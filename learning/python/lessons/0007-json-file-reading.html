@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 7 · 从文件读取 JSON 配置</title>
+<style>
+body{max-width:800px;margin:48px auto;padding:0 24px 56px;background:#fbfaf6;color:#172027;font:17px/1.65 system-ui,"Microsoft YaHei",sans-serif}h1{font-size:2rem;line-height:1.2}h2{font-size:1.2rem;color:#80572a;margin-top:2rem}pre{background:#172027;color:#faf7ef;padding:18px;border-radius:10px;overflow:auto}code{font-family:Consolas,monospace}a{color:#80572a}.note{color:#5c6870}.flow{padding:18px;border:1px solid #d8d2c5;border-radius:10px}li{margin:8px 0}@media print{body{background:white;margin:20px auto}pre{white-space:pre-wrap;overflow-wrap:anywhere}}
+</style>
+</head>
+<body>
+<p class="note">Week 1 · Day 7 · 第一步：只读取，不写入</p>
+<h1>把磁盘里的配置读进程序</h1>
+<p>昨天处理的是 Python 字符串里的 JSON。今天将查询配置放在文件中，再读入程序。这是读取 AI 应用配置、工具参数样例与评测数据的基础；本节不存放密钥。</p>
+<p class="flow">路径字符串 → open 打开文件 → json.load 读取并解析 → Python 对象</p>
+<h2>输入文件</h2>
+<p><a href="../week01/data/day07_query_config.json">day07_query_config.json</a> 的内容如下。JSON 文件内容不是 Python 源码，不在整个对象外面再加一层字符串引号。</p>
+<pre><code>{
+  "table_name": "orders",
+  "limit": 20,
+  "active": true
+}</code></pre>
+<h2>先读懂这几行</h2>
+<pre><code>import json
+
+path = "E:/Project/AI_Application_Study/learning/python/week01/data/day07_query_config.json"
+with open(path, "r", encoding="utf-8") as file:
+    config = json.load(file)
+
+print(config["table_name"])
+print(config["limit"])</code></pre>
+<ul>
+<li><code>path</code> 是文件地址字符串，不是文件内容。本例使用你当前仓库的绝对路径，先不引入路径计算。</li>
+<li><code>open(...)</code> 打开文件并返回文件对象。<code>"r"</code> 表示只读；<code>encoding="utf-8"</code> 指定文本编码。</li>
+<li><code>as file</code> 把这个文件对象绑定到变量 <code>file</code>；它不是路径字符串。</li>
+<li><code>with</code> 管理文件的使用范围，离开缩进块时会自动关闭文件。此处只学习这一个用法，不展开上下文管理器实现。</li>
+<li><code>json.load(file)</code> 从已打开的文件读取并解析 JSON。本例顶层是 object，解析后得到字典；JSON 顶层不一定都是 object。</li>
+</ul>
+<p>文件关闭后，已读入内存的 <code>config</code> 仍可使用。仅修改内存中的字典不会自动保存回文件；本小节不进行任何写入。</p>
+<h2>与昨天的区别</h2>
+<p><code>json.loads(json_text)</code> 接收包含 JSON 的字符串；<code>json.load(file)</code> 接收可读取的文件对象。路径虽然也是 str，但路径文本不等于 JSON 内容。</p>
+<h2>你来预测</h2>
+<ol>
+<li>两行 print 的输出分别是什么？config 的类型是什么？</li>
+<li>为什么使用 json.load(file)，而不是 json.loads(path)？</li>
+</ol>
+<p>先不运行、不查答案，在聊天中作答；能准确解释输出及输入对象的差别，再运行 <a href="../week01/day07_read_json_demo.py">最小示例</a> 核对，然后进入亲手练习。示例脚本将读取逻辑放在 main 内，并保留入口保护，导入时不会读取文件。</p>
+<h2>亲手练习：读取函数</h2>
+<p>阅读验收后，打开 <a href="../week01/day07_load_query_config.py">load_query_config 练习</a>，先写中文伪代码，再把给定路径中的配置读成字典并 return。使用路径参数，不写死配置，不在业务函数内 print，也不修改源文件。</p>
+<p>只处理存在且可读的 UTF-8 合法 JSON object；验收需保留 0、false、字符串与中文字段。<a href="../week01/test_day07_load_query_config.py">三个测试</a>由导师提供，不要求现在学习测试框架。核心代码仍由你完成，代码通过后还需解释文件关闭与返回结果的关系。</p>
+<p class="note">有不清楚的语法随时问导师。今天结束前仍预留 10～15 分钟做交错巩固。</p>
+<h2>参考与回顾</h2>
+<p><a href="0006-python-object-vs-json-text.html">上一课：对象与 JSON 文本</a> · <a href="../reference/python-json-quick-reference.html">JSON 速查</a></p>
+<p>官方依据：<a href="https://docs.python.org/zh-cn/3.11/tutorial/inputoutput.html#reading-and-writing-files">Python 3.11 文件读取、编码与 with</a> · <a href="https://docs.python.org/zh-cn/3.11/library/json.html#json.load">json.load / json.loads</a>。</p>
+</body>
+</html>

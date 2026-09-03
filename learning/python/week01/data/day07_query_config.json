@@ -1,0 +1,5 @@
+{
+  "table_name": "orders",
+  "limit": 20,
+  "active": true
+}

@@ -84,3 +84,53 @@ config = json.loads(result)
 **标准回答：**
 
 第一行能正常接收 dict，但第二行 json.loads(result) 会抛出 TypeError，因为已经解析过的 Python 字典不是该函数接受的 JSON 输入。原接口要求 str，应通过 json.dumps(data) 返回 JSON 文本。本课以 str 为例；标准库 loads 也支持承载 JSON 的 bytes、bytearray，但不接受 dict。
+
+## 2026-09-04 — JSON 文件读取与资源生命周期
+
+本轮评分：7/10。原题正确；变体中混淆文件文本与文件对象，并遗漏了文件已经关闭的状态。已反馈，待独立纠错复述。
+
+后续复测：学习者已正确复述返回 dict 可继续使用、返回已关闭文件对象不能继续读取；另补准关闭时机为调用方获得返回值之前。原评分保留，待交错巩固和跨日复测检验稳定性。
+
+当日收尾：三题交错巩固及学习者亲手修正缩进均通过，巩固另计 10/10，不改写首次面试评分；下次进行间隔复测。
+
+### 问题 1：return 位于 with 内部时，调用方获得结果前文件是否关闭？继续读取 result["limit"] 是否还需要文件打开？为什么？
+
+```python
+def load_query_config(path):
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+result = load_query_config(path)
+```
+
+**标准回答：**
+
+文件已关闭，也不需要为了访问 result["limit"] 保持打开。return 先求值 json.load(f)，在文件仍打开时读取并解析 JSON；本题顶层 JSON object 被解析为内存中的 dict。随后离开 with 时关闭文件，调用方获得返回的字典。关闭文件不会销毁已解析的字典，后续读取字典不需要再次读取文件。
+
+### 追问：仅将 return json.load(f) 改成 return f：调用方获得什么对象？再执行 json.load(result) 是否成功，为什么？
+
+**标准回答：**
+
+调用方获得的是已经关闭的文件对象，不是文件中的文本，也不是解析后的字典。return f 只确定要返回哪个对象，不读取或解析文件；离开 with 时仍会执行关闭操作。json.load(result) 需要读取该文件对象，但文件已关闭，因此失败。本地实际运行得到 ValueError: I/O operation on closed file.。关键不是背异常名，而是区分“文件对象仍存在”与“文件仍然打开、可以读取”。
+
+### 当日巩固 1：文件内容为 {"active": false, "label": "false", "limit": 0}，经 json.load 解析后依次打印三个字段。三行输出依次是什么？三个字段值分别是什么 Python 类型？
+
+**标准回答：** 输出依次为 False、false、0；对应类型为 bool、str、int。JSON 的 false 是布尔值，带双引号的 "false" 是字符串；print 显示字符串内容时不加引号。
+
+### 当日巩固 2：以下代码停止前会打印什么？哪一行出错，原因是什么？只调整缩进让调用方拿到解析后的数据，保留两条 print。
+
+```python
+def load_config(path):
+    with open(path, "r", encoding="utf-8") as f:
+        print("opened")
+    return json.load(f)
+
+config = load_config(path)
+print("done")
+```
+
+**标准回答：** 假设文件存在且包含合法 JSON，原题先打印 opened，随后 return json.load(f) 读取已关闭的文件而失败，不会打印 done。将 return json.load(f) 向内缩进一级，放入 with 块，与 print("opened") 同级，即可在关闭文件之前完成读取解析。调用方拿到的是字典，修正后依次打印 opened、done。学习者已亲手完成这项修改并经执行验证。
+
+### 当日巩固 3：config_tools 顶层打印 loading，build_config(limit=100) 只 print(limit)，入口保护中调用 build_config()。app 导入函数后执行 result = build_config(0) 和 print(result)。精确输出顺序是什么？result 保存什么？默认值 100 会打印吗，为什么？
+
+**标准回答：** 新进程执行 app 时依次输出 loading、0、None。导入会执行模块顶层 print，但入口保护中的调用不执行；app 显式传入 0，覆盖默认值 100。build_config 没有显式 return，隐式返回 None，所以 result 保存 None，100 不会打印。
