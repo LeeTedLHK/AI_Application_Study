@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python 四种常用容器</title>
+  <style>
+    body { max-width: 820px; margin: 48px auto; padding: 0 24px; color: #202124;
+           font: 17px/1.65 system-ui, sans-serif; }
+    h1, h2 { line-height: 1.25; } table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
+    code, pre { background: #f3f4f6; } code { padding: .1em .3em; }
+    pre { padding: 14px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h1>先会选，再会写：四种常用容器</h1>
+  <p>容器是“把多个值组织在一起”的数据类型。选择时先问：需要顺序吗？会修改吗？按位置找，还是按名字找？</p>
+
+  <table>
+    <thead><tr><th>类型</th><th>最核心的用途</th><th>本项目中的例子</th></tr></thead>
+    <tbody>
+      <tr><td><code>list</code></td><td>有顺序、会增删的一串值</td><td>聊天消息、检索结果</td></tr>
+      <tr><td><code>tuple</code></td><td>有顺序、结构固定的一组值</td><td>固定必填字段、坐标</td></tr>
+      <tr><td><code>set</code></td><td>不重复、主要判断“是否属于”</td><td>合法状态、权限集合</td></tr>
+      <tr><td><code>dict</code></td><td>用 key 找对应 value</td><td>JSON、SQL 行、工具参数</td></tr>
+    </tbody>
+  </table>
+
+  <h2>最小例子</h2>
+  <pre><code>messages = ["用户提问", "助手回答"]
+required_fields = ("department", "amount", "status")
+valid_statuses = {"paid", "cancelled", "pending"}
+row = {"department": "sales", "amount": 1200}</code></pre>
+
+  <p>这些选择不是强制规则：用 list 也能保存合法状态。好的选择主要让代码表达意图，并减少不需要的操作。</p>
+
+  <h2>权威参考</h2>
+  <p><a href="https://docs.python.org/3/tutorial/datastructures.html">Python 官方教程：Data Structures</a></p>
+  <p>有不清楚的地方，先向 Agent 提问；理解后再回到校验函数。</p>
+</body>
+</html>

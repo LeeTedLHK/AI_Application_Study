@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>module / import / __main__ 速查</title>
+  <style>
+    body { max-width:780px; margin:48px auto; padding:0 24px; color:#1e2933; font:16px/1.6 system-ui,"Microsoft YaHei",sans-serif; }
+    h1 { font-size:2rem; } table { width:100%; border-collapse:collapse; margin:24px 0; }
+    th,td { text-align:left; padding:12px; border-bottom:1px solid #d7dde1; vertical-align:top; }
+    th { color:#275b74; } code { background:#f1f4f5; padding:.1em .3em; }
+    pre { padding:14px; background:#f1f4f5; overflow:auto; }
+  </style>
+</head>
+<body>
+  <h1>module / import / __main__ 速查</h1>
+  <table>
+    <thead><tr><th>场景</th><th><code>__name__</code></th><th>入口保护是否执行</th></tr></thead>
+    <tbody>
+      <tr><td><code>python query_tools.py</code></td><td><code>"__main__"</code></td><td>是</td></tr>
+      <tr><td><code>import query_tools</code></td><td><code>"query_tools"</code></td><td>否</td></tr>
+    </tbody>
+  </table>
+  <pre><code>def main():
+    # 演示或启动逻辑
+    ...
+
+if __name__ == "__main__":
+    main()</code></pre>
+  <p><strong>放在模块顶层：</strong>函数、类、模块常量和必要的导入。</p>
+  <p><strong>放在入口保护内：</strong>演示输出、手工测试和应用启动调用。</p>
+  <p><a href="../lessons/0005-modules-import-main.html">返回 Day 5 讲义</a></p>
+</body>
+</html>

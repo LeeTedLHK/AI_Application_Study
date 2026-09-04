@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Day 5 · module、import 与 __main__</title>
+  <style>
+    :root { --ink:#172027; --muted:#5c6870; --accent:#275d78; --paper:#fbfaf6; --line:#d8d2c5; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.65 system-ui,"Microsoft YaHei",sans-serif; }
+    main { max-width:800px; margin:auto; padding:56px 28px 90px; }
+    h1 { font-size:2.15rem; line-height:1.15; margin:.2rem 0 .8rem; }
+    h2 { margin-top:2.2rem; color:var(--accent); font-size:1.25rem; }
+    .lede,.note { color:var(--muted); }
+    .model { display:grid; gap:8px; padding:18px 20px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    pre { overflow:auto; padding:18px; border-radius:10px; background:#172027; color:#faf7ef; }
+    code { font-family:"Cascadia Code",Consolas,monospace; }
+    a { color:var(--accent); }
+    @media print { body { background:#fff; } main { padding:20px; } }
+  </style>
+</head>
+<body>
+<main>
+  <p class="note">Week 1 · Day 5 · 一个核心概念</p>
+  <h1>让 Python 文件既能复用，也能直接运行</h1>
+  <p class="lede">一个 <code>.py</code> 文件就是一个模块。别的文件可以 <code>import</code> 它，并通过模块名访问其中的函数。</p>
+
+  <div class="model">
+    <div><strong>直接运行：</strong><code>__name__ == "__main__"</code></div>
+    <div><strong>被导入：</strong><code>__name__ == 模块名</code></div>
+    <div><strong>共同点：</strong>模块的顶层代码都会执行；入口保护中的代码只在直接运行时执行。</div>
+  </div>
+
+  <h2>为什么需要入口保护</h2>
+  <pre><code># query_tools.py
+def build_config():
+    return {"limit": 100}
+
+if __name__ == "__main__":
+    print(build_config())</code></pre>
+  <p>直接运行 <code>query_tools.py</code> 时会打印演示结果；其他文件执行 <code>import query_tools</code> 时，只获得模块和函数，不会执行入口保护里的打印。</p>
+
+  <h2>import 的最小用法</h2>
+  <pre><code># app.py
+import query_tools
+
+config = query_tools.build_config()
+print(config)</code></pre>
+  <p><code>import query_tools</code> 把模块名绑定到当前文件；用 <code>query_tools.build_config</code> 能清楚看出函数来自哪里。</p>
+
+  <h2>AI 应用中的位置</h2>
+  <p>FastAPI 路由会导入业务函数，测试会导入被测函数，Agent 会导入 Tool。若导入时自动运行演示、查询数据库或发起 API 请求，应用启动和测试就会产生意外副作用。</p>
+
+  <h2>复习入口</h2>
+  <p><a href="../reference/modules-import-main-quick-reference.html">module / import / __main__ 速查表</a> · <a href="0004-function-scope.html">上一课：函数作用域</a></p>
+  <p>权威参考：<a href="https://docs.python.org/3.11/tutorial/modules.html">Python 3.11 官方教程：Modules</a>、<a href="https://docs.python.org/3.11/library/__main__.html">Python 3.11 官方文档：__main__</a>。</p>
+  <p class="note">阅读后回到对话完成执行预测；不清楚时直接问 Agent。</p>
+</main>
+</body>
+</html>

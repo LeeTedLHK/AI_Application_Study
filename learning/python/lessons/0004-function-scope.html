@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Day 4 · 函数作用域</title>
+  <style>
+    :root { --ink:#182026; --muted:#59656f; --accent:#285c78; --paper:#fcfaf5; --line:#d9d2c3; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.65 system-ui,"Microsoft YaHei",sans-serif; }
+    main { max-width:780px; margin:auto; padding:56px 28px 90px; }
+    h1 { font-size:2.2rem; line-height:1.15; margin:.2rem 0 .8rem; }
+    h2 { margin-top:2.2rem; color:var(--accent); font-size:1.25rem; }
+    .lede,.note { color:var(--muted); }
+    .model { padding:18px 20px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    pre { overflow:auto; padding:18px; border-radius:10px; background:#182026; color:#faf7ef; }
+    code { font-family:"Cascadia Code",Consolas,monospace; }
+    a { color:var(--accent); }
+    @media print { body { background:#fff; } main { padding:20px; } }
+  </style>
+</head>
+<body>
+<main>
+  <p class="note">Week 1 · Day 4 · 一个核心概念</p>
+  <h1>函数有自己的局部作用域</h1>
+  <p class="lede">函数参数和函数内部创建的变量，默认属于本次函数调用。函数外部的模块变量不会因为内部出现同名局部变量而自动改变。</p>
+
+  <div class="model">
+    <strong>最小心智模型</strong><br>
+    参数也是局部变量；函数内赋值默认创建或更新局部名字；函数结束后，通过 <code>return</code> 把需要的结果交出去。
+  </div>
+
+  <h2>最小例子</h2>
+  <pre><code>status = "global"
+
+def normalize_status(status):
+    normalized = status.strip().lower()
+    return normalized
+
+result = normalize_status(" PAID ")</code></pre>
+  <p>两个同名的 <code>status</code> 处于不同作用域。函数参数接收 <code>" PAID "</code>；函数外的 <code>status</code> 仍是 <code>"global"</code>。</p>
+
+  <h2>为什么不应偷偷依赖全局业务状态</h2>
+  <p>如果函数从外部可变变量中偷取筛选条件，调用者看函数签名无法知道完整输入，测试也会受执行顺序影响。在 FastAPI 或 Agent Tool 中，不同请求还可能互相污染。业务输入优先通过参数传入，结果通过 <code>return</code> 返回。</p>
+  <p class="note">读取模块常量、导入的函数通常是正常做法；今天关注的是避免隐藏的、会变化的业务输入。</p>
+
+  <h2>复习入口</h2>
+  <p><a href="../reference/function-scope-quick-reference.html">作用域速查表</a> · <a href="0003-function-input-output.html">上一课：函数输入与输出</a></p>
+  <p>权威参考：<a href="https://docs.python.org/zh-cn/3.11/tutorial/classes.html#python-scopes-and-namespaces">Python 3.11 官方教程：作用域和命名空间</a>。不必通读类章节，只看作用域小节。</p>
+  <p class="note">阅读后回到对话完成执行预测；有疑问请直接问 Agent。</p>
+</main>
+</body>
+</html>

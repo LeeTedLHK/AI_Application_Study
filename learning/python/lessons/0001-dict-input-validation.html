@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Day 2：字典输入校验</title>
+  <style>
+    body { max-width: 760px; margin: 48px auto; padding: 0 24px; color: #202124;
+           font: 17px/1.65 system-ui, sans-serif; }
+    h1, h2 { line-height: 1.25; } code { background: #f3f4f6; padding: .1em .3em; }
+    .rule { border-left: 4px solid #356ae6; padding-left: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Day 2：先校验，再处理</h1>
+  <p>SQL 查询行、API JSON 和 LLM 工具参数都来自函数边界之外。进入核心逻辑前先校验，能让失败更早、更清楚。</p>
+
+  <h2>今天只记一个判断</h2>
+  <p class="rule"><code>data[key]</code> 表示“这个 key 必须存在”；<code>data.get(key)</code> 或 <code>key in data</code> 表示“我要主动处理缺失”。</p>
+
+  <h2>数据结构选择</h2>
+  <p><code>tuple</code> 表达固定、有顺序的必填字段；<code>set</code> 表达无重复、主要用于成员判断的合法值集合。</p>
+
+  <h2>练习</h2>
+  <p>完成 <code>week01/day02_validate_query_rows.py</code>，让一个函数一次返回当前行的全部错误。需要帮助时，指出你卡住的具体判断。</p>
+
+  <h2>权威参考</h2>
+  <p><a href="https://docs.python.org/3/library/stdtypes.html#mapping-types-dict">Python 官方文档：Mapping Types — dict</a></p>
+</body>
+</html>
+

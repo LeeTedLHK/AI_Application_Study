@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python 函数作用域速查</title>
+  <style>
+    body { max-width:760px; margin:48px auto; padding:0 24px; color:#1e2933; font:16px/1.6 system-ui,"Microsoft YaHei",sans-serif; }
+    h1 { font-size:2rem; } table { width:100%; border-collapse:collapse; margin:24px 0; }
+    th,td { text-align:left; padding:12px; border-bottom:1px solid #d7dde1; vertical-align:top; }
+    th { color:#275b74; } code { background:#f1f4f5; padding:.1em .3em; }
+    .rule { padding:16px; border-left:4px solid #275b74; background:#f6f8f8; }
+  </style>
+</head>
+<body>
+  <h1>函数作用域速查</h1>
+  <p class="rule">业务输入用参数传入；中间结果放局部变量；业务输出用 <code>return</code> 返回。</p>
+  <table>
+    <thead><tr><th>名字出现的位置</th><th>当前阶段的判断</th></tr></thead>
+    <tbody>
+      <tr><td>函数参数</td><td>局部名字，每次调用都有自己的值</td></tr>
+      <tr><td>函数内部赋值</td><td>默认绑定到当前函数的局部作用域</td></tr>
+      <tr><td>函数外部赋值</td><td>模块级全局名字</td></tr>
+      <tr><td>函数读取外部常量</td><td>通常可以，但不要把会变化的业务输入隐藏在外部</td></tr>
+    </tbody>
+  </table>
+  <p><strong>警报信号：</strong>函数签名没有某项业务输入，函数体却从外部可变变量读取它；测试必须先修改全局变量才能通过。</p>
+  <p><a href="../lessons/0004-function-scope.html">返回 Day 4 讲义</a></p>
+</body>
+</html>
