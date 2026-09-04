@@ -134,3 +134,19 @@ print("done")
 ### 当日巩固 3：config_tools 顶层打印 loading，build_config(limit=100) 只 print(limit)，入口保护中调用 build_config()。app 导入函数后执行 result = build_config(0) 和 print(result)。精确输出顺序是什么？result 保存什么？默认值 100 会打印吗，为什么？
 
 **标准回答：** 新进程执行 app 时依次输出 loading、0、None。导入会执行模块顶层 print，但入口保护中的调用不执行；app 显式传入 0，覆盖默认值 100。build_config 没有显式 return，隐式返回 None，所以 result 保存 None，100 不会打印。
+
+## 2026-09-05 — 异常与 traceback 阅读
+
+本轮评分：8/10。能先识别最后一行异常类型，正确区分 FileNotFoundError 与 JSONDecodeError 的修复方向，也知道不应修改标准库；变体中需要补准“先看最近的自己代码失败行，再向上追调用和输入”。
+
+### 问题 1：AI 后端启动时加载 JSON 配置失败，traceback 中既有自己的代码，也有多行 Python 标准库代码。你会按照什么顺序阅读 traceback？怎样区分应该修复文件路径，还是修复 JSON 内容？
+
+**标准回答：**
+
+先读 traceback 最后一行，确认异常类型和详情。若是 FileNotFoundError，重点核对失败的 open 操作、实际 path、当前工作目录及文件是否存在；若是 JSONDecodeError，说明文件通常已打开并进入解析阶段，应根据异常给出的 JSON 行列检查文本语法。然后从靠近底部的自己代码 frame 开始，确认直接失败的操作，再向上追调用链和输入来源。修改后必须重新运行并核对实际结果与预期，不能把“不再抛异常”当作完成。
+
+### 追问：最后一行是 JSONDecodeError，上方先是多行 json/decoder.py，再往上是 config_loader.py 第 8 行 return json.load(f)，app.py 第 20 行 config = load_config(path)。是否修改 json/decoder.py？自己的两行先检查哪一行？如何追到有问题的 JSON 输入？
+
+**标准回答：**
+
+不修改 Python 标准库的 json/decoder.py；它只是异常传播过程中显示的内部调用。先检查最靠近异常的自己代码 config_loader.py 第 8 行，确认失败操作是 json.load(f)，由此知道问题发生在读取到的 JSON 内容解析阶段。再向上检查 app.py 第 20 行传入的 path，追到具体文件，结合 JSONDecodeError 的文本行列检查该文件。修复后重新运行测试，并比较解析结果是否符合业务预期。

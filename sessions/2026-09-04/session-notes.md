@@ -63,3 +63,52 @@
 ## Git
 
 章节提交信息：learn(week01-day07): JSON file reading and resource lifetime。仅纳入本章示例、练习、测试、数据、讲义 / 速查、两日会话记录、tracker 和已作答面试记录；具体提交哈希以 Git 日志为准。不纳入 day06_json_config.py 的无关修改或旧章节未跟踪文件；本次不推送远程。
+
+## Day 8 Start — Exceptions / Traceback
+
+- 用户在查看下一章范围和约 1 小时时长后明确要求继续，视为批准本次边界清晰的课程设计。
+- 当前只启动约 2 分钟跨日复测，不提前引入 try / except；通过后再用 FileNotFoundError 与 JSONDecodeError 学习 traceback 的阅读顺序。
+- 当前 Python 为 3.11.15；知识依据核对 Python 3.11.15 官方 Errors and Exceptions、Built-in Exceptions 与 json.JSONDecodeError 文档。
+- 新建 learning/python/week01/day08_warmup.py；题面无答案、无文件操作，等待学习者闭卷作答。
+- 本章尚未完成，不提交或推送。
+
+### Day 8 Opening Retrieval Result
+
+- 学习者回答 result 为 dict，调用方得到结果时 f 已关闭；最后输出 False，不需重新打开文件，因为 result 已经是生成的 dict 而不是文件。两问均正确，关闭时机与返回对象的上次缺口在本次跨轮复测中未复现。
+- Day 7 等级保持 Modified-It；复测用于证明提取更稳定，不自动升级。
+
+### Day 8 New Concept — First Traceback
+
+- 当前只讲异常与 traceback 阅读，不先教 try / except。最小心智模型：最后一行读异常类型和详情，最靠近底部的自己代码找失败操作，再向上看调用入口。
+- 新增 0008-traceback-first-read.html、python-traceback-quick-reference.html、day08_file_not_found_demo.py 和无答案阅读题 day08_traceback_reading.py。
+- 使用不存在的 missing-config.json 制造 FileNotFoundError；示例不创建、修改或删除文件。已实际运行：先输出 before load，随后退出码 1；traceback 的 25 → 19 → 13 行与讲义一致，after load 未执行。
+- 来源：Python 3.11.15 官方异常教程与 FileNotFoundError 文档。
+
+### First Traceback Reading Result
+
+- 学习者正确识别 FileNotFoundError、缺少 missing-config.json；正确定位 with open(...) 为实际失败操作；正确解释 load_config 调用抛出异常后无法到达 after load。
+- 第 2 问误答 main()。main() 是第 25 行模块入口对 main 函数的调用；真正发起 load_config 调用的是第 19 行 config = load_config("missing-config.json")；第 13 行 open 才是最终失败操作。
+- 本轮 3/4，保持 Need-Practice。下一步先让学习者用三行箭头复述 25 → 19 → 13 的角色，正确后再进入 JSONDecodeError，不提前写 try / except。
+
+### First Traceback Corrective Retrieval
+
+- 学习者已正确复述：模块入口调用 main，main 内调用 load_config，load_config 内 open 因找不到路径抛出异常。三层角色正确，纠错通过；拼写 mian 不作为概念错误。
+- 继续第二个失败案例：新增存在但含尾随逗号的 data/day08_invalid_config.json，以及只读示例 day08_invalid_json_demo.py。下一步实际运行并基于真实 traceback 教学，不先引入处理语法。
+
+### Second Traceback — JSONDecodeError
+
+- 已实际运行 day08_invalid_json_demo.py：文件路径存在并成功进入 json.load；演示以 JSONDecodeError 退出。自己代码调用链为 25 行模块入口 → 19 行 main 调用 load_config → 13 行 json.load 触发解析。
+- 异常详情为 Expecting property name enclosed in double quotes: line 4 column 1 (char 43)。这里的 line 4 / column 1 属于 JSON 文本，不是 Python 文件行号；非法原因是最后字段后的尾随逗号。
+- 标准库内部 frame 会出现在完整 traceback 中；当前要求先识别最后一行，再找最靠近底部的自己代码，不要求理解 json 标准库内部实现。
+- 已扩展 0008 讲义与 traceback 速查，新增无答案练习 day08_json_decode_reading.py。等待学习者回答，不提前进入 try / except。
+
+### JSONDecodeError Reading Result
+
+- 学习者 4/4：正确识别 JSONDecodeError 与 JSON 第 4 行第 1 列；正确定位 Python 第 19 行调用 load_config、第 13 行 json.load 解析；根据已经执行到 json.load 且未出现文件不存在错误判断 open 成功；定位 limit 字段后的尾随逗号并给出删除逗号的最小修复。
+- 迁移表现通过，exception / traceback 从 Need-Practice 调整为 Understood-It。尚未亲手完成双阶段 Debug，不升级到 Modified-It。
+
+### Learner Debug Challenge
+
+- 新增 day08_debug_challenge.py、data/day08_debug_config.json 与测试脚手架。程序预置一个错误路径，实际配置文件另含非法尾随逗号；学习者需运行 → 读 traceback → 每次只修当前根因 → 再运行。
+- 不提前提供具体修复位置；不允许增加 try / except、硬编码字典、删除读取逻辑或修改测试预期。
+- 下一步只处理第一次异常，并用异常类型、调用位置、失败位置、根因、修改五项报告；第二个异常必须等第一次修复并重新运行后再处理。

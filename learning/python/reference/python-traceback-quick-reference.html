@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python traceback 速查</title>
+<style>
+body{max-width:800px;margin:48px auto;padding:0 24px 56px;background:#fbfaf6;color:#172027;font:17px/1.65 system-ui,"Microsoft YaHei",sans-serif}h1{font-size:2rem;line-height:1.2}h2{font-size:1.2rem;color:#80572a;margin-top:2rem}pre{background:#172027;color:#faf7ef;padding:18px;border-radius:10px;overflow:auto}code{font-family:Consolas,monospace}.flow{padding:18px;border:1px solid #d8d2c5;border-radius:10px}a{color:#80572a}@media print{body{background:white;margin:20px auto}pre{white-space:pre-wrap}}
+</style>
+</head>
+<body>
+<p>Week 1 · Python Core</p>
+<h1>Traceback 四步速查</h1>
+<p class="flow">最后一行异常类型 → 同行错误详情 → 最靠近底部的自己代码 → 沿调用链向上找入口</p>
+<h2>先回答四个问题</h2>
+<ol>
+<li>是什么异常？例如 <code>FileNotFoundError</code>。</li>
+<li>详情说什么？例如哪个文件不存在。</li>
+<li>真正失败的操作在哪里？通常先看最靠近异常行的自己代码。</li>
+<li>它是从哪里被调用的？再沿上方 frame 找调用路径。</li>
+</ol>
+<p>异常发生后，如果没有匹配的处理代码，当前执行路径会中断，异常后的普通语句不会继续运行。</p>
+<h2>文件配置的两个常见失败阶段</h2>
+<ul>
+<li><code>FileNotFoundError</code>：路径无法打开，失败操作通常是 <code>open</code>。</li>
+<li><code>JSONDecodeError</code>：文件已打开，但内容不符合 JSON 语法，失败操作通常是 <code>json.load</code> 或 <code>json.loads</code>。</li>
+</ul>
+<p>traceback frame 中的行号属于 Python 代码；JSONDecodeError 详情中的 line / column 属于被解析的 JSON 文本。</p>
+<p>不要从第一行开始逐字翻译，也不要看到异常就立刻加 <code>try/except</code>。先确认根因，再决定是修输入、修路径、修代码，还是以后增加合适的异常处理。</p>
+<p><a href="../lessons/0008-traceback-first-read.html">返回 Day 8 讲义</a> · <a href="https://docs.python.org/3.11/tutorial/errors.html#exceptions">Python 3.11.15 官方异常教程</a> · <a href="https://docs.python.org/3.11/library/json.html#json.JSONDecodeError">官方 JSONDecodeError</a></p>
+</body>
+</html>
