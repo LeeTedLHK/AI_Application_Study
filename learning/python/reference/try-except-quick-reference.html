@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>try / except 精确捕获速查</title>
+  <style>
+    body{max-width:820px;margin:36px auto;padding:0 28px;color:#182235;font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}
+    h1{font-size:1.8rem} h2{margin-top:28px} pre{padding:16px;background:#f5f7fb;border:1px solid #d8dfeb;border-radius:8px;overflow:auto}
+    code{font-family:"Cascadia Code",Consolas,monospace} table{width:100%;border-collapse:collapse} th,td{padding:9px;border-bottom:1px solid #d8dfeb;text-align:left}
+    .warn{padding:14px 18px;border-left:4px solid #b45309;background:#fff7ed} a{color:#315caa}
+  </style>
+</head>
+<body>
+  <h1>try / except 精确捕获速查</h1>
+  <pre><code>try:
+    result = operation()
+    return result
+except KnownError:
+    return fallback</code></pre>
+
+  <h2>执行规则</h2>
+  <table>
+    <tr><th>情况</th><th>结果</th></tr>
+    <tr><td>try 成功</td><td>跳过 except</td></tr>
+    <tr><td>异常类型匹配</td><td>跳过 try 剩余部分，执行对应 except</td></tr>
+    <tr><td>异常类型不匹配</td><td>继续向调用方传播</td></tr>
+    <tr><td>多个 except 匹配</td><td>只执行第一个匹配分支</td></tr>
+  </table>
+
+  <h2>当前配置场景</h2>
+  <ul>
+    <li><code>FileNotFoundError</code>：路径对应的文件不存在。</li>
+    <li><code>json.JSONDecodeError</code>：文件已读取，但 JSON 文本无法解析。</li>
+  </ul>
+
+  <p class="warn">只捕获真正知道如何处理的异常。本章不使用裸 <code>except:</code> 或宽泛的 <code>except Exception:</code>，以免隐藏未知缺陷。</p>
+
+  <h2>Debug 提问顺序</h2>
+  <ol>
+    <li>try 中哪一步抛出了异常？</li>
+    <li>异常是否匹配某个 except？</li>
+    <li>try 中哪些后续语句被跳过？</li>
+    <li>调用方最终拿到返回值，还是异常继续传播？</li>
+  </ol>
+
+  <p><a href="../lessons/0009-try-except-specific-errors.html">返回 Day 9 讲义</a> · <a href="https://docs.python.org/3.11/tutorial/errors.html#handling-exceptions">Python 官方异常处理</a></p>
+</body>
+</html>

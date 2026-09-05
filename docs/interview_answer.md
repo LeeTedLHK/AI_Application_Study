@@ -150,3 +150,13 @@ print("done")
 **标准回答：**
 
 不修改 Python 标准库的 json/decoder.py；它只是异常传播过程中显示的内部调用。先检查最靠近异常的自己代码 config_loader.py 第 8 行，确认失败操作是 json.load(f)，由此知道问题发生在读取到的 JSON 内容解析阶段。再向上检查 app.py 第 20 行传入的 path，追到具体文件，结合 JSONDecodeError 的文本行列检查该文件。修复后重新运行测试，并比较解析结果是否符合业务预期。
+
+## 2026-09-05 — 精确异常捕获
+
+本轮评分：9/10。学习者能解释宽泛捕获会把其他根因错误标记为 invalid_json，导致无法精确定位并误导开发人员排查；补充影响是调用方和监控也可能基于错误分类采取错误动作。
+
+### 问题：如果 load_query_config 内部的程序错误抛出 NameError，而代码使用 except Exception 并统一返回 invalid_json，会产生什么工程问题？为什么 AI 后端不应把所有异常都当成 invalid_json？
+
+**标准回答：**
+
+except Exception 会同时捕获 JSON 格式错误、权限问题、程序缺陷等许多不同异常。统一返回 invalid_json 会掩盖原始异常类型和 traceback，使开发人员误查 JSON 文件，调用方也可能错误地提示用户修改配置或执行不合适的恢复动作，日志和监控还会得到失真的错误分类。应只捕获当前层明确知道如何恢复或转换的异常；例如分别处理 FileNotFoundError 和 json.JSONDecodeError，让 NameError 等未知异常保留原类型继续传播，以便尽快暴露并修复代码缺陷。

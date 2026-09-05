@@ -71,3 +71,45 @@
 ## Git
 
 章节提交信息：learn(week01-day08): exception and traceback debugging。只纳入 Day 8 代码、数据、讲义、测试，以及与本章直接相关的 tracker、session 和面试记录；不纳入 day06_json_config.py 的修改和其他未跟踪文件。本次不推送远程。
+
+## Day 9 Start — Specific try / except
+
+- Day 8 章节已归档为本地提交 ae8eb97；继续学习仍发生在 2026-09-05，因此追加到同一日 session notes，不新建重复日期目录。
+- 开场闭卷复测 4/4：学习者准确给出 JSONDecodeError → return json.load(f) → config = load_config(path) 的阅读顺序；能从调用行追 path，并区分 JSON 文本行列与 Python 文件行号。
+- 本章限定为一个 try 和两个精确 except：FileNotFoundError、json.JSONDecodeError。暂不引入 else、finally、自定义异常或宽泛 Exception。
+- 输出采用固定结构：成功包含 data；已知失败包含 file_not_found 或 invalid_json。该形式可迁移到 AI Tool / API 的结构化结果。
+- 依据 Python 3.11.15 官方 Handling Exceptions 和 json.JSONDecodeError 文档设计讲义。
+- TDD 红灯第一步：新增三个真实文件行为测试；首次运行因 day09_safe_config_loader 模块尚未创建而得到 ModuleNotFoundError，证明功能尚不存在。
+- 下一步：加入占位模块后确认测试以业务断言失败，再由学习者先完成执行预测。
+- 加入仅返回 None 的占位函数后，三个测试均以 None 与预期结构不相等的断言失败；红灯原因已从模块不存在收窄到业务行为未实现。
+- 执行预测 3/3：学习者准确判断合法 JSON 返回字典且跳过 except；非法 JSON 转入匹配分支并返回 None；FileNotFoundError 不匹配 JSONDecodeError，会继续传播。表达补准：json.loads 抛异常时，data 赋值没有完成，try 内 return 也不执行。
+- 学习者随后独立完成一个 try 和两个精确 except 分支。导师重新运行 Day 9 三个测试全部通过，Day 7 三个回归测试全部通过；代码满足固定结构、复用 Day 7 函数、不打印且不宽泛捕获的约束。
+
+### Day 9 Interview Check
+
+- 问题：如果 load_query_config 内部抛出 NameError，而 except Exception 统一返回 invalid_json，会产生什么工程问题？
+- 学习者准确说明所有其他异常会被错误转换成 invalid_json，真实原因无法精确定位，且会诱导开发人员误查 JSON，影响工程排查。
+- 补充：调用方可能采取错误恢复动作，日志与监控的错误分类也会失真。
+- 评分：9/10。标准答案已在学习者作答并评分后追加到 docs/interview_answer.md。
+- 下一步：完成 Day 9 三道交错巩固，再做最终验证和章节 Git 提交。
+
+### Day 9 Daily Consolidation
+
+- 三题首次闭卷 7/10。第 1 题准确预测 start → invalid → finish，并说明 config 赋值未完成、JSONDecodeError 分支执行；第 2 题准确区分 FileNotFoundError 与 json.JSONDecodeError，也能解释宽泛分类掩盖根因。
+- 第 3 题首次把未匹配的 FileNotFoundError 当成会由 JSONDecodeError 分支返回 None，因此误判 result 能赋值、print 会执行；另把“修改路径”回答成当前代码的运行行为。
+- 反馈只重申异常类型匹配规则，随后纠错复述 3/3：result 赋值不完成、print 不执行、FileNotFoundError 保留原类型继续传播。
+- 首次巩固评分保留为 7/10，不改写为满分；该缺口加入下次约 2 分钟间隔复测。
+- 下一步：重新运行 Day 9 完整测试、Day 8 与 Day 7 回归，检查导入副作用和 Git 暂存范围后归档。
+
+### Day 9 Final Acceptance
+
+- 重新运行 Day 9 测试：3 tests，OK。
+- 重新运行 Day 8 回归：1 test，OK；Day 7 回归：3 tests，OK。
+- 新进程导入 day09_safe_config_loader、day09_try_except_prediction、day09_consolidation：无 stdout / stderr。
+- 使用临时替换的依赖制造 NameError：load_query_config_safely 未吞掉异常，探针捕获到原类型 NameError 和信息 programming bug。
+- 本章代码、失败案例、学习者修改、解释、面试和每日巩固均已完成；等级保持 Modified-It。巩固缺口虽已即时纠正，仍保留下次间隔复测。
+
+### Day 9 Git
+
+- 章节提交信息：learn(week01-day09): specific exception handling。
+- 只纳入 Day 9 讲义、速查、预测、实现、测试、巩固和相关 tracker / session / interview 记录；不纳入其他未跟踪文件，本次不推送远程。
