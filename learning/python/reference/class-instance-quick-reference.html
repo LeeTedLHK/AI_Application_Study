@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python class 与实例｜速查</title>
+  <style>
+    :root { --ink:#172033; --muted:#5f6b7a; --accent:#315caa; --line:#d7dfeb; --soft:#edf3ff; }
+    body { margin:0; color:var(--ink); background:#f7f8fb; font:16px/1.6 system-ui,"Microsoft YaHei",sans-serif; }
+    main { max-width:860px; margin:32px auto; padding:36px 44px; background:#fff; box-shadow:0 10px 30px #17203314; }
+    h1 { margin:0 0 6px; font-size:1.8rem; } h2 { margin-top:28px; font-size:1.15rem; }
+    .lead { color:var(--muted); } pre { padding:16px; overflow:auto; border:1px solid var(--line); border-radius:8px; background:#f8fafc; }
+    code { font-family:"Cascadia Code",Consolas,monospace; } table { width:100%; border-collapse:collapse; }
+    th,td { padding:9px 11px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { background:var(--soft); } .warning { padding:13px 16px; border-left:4px solid var(--accent); background:var(--soft); }
+    a { color:var(--accent); } @media print { body{background:#fff} main{box-shadow:none;margin:0;max-width:none;padding:16px} }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Python class 与实例</h1>
+  <p class="lead">Day 10 最小对象模型速查：只覆盖 class、实例、<code>__init__</code>、<code>self</code>、属性和方法。</p>
+
+  <h2>骨架</h2>
+  <pre><code>class QueryTask:
+    def __init__(self, table_name, limit):
+        self.table_name = table_name
+        self.limit = limit
+
+    def describe(self):
+        return f"{self.table_name}:{self.limit}"
+
+task = QueryTask("orders", 10)
+result = task.describe()</code></pre>
+
+  <h2>读代码</h2>
+  <table>
+    <tr><th>写法</th><th>含义</th></tr>
+    <tr><td><code>QueryTask(...)</code></td><td>创建新实例；参数传给 <code>__init__</code></td></tr>
+    <tr><td><code>self.name = name</code></td><td>把右侧参数保存为当前实例的属性</td></tr>
+    <tr><td><code>task.name</code></td><td>读取或修改该实例的属性</td></tr>
+    <tr><td><code>task.describe()</code></td><td>调用实例方法；<code>task</code> 自动成为 <code>self</code></td></tr>
+  </table>
+
+  <h2>选择提醒</h2>
+  <p>临时、松散的 JSON 数据可以继续用字典。需要表达明确对象，并把状态和相关行为放在一起时，再考虑 class。</p>
+  <p class="warning"><strong>常见错误：</strong>漏写 <code>self</code>；只写 <code>limit = limit</code> 而没有保存到实例；在方法中写 <code>limit</code> 而不是 <code>self.limit</code>；误以为普通 class 会自动检查类型。</p>
+
+  <p><a href="https://docs.python.org/3.11/tutorial/classes.html">Python 3.11 Classes 官方教程</a> · <a href="../lessons/0010-class-instance-state.html">返回本章讲义</a></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Day 10｜class、实例与状态</title>
+  <style>
+    :root { color-scheme: light; --ink:#172033; --muted:#5f6b7a; --accent:#315caa; --soft:#edf3ff; --line:#d7dfeb; }
+    body { margin:0; background:#f7f8fb; color:var(--ink); font:17px/1.7 system-ui,"Microsoft YaHei",sans-serif; }
+    main { max-width:820px; margin:36px auto; padding:42px 48px; background:white; box-shadow:0 12px 36px #17203314; }
+    h1 { font-size:2rem; line-height:1.25; margin:0 0 8px; }
+    h2 { margin-top:34px; font-size:1.25rem; }
+    .lead { color:var(--muted); margin-top:0; }
+    .goal,.rule { padding:16px 20px; border-left:4px solid var(--accent); background:var(--soft); }
+    pre { overflow:auto; padding:18px; border:1px solid var(--line); border-radius:8px; background:#f8fafc; font-size:.92rem; line-height:1.55; }
+    code { font-family:"Cascadia Code",Consolas,monospace; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { background:#f8fafc; }
+    a { color:var(--accent); }
+    @media print { body{background:white} main{box-shadow:none;margin:0;max-width:none;padding:20px} }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Day 10：让查询任务拥有自己的状态</h1>
+  <p class="lead">从零散字典前进到“一个对象对应一个具体查询任务”。</p>
+
+  <p class="goal"><strong>本节唯一目标：</strong>能创建 class 和多个实例，使用 <code>__init__</code> 保存实例属性，并通过实例方法读取这些状态。</p>
+
+  <h2>最小心智模型</h2>
+  <table>
+    <tr><th>概念</th><th>本课理解</th></tr>
+    <tr><td><code>class QueryTask</code></td><td>定义一种新的对象类型</td></tr>
+    <tr><td><code>QueryTask("orders", 10)</code></td><td>创建一个具体实例，并自动调用 <code>__init__</code></td></tr>
+    <tr><td><code>self</code></td><td>当前正在初始化或操作的那个实例</td></tr>
+    <tr><td><code>self.limit</code></td><td>保存在当前实例上的状态</td></tr>
+    <tr><td><code>task.to_payload()</code></td><td>调用实例的方法，Python 自动把 <code>task</code> 作为 <code>self</code></td></tr>
+  </table>
+
+  <h2>最小例子</h2>
+  <pre><code>class QueryTask:
+    def __init__(self, table_name, limit):
+        self.table_name = table_name
+        self.limit = limit
+
+    def describe(self):
+        return f"{self.table_name}:{self.limit}"
+
+task = QueryTask("orders", 10)
+print(task.describe())</code></pre>
+
+  <p><code>self.limit = limit</code> 的右边是传入参数，左边是实例属性。创建另一个实例时，会得到另一份独立状态。</p>
+
+  <p class="rule"><strong>与字典的边界：</strong>JSON 解析结果和临时数据行常用字典；当数据代表一个明确概念，并且有紧密相关的行为时，可以使用 class。普通 class 不会自动进行类型校验。</p>
+
+  <h2>为什么 AI 应用需要它</h2>
+  <p>请求、文档、检索结果、Agent 状态和 Tool 调用都可能需要同时携带数据与行为。今天先掌握最小对象模型，后续再逐步连接 typing、dataclass 和 Pydantic，不提前混入继承等内容。</p>
+
+  <h2>现在亲手做</h2>
+  <ol>
+    <li>打开 <a href="../week01/day10_query_task.py">QueryTask 练习</a>。</li>
+    <li>先写三行伪代码，再完成 <code>__init__</code> 和 <code>to_payload</code>。</li>
+    <li>运行 <a href="../week01/test_day10_query_task.py">三个初始行为测试</a>。</li>
+    <li>完成需求修改后，运行 <a href="../week01/test_day10_update_limit.py">update_limit 测试</a>。</li>
+  </ol>
+
+  <p>卡住时先区分：哪个名字是传入参数，哪个名字是实例属性，当前 <code>self</code> 指向哪个对象。可以随时向导师追问。</p>
+
+  <h2>可信来源</h2>
+  <p><a href="https://docs.python.org/3.11/tutorial/classes.html#class-objects">Python 3.11：Class Objects</a>说明实例化和 <code>__init__</code>；<a href="https://docs.python.org/3.11/tutorial/classes.html#instance-objects">Instance Objects</a>说明数据属性与方法。</p>
+
+  <p><a href="0009-try-except-specific-errors.html">上一章：精确异常处理</a> · <a href="../reference/class-instance-quick-reference.html">本章速查表</a></p>
+</main>
+</body>
+</html>

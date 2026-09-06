@@ -4,11 +4,11 @@
 
 ## 当前状态
 
-- 当前日期：2026-09-05
+- 当前日期：2026-09-07
 - 当前 Week：Week 1
 - 当前 Phase：Python Core
-- 当前主目标：Day 9 精确 try / except 已完成验收并进入章节归档
-- 下一步唯一优先任务：归档后，下次先用约 2 分钟复测未匹配异常传播，再进入 Python class 最小对象模型
+- 当前主目标：Day 10 Python class 最小对象模型已完成验收并进入章节归档
+- 下一步唯一优先任务：归档后，下次先用约 2 分钟复测“实例状态已修改但方法隐式返回 None”，再进入 iterator / generator 最小心智模型
 - 上次周测日期：
 - 上次阶段 Mock：
 
@@ -18,7 +18,7 @@
 
 | Week | 主题 | 状态 | 主要产物 |
 |---|---|---|---|
-| 1 | Python Core | 进行中 | Day 1～4 综合能力 `Built-It`；Day 5～7 模块、JSON、文件读取通过；Day 8 traceback、Day 9 精确异常捕获与巩固通过，`Modified-It` |
+| 1 | Python Core | 进行中 | Day 1～4 综合能力 `Built-It`；Day 5～7 模块、JSON、文件读取通过；Day 8～10 traceback、精确异常捕获、class 最小对象模型与巩固通过，`Modified-It` |
 | 2 | Python Engineering / Async | 未开始 | |
 | 3 | FastAPI / Backend | 未开始 | |
 | 4 | LLM API / Tool Calling | 未开始 | |
@@ -55,6 +55,8 @@
 | JSON 文件读取 / open / with | Modified-It | 学习者实现 load_query_config，9 月 4 日复跑 3 个测试通过、导入静默；亲手修正巩固题缩进并经实际运行验证；三题巩固 10/10 | 已能实现、解释并修改失败变体；不据当日表现判定长期掌握，下次复测关闭时机与返回对象区别 |
 | exception / traceback | Modified-It | 9 月 5 日独立分两轮修复 challenge 的路径与 JSON；准确解释解析器在读到下一行右花括号时才确认尾随逗号后缺少字段；最终输出正确，Day 8 测试 1/1、Day 7 回归 3/3 通过 | 面试追问曾先检查上层调用行；下次间隔复测“最后一行 → 最近的自己代码 → 向上追输入”的顺序，再进入最小异常处理 |
 | specific try / except | Modified-It | 独立实现成功、文件不存在、JSON 非法三条结构化返回路径；Day 9 测试 3/3、Day 7 回归 3/3 通过；面试能解释宽泛捕获掩盖根因 | 完成当日交错巩固；下次复测未匹配异常传播，不提前扩展 finally |
+
+| class / instance / self | Modified-It | 独立实现 QueryTask 的 __init__、to_payload、update_limit；Day 10 测试 4/4，通过实例隔离与 limit=0 边界；面试 9/10 | 首次巩固混淆对象状态与隐式返回值，反馈和新数据复测已通过；下次约 2 分钟间隔复测 |
 
 ## Backend
 
@@ -100,6 +102,7 @@
 
 ### Minor
 
+- 2026-09-07 Day 10：首次巩固把 update_limit 修改后的实例属性与方法返回值混淆；经实际输出和逐步解释后，能说明 self.limit 更新为新值，而无显式 return 只使调用结果为 None。下次用新数据间隔复测。
 - 2026-09-05 Day 9：巩固变体中一度认为不匹配的 FileNotFoundError 会由 JSONDecodeError 分支返回 None；即时纠错已通过，下次用新数据复测传播、赋值与后续语句三者关系。
 - 2026-09-05 Day 8：一度把 path 改到业务内容不匹配的 day08_invalid_config.json；根据输出契约重新选择 challenge 配置后已解决。巩固中已补充“无异常还要比较 actual / expected 并运行测试”。
 - 2026-09-05 Day 8：面试变体中先选择检查 app.py 上层调用行；标准顺序应先看最靠近底部的自己代码 return json.load(f)，再向上追到调用方提供的 path。下次做两分钟间隔复测。
@@ -108,6 +111,9 @@
 
 ## Latest Daily Consolidation
 
+- 2026-09-07 Day 10：三题首次闭卷 7/10。实例状态题误判输出，混淆属性更新与方法返回值；参数 / 实例属性改错和未匹配异常传播判断正确。反馈后借助真实输出补准，新数据 update_limit(0) 复测准确给出属性 0、调用结果 None。首次评分保留，下次间隔复测。
+- Day 10 最终验证：本章测试 4/4、Day 9 回归 3/3、Day 8 回归 1/1、Day 7 回归 3/3，共 11/11 通过；Day 10 业务模块与巩固模块导入静默。掌握等级为 Modified-It。
+- Day 10 章节归档信息：learn(week01-day10): class instance state；只纳入本章讲义、速查、练习、测试、巩固和相关记录，不推送远程。
 - 2026-09-05 Day 9：三题首次闭卷 7/10。成功路径与两个精确异常分支判断正确；未匹配异常题误认为会返回 None。反馈后纠错 3/3，能说明 result 不赋值、后续 print 不执行、FileNotFoundError 原样传播。首次评分保留，下次间隔复测。
 - Day 9 最终验证：本章 3/3、Day 8 回归 1/1、Day 7 回归 3/3 通过；三个 Day 9 模块导入静默；临时 NameError 传播探针显示原类型与信息均未被吞掉。掌握等级保持 Modified-It。
 - Day 9 章节归档信息：learn(week01-day09): specific exception handling；只纳入本章讲义、速查、练习、测试与相关记录，不推送远程。
@@ -135,6 +141,7 @@
 | 2026-09-04 | JSON 文件读取与资源生命周期 | 7/10 | 原题正确；首次变体遗漏已关闭状态 | 原面试评分保留；后续纠错、实际改错和三题巩固通过（巩固另计 10/10），下次间隔复测 |
 | 2026-09-05 | 异常与 traceback 阅读 | 8/10 | 变体中先检查上层 app 调用行，而非最近的自己代码失败行 | 下次复测“异常详情 → 最近的自己代码 → 向上追输入”，再学习最小异常处理 |
 | 2026-09-05 | 精确异常捕获 | 9/10 | 核心风险解释完整；可进一步从调用方动作和监控分类说明影响 | 巩固未匹配异常传播；后续在 API 错误映射中复用 |
+| 2026-09-07 | class、实例与状态 | 9/10 | 一度认为普通字典无法同时表示多个对象 | 补准字典可有多份；class 的优势是为明确领域概念集中状态与行为 |
 
 ## Recently Resolved Gaps
 
@@ -151,3 +158,4 @@
 | 2026-09-02 | 显式参数覆盖与导入副作用位置的次日提取 | 准确预测 20 / None，并说明模块顶层连接与 main 函数体连接的差别 |
 | 2026-09-02 | JSON 大小写、双引号及返回值的当日独立提取 | 巩固准确预测 True / None 与 JSON true / null；逐一解释单引号 key 和 False 非法；综合题准确预测 loaded、limit 0、None |
 | 2026-09-05 | 区分 traceback 的入口、调用、失败操作与 JSON 检测位置 | 能复述入口调用 main、main 调用加载函数、json.load 触发解析；并解释解析器在读到右花括号时才确认前一行尾随逗号导致语法无法继续 |
+| 2026-09-07 | 区分异常未匹配、向上传播与顶层 traceback | 新变体准确预测上层捕获 FileNotFoundError 后输出 missing、finish，无 traceback，config 与 result 赋值均未完成 |
