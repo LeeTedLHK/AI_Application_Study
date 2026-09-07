@@ -4,11 +4,11 @@
 
 ## 当前状态
 
-- 当前日期：2026-09-07
+- 当前日期：2026-09-08
 - 当前 Week：Week 1
 - 当前 Phase：Python Core
-- 当前主目标：Day 10 Python class 最小对象模型已完成验收并进入章节归档
-- 下一步唯一优先任务：归档后，下次先用约 2 分钟复测“实例状态已修改但方法隐式返回 None”，再进入 iterator / generator 最小心智模型
+- 当前主目标：Day 11 iterator / generator / yield 已完成知识验收并进入章节归档
+- 下一步唯一优先任务：先确认并修复最新 demo 目录迁移留下的旧 week01 路径，再用约 2 分钟复测 generator 性能条件与单次消费，随后进入 decorator
 - 上次周测日期：
 - 上次阶段 Mock：
 
@@ -18,7 +18,7 @@
 
 | Week | 主题 | 状态 | 主要产物 |
 |---|---|---|---|
-| 1 | Python Core | 进行中 | Day 1～4 综合能力 `Built-It`；Day 5～7 模块、JSON、文件读取通过；Day 8～10 traceback、精确异常捕获、class 最小对象模型与巩固通过，`Modified-It` |
+| 1 | Python Core | 进行中 | Day 1～4 综合能力 `Built-It`；Day 5～7 模块、JSON、文件读取通过；Day 8～11 traceback、精确异常捕获、class、generator 与巩固通过，`Modified-It` |
 | 2 | Python Engineering / Async | 未开始 | |
 | 3 | FastAPI / Backend | 未开始 | |
 | 4 | LLM API / Tool Calling | 未开始 | |
@@ -56,7 +56,8 @@
 | exception / traceback | Modified-It | 9 月 5 日独立分两轮修复 challenge 的路径与 JSON；准确解释解析器在读到下一行右花括号时才确认尾随逗号后缺少字段；最终输出正确，Day 8 测试 1/1、Day 7 回归 3/3 通过 | 面试追问曾先检查上层调用行；下次间隔复测“最后一行 → 最近的自己代码 → 向上追输入”的顺序，再进入最小异常处理 |
 | specific try / except | Modified-It | 独立实现成功、文件不存在、JSON 非法三条结构化返回路径；Day 9 测试 3/3、Day 7 回归 3/3 通过；面试能解释宽泛捕获掩盖根因 | 完成当日交错巩固；下次复测未匹配异常传播，不提前扩展 finally |
 
-| class / instance / self | Modified-It | 独立实现 QueryTask 的 __init__、to_payload、update_limit；Day 10 测试 4/4，通过实例隔离与 limit=0 边界；面试 9/10 | 首次巩固混淆对象状态与隐式返回值，反馈和新数据复测已通过；下次约 2 分钟间隔复测 |
+| class / instance / self | Modified-It | 独立实现 QueryTask 的 __init__、to_payload、update_limit；Day 10 测试 4/4，通过实例隔离与 limit=0 边界；面试 9/10 | Day 11 开场变体最终准确解释参数求值、self 绑定、实例状态与隐式返回值，跨日缺口关闭 |
+| iterator / generator / yield | Modified-It | 独立实现 iter_active_table_names；顺序筛选、消费位置、空输入测试 3/3；能解释延迟执行、yield 暂停与单次消费 | 面试误认为 generator 一定更快；下次复测上游惰性、提前停止与重复读取的条件 |
 
 ## Backend
 
@@ -98,10 +99,12 @@
 
 ### Significant
 
-- 暂无。Day 8 的入口、调用、失败操作与 JSON 文本检测位置已在反馈和巩固中补准，保留跨日复测。
+- 工程维护：最新提交 8e5c839 将 Day 1～10 移到 learning/python/demo，但多处运行说明和三个 demo 脚本仍引用旧 week01 路径；Day 8 回归因硬编码旧数据路径失败。需先确认迁移意图，再单独使用 chore 提交修复，不混入 Day 11。
+- 知识层面暂无 Significant 缺口。Day 8 的入口、调用、失败操作与 JSON 文本检测位置已在反馈和巩固中补准，保留跨日复测。
 
 ### Minor
 
+- 2026-09-08 Day 11：面试中一度认为 generator 一定更快。已补准 generator 只保证按需产出；只有上游也延迟读取且调用方提前停止，才可能避免剩余 I/O 与计算。下次用新场景间隔复测。
 - 2026-09-07 Day 10：首次巩固把 update_limit 修改后的实例属性与方法返回值混淆；经实际输出和逐步解释后，能说明 self.limit 更新为新值，而无显式 return 只使调用结果为 None。下次用新数据间隔复测。
 - 2026-09-05 Day 9：巩固变体中一度认为不匹配的 FileNotFoundError 会由 JSONDecodeError 分支返回 None；即时纠错已通过，下次用新数据复测传播、赋值与后续语句三者关系。
 - 2026-09-05 Day 8：一度把 path 改到业务内容不匹配的 day08_invalid_config.json；根据输出契约重新选择 challenge 配置后已解决。巩固中已补充“无异常还要比较 actual / expected 并运行测试”。
@@ -111,6 +114,9 @@
 
 ## Latest Daily Consolidation
 
+- 2026-09-08 Day 11：三题首次闭卷 9/10。生成器执行顺序与 class 交错题正确；单次消费原因和两种修复均正确，内存与重复读取取舍表达需补准。面试 7/10，主要缺口是误认为 generator 一定更快。
+- Day 11 最终验证：本章测试 3/3 通过，业务模块与巩固模块导入静默。扩展回归在最新 demo 目录中 10/11 通过；唯一失败来自先前目录迁移未更新 Day 8 硬编码数据路径，不属于 Day 11 代码，本轮未修改。
+- Day 11 章节归档信息：learn(week01-day11): iterator generator yield；只纳入本章讲义、速查、练习、测试、巩固和相关记录，明确排除 test.py 与目录迁移修复，不推送远程。
 - 2026-09-07 Day 10：三题首次闭卷 7/10。实例状态题误判输出，混淆属性更新与方法返回值；参数 / 实例属性改错和未匹配异常传播判断正确。反馈后借助真实输出补准，新数据 update_limit(0) 复测准确给出属性 0、调用结果 None。首次评分保留，下次间隔复测。
 - Day 10 最终验证：本章测试 4/4、Day 9 回归 3/3、Day 8 回归 1/1、Day 7 回归 3/3，共 11/11 通过；Day 10 业务模块与巩固模块导入静默。掌握等级为 Modified-It。
 - Day 10 章节归档信息：learn(week01-day10): class instance state；只纳入本章讲义、速查、练习、测试、巩固和相关记录，不推送远程。
@@ -142,6 +148,7 @@
 | 2026-09-05 | 异常与 traceback 阅读 | 8/10 | 变体中先检查上层 app 调用行，而非最近的自己代码失败行 | 下次复测“异常详情 → 最近的自己代码 → 向上追输入”，再学习最小异常处理 |
 | 2026-09-05 | 精确异常捕获 | 9/10 | 核心风险解释完整；可进一步从调用方动作和监控分类说明影响 | 巩固未匹配异常传播；后续在 API 错误映射中复用 |
 | 2026-09-07 | class、实例与状态 | 9/10 | 一度认为普通字典无法同时表示多个对象 | 补准字典可有多份；class 的优势是为明确领域概念集中状态与行为 |
+| 2026-09-08 | iterator、generator 与 yield | 7/10 | 误认为 generator 一定更快 | 复测上游惰性、提前停止、峰值内存与重复读取成本的条件 |
 
 ## Recently Resolved Gaps
 
@@ -159,3 +166,4 @@
 | 2026-09-02 | JSON 大小写、双引号及返回值的当日独立提取 | 巩固准确预测 True / None 与 JSON true / null；逐一解释单引号 key 和 False 非法；综合题准确预测 loaded、limit 0、None |
 | 2026-09-05 | 区分 traceback 的入口、调用、失败操作与 JSON 检测位置 | 能复述入口调用 main、main 调用加载函数、json.load 触发解析；并解释解析器在读到右花括号时才确认前一行尾随逗号导致语法无法继续 |
 | 2026-09-07 | 区分异常未匹配、向上传播与顶层 traceback | 新变体准确预测上层捕获 FileNotFoundError 后输出 missing、finish，无 traceback，config 与 result 赋值均未完成 |
+| 2026-09-08 | 区分实例状态修改、参数求值与方法返回值 | 新变体准确预测 first 改为 1、second 保留调用时接收的 9、received 为 None，并说明参数接收的是当时求出的值 |

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iterator 与 Generator｜速查</title>
+  <style>
+    :root { --ink:#172033; --muted:#5f6b7a; --accent:#356a55; --line:#d7dfeb; --soft:#edf7f1; }
+    body { margin:0; color:var(--ink); background:#f7f8fb; font:16px/1.6 system-ui,"Microsoft YaHei",sans-serif; }
+    main { max-width:860px; margin:32px auto; padding:36px 44px; background:#fff; box-shadow:0 10px 30px #17203314; }
+    h1 { margin:0 0 6px; font-size:1.8rem; } h2 { margin-top:28px; font-size:1.15rem; }
+    .lead { color:var(--muted); } pre { padding:16px; overflow:auto; border:1px solid var(--line); border-radius:8px; background:#f8fafc; }
+    code { font-family:"Cascadia Code",Consolas,monospace; } table { width:100%; border-collapse:collapse; }
+    th,td { padding:9px 11px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { background:var(--soft); } .warning { padding:13px 16px; border-left:4px solid var(--accent); background:var(--soft); }
+    a { color:#286347; } @media print { body{background:#fff} main{box-shadow:none;margin:0;max-width:none;padding:16px} }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Iterator 与 Generator</h1>
+  <p class="lead">Day 11 快速回忆：逐项消费、暂停与恢复。</p>
+
+  <h2>核心映射</h2>
+  <table>
+    <tr><th>写法</th><th>发生什么</th></tr>
+    <tr><td><code>iterator = iter(values)</code></td><td>从 iterable 得到记录位置的 iterator</td></tr>
+    <tr><td><code>next(iterator)</code></td><td>取一个值并推进；耗尽后抛 StopIteration</td></tr>
+    <tr><td><code>for value in values</code></td><td>自动获取 iterator、重复 next、处理 StopIteration</td></tr>
+    <tr><td><code>yield value</code></td><td>产出值并暂停，下一次 next 从这里之后恢复</td></tr>
+  </table>
+
+  <h2>生成器骨架</h2>
+  <pre><code>def iter_values(values):
+    for value in values:
+        yield value</code></pre>
+
+  <h2>常见误区</h2>
+  <p class="warning">调用生成器函数不会立即执行函数体；yield 不等于 return；生成器结束时的 StopIteration 通常由 for 自动处理；list 转成 iterator 不会删除 list 中的数据。</p>
+
+  <p><a href="https://docs.python.org/3.11/tutorial/classes.html#iterators">Python 3.11 Iterators</a> · <a href="https://docs.python.org/3.11/tutorial/classes.html#generators">Generators</a> · <a href="../lessons/0011-iterator-generator-yield.html">返回本章讲义</a></p>
+</main>
+</body>
+</html>

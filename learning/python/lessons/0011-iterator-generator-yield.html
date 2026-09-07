@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Day 11｜iterator、generator 与 yield</title>
+  <style>
+    :root { color-scheme: light; --ink:#172033; --muted:#5f6b7a; --accent:#356a55; --soft:#edf7f1; --line:#d7dfeb; }
+    body { margin:0; background:#f7f8fb; color:var(--ink); font:17px/1.7 system-ui,"Microsoft YaHei",sans-serif; }
+    main { max-width:820px; margin:36px auto; padding:42px 48px; background:white; box-shadow:0 12px 36px #17203314; }
+    h1 { font-size:2rem; line-height:1.25; margin:0 0 8px; }
+    h2 { margin-top:34px; font-size:1.25rem; }
+    .lead { color:var(--muted); margin-top:0; }
+    .goal,.rule { padding:16px 20px; border-left:4px solid var(--accent); background:var(--soft); }
+    pre { overflow:auto; padding:18px; border:1px solid var(--line); border-radius:8px; background:#f8fafc; font-size:.92rem; line-height:1.55; }
+    code { font-family:"Cascadia Code",Consolas,monospace; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { background:#f8fafc; }
+    a { color:#286347; }
+    @media print { body{background:white} main{box-shadow:none;margin:0;max-width:none;padding:20px} }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Day 11：一次取一个结果</h1>
+  <p class="lead">看懂 for 循环背后的 iterator，再用 yield 写出最小 generator。</p>
+
+  <p class="goal"><strong>本节唯一目标：</strong>能解释 iter、next、StopIteration 和 yield，并实现一个按需产出启用表名的生成器。</p>
+
+  <h2>iterator 心智模型</h2>
+  <table>
+    <tr><th>概念</th><th>作用</th></tr>
+    <tr><td>iterable</td><td>可以提供迭代器的对象，例如 list</td></tr>
+    <tr><td><code>iter(rows)</code></td><td>取得一个记录当前位置的 iterator</td></tr>
+    <tr><td><code>next(iterator)</code></td><td>取得下一个值并推进位置</td></tr>
+    <tr><td><code>StopIteration</code></td><td>告诉调用方已经没有下一个值</td></tr>
+    <tr><td><code>for</code></td><td>自动重复 next，并在 StopIteration 时正常结束</td></tr>
+  </table>
+
+  <h2>generator 心智模型</h2>
+  <pre><code>def generate_numbers():
+    print("start")
+    yield 10
+    print("resume")
+    yield 20
+
+numbers = generate_numbers()  # 函数体尚未执行
+first = next(numbers)         # 执行到 yield 10 后暂停</code></pre>
+
+  <p><code>return</code> 给出返回值并结束函数；<code>yield</code> 产出一个值、保存当前位置并暂停。下一次 <code>next()</code> 从暂停点继续。</p>
+
+  <p class="rule"><strong>重要边界：</strong>生成器节省的是“结果无需预先全部构造”的空间；如果输入本身已经是完整 list，那份输入仍然占用内存。</p>
+
+  <h2>为什么 AI 应用需要它</h2>
+  <p>文档切块、数据库游标、检索结果和模型流式输出都可能逐项到达。iterator / generator 让调用方消费一项就处理一项，并为后续 streaming 与 async iteration 建立基础。</p>
+
+  <h2>现在亲手做</h2>
+  <ol>
+    <li>打开 <a href="../week01/day11_active_table_generator.py">生成器练习</a>。</li>
+    <li>先写三行伪代码，再完成循环、筛选与 yield。</li>
+    <li>运行 <a href="../week01/test_day11_active_table_generator.py">三个行为测试</a>。</li>
+  </ol>
+
+  <p>卡住时先描述：当前 next 从哪里恢复、何时遇到 yield、哪个值被交给调用方。可以随时向导师追问。</p>
+
+  <h2>可信来源</h2>
+  <p><a href="https://docs.python.org/3.11/tutorial/classes.html#iterators">Python 3.11：Iterators</a>解释 iter、next 与 StopIteration；<a href="https://docs.python.org/3.11/tutorial/classes.html#generators">Generators</a>解释 yield、暂停与状态保存。</p>
+
+  <p><a href="0010-class-instance-state.html">上一章：class 与实例</a> · <a href="../reference/iterator-generator-quick-reference.html">本章速查表</a></p>
+</main>
+</body>
+</html>
