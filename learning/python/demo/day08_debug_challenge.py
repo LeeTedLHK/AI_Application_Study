@@ -28,7 +28,7 @@ from day07_load_query_config import load_query_config
 
 def main():
     print("start")
-    path = "E:/Project/AI_Application_Study/learning/python/week01/data/day08_debug_config.json"
+    path = "E:/Project/AI_Application_Study/learning/python/demo/data/day08_debug_config.json"
     config = load_query_config(path)
     print(config)
     print("finish")

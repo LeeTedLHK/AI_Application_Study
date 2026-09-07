@@ -3,7 +3,7 @@
 本课不要求学习 unittest、pathlib 或 tempfile；它们只是测试脚手架。
 
 运行：
-    python -X utf8 -B learning/python/week01/test_day09_safe_config_loader.py
+    python -X utf8 -B learning/python/demo/test_day09_safe_config_loader.py
 
 三个行为契约：
 1. 合法 JSON：ok=True，data 是解析后的字典，error=None；

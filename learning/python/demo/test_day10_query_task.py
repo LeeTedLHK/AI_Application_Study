@@ -3,7 +3,7 @@
 本课不要求学习 unittest 的写法；它只是验收脚手架。
 
 运行：
-    python -X utf8 -B learning/python/week01/test_day10_query_task.py
+    python -X utf8 -B learning/python/demo/test_day10_query_task.py
 
 三个初始行为契约：
 1. 实例能把自己的 table_name 和 limit 转成 Python 字典；

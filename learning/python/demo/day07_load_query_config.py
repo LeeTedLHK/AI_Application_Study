@@ -34,7 +34,7 @@ def load_query_config(path):
 
 
 def main():
-    path = "E:/Project/AI_Application_Study/learning/python/week01/data/day07_query_config.json"
+    path = "E:/Project/AI_Application_Study/learning/python/demo/data/day07_query_config.json"
     result = load_query_config(path)
     print(result)
 

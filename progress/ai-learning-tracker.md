@@ -7,8 +7,8 @@
 - 当前日期：2026-09-08
 - 当前 Week：Week 1
 - 当前 Phase：Python Core
-- 当前主目标：Day 11 iterator / generator / yield 已完成知识验收并进入章节归档
-- 下一步唯一优先任务：先确认并修复最新 demo 目录迁移留下的旧 week01 路径，再用约 2 分钟复测 generator 性能条件与单次消费，随后进入 decorator
+- 当前主目标：Day 11 iterator / generator / yield 已完成；Day 1～10 的长期目录已确认为 `learning/python/demo`，迁移路径维护完成
+- 下一步唯一优先任务：用约 2 分钟复测 generator 性能条件与单次消费，随后进入 decorator
 - 上次周测日期：
 - 上次阶段 Mock：
 
@@ -99,7 +99,6 @@
 
 ### Significant
 
-- 工程维护：最新提交 8e5c839 将 Day 1～10 移到 learning/python/demo，但多处运行说明和三个 demo 脚本仍引用旧 week01 路径；Day 8 回归因硬编码旧数据路径失败。需先确认迁移意图，再单独使用 chore 提交修复，不混入 Day 11。
 - 知识层面暂无 Significant 缺口。Day 8 的入口、调用、失败操作与 JSON 文本检测位置已在反馈和巩固中补准，保留跨日复测。
 
 ### Minor
@@ -114,6 +113,7 @@
 
 ## Latest Daily Consolidation
 
+- 2026-09-08 工程维护：学习者确认 `learning/python/demo` 是 Day 1～10 的长期目录。修复 demo 内 16 处旧 `week01` 路径引用；旧路径搜索清零，Day 1～10 回归 14/14、Day 11 回归 3/3 通过，无效 JSON 示例恢复为预期 `JSONDecodeError`。
 - 2026-09-08 Day 11：三题首次闭卷 9/10。生成器执行顺序与 class 交错题正确；单次消费原因和两种修复均正确，内存与重复读取取舍表达需补准。面试 7/10，主要缺口是误认为 generator 一定更快。
 - Day 11 最终验证：本章测试 3/3 通过，业务模块与巩固模块导入静默。扩展回归在最新 demo 目录中 10/11 通过；唯一失败来自先前目录迁移未更新 Day 8 硬编码数据路径，不属于 Day 11 代码，本轮未修改。
 - Day 11 章节归档信息：learn(week01-day11): iterator generator yield；只纳入本章讲义、速查、练习、测试、巩固和相关记录，明确排除 test.py 与目录迁移修复，不推送远程。
@@ -154,6 +154,7 @@
 
 | Date | Gap | Evidence |
 |---|---|---|
+| 2026-09-08 | Day 1～10 移入长期 `demo` 目录后仍残留旧 `week01` 路径 | 修复 16 处代码与运行说明引用；旧路径搜索清零，Day 1～10 14/14、Day 11 3/3 测试通过 |
 | 2026-08-31 | 理解 `dict.get(key, default)` 的默认值只在 key 缺失时生效 | 能正确判断直接累计缺失 key 会失败，并完成三个运行案例 |
 | 2026-09-01 | 区分字典缺失读取、`get()` 和赋值的副作用 | 正确预测 `get()` 返回 None 且不修改字典，赋值后才创建 key |
 | 2026-09-01 | 区分 `raise` 主动抛出异常与 `return` 结束函数 | 正确预测 `raise` 后的 `return` 和调用方 `print` 均不会执行 |

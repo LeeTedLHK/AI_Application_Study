@@ -1,6 +1,6 @@
 """导师提供的验收脚手架，本课不要求学习 unittest、pathlib 或 tempfile。
 
-运行：python -X utf8 learning/python/week01/test_day07_load_query_config.py
+运行：python -X utf8 learning/python/demo/test_day07_load_query_config.py
 只在临时目录创建测试配置并在结束后清理，不改动仓库里的配置样例。
 测试意图：捕获返回文本/None、忽略路径参数或改变字段类型、文件改写/打印副作用。
 不要为了通过测试而修改验收要求或测试预期。

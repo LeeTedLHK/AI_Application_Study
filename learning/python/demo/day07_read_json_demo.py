@@ -9,14 +9,14 @@
 阅读验收：
 1. 两行输出分别是什么？config 的类型是什么？
 2. 为什么这里使用 json.load(file)，而不是 json.loads(path)？
-运行方式：python learning/python/week01/day07_read_json_demo.py
+运行方式：python learning/python/demo/day07_read_json_demo.py
 """
 
 import json
 
 
 def main():
-    path = "E:/Project/AI_Application_Study/learning/python/week01/data/day07_query_config.json"
+    path = "E:/Project/AI_Application_Study/learning/python/demo/data/day07_query_config.json"
     with open(path, "r", encoding="utf-8") as file:
         config = json.load(file)
 

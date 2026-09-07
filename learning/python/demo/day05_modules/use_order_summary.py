@@ -9,7 +9,7 @@
 4. 添加入口保护，使 main() 只在直接运行本文件时执行。
 
 验收命令：
-python learning/python/week01/day05_modules/use_order_summary.py
+python learning/python/demo/day05_modules/use_order_summary.py
 
 必须只输出一行 consumer result；如果同时出现 module demo，说明
 order_summary.py 的演示代码没有被入口保护正确隔离。

@@ -3,7 +3,7 @@
 本课不要求学习 unittest；它只是验收脚手架。
 
 运行：
-    python -X utf8 -B learning/python/week01/test_day10_update_limit.py
+    python -X utf8 -B learning/python/demo/test_day10_update_limit.py
 
 行为契约：
 - task_a.update_limit(25) 只更新 task_a；

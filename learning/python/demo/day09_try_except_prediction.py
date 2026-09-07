@@ -25,7 +25,7 @@ invalid_result = parse_config('{"limit": 20,}')
    程序会继续返回 None，还是异常继续向外传播？
 
 答完后再运行：
-    python -X utf8 -B learning/python/week01/day09_try_except_prediction.py
+    python -X utf8 -B learning/python/demo/day09_try_except_prediction.py
 
 注意：文件本身没有 print，因此直接运行不会显示结果。需要先做代码预测。
 """

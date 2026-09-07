@@ -57,7 +57,7 @@
 
 ## Next Single Priority
 
-- 先确认并修复最新 demo 目录迁移留下的旧 week01 路径，再用约 2 分钟复测“generator 不保证更快、耗尽后不能自动重用”，随后进入 decorator。
+- 用约 2 分钟复测“generator 不保证更快、耗尽后不能自动重用”，随后进入 decorator。
 
 ## Final Verification
 
@@ -72,3 +72,11 @@
 
 - 章节提交信息：learn(week01-day11): iterator generator yield。
 - 只纳入 Day 11 讲义、速查、练习、测试、巩固及 tracker、session、面试记录；不推送远程。
+
+## Directory Migration Follow-up
+
+- 学习者确认 `learning/python/demo` 是 Day 1～10 希望长期保留的目录结构。
+- 红灯证据：Day 7 示例和 Day 8 回归均因仍读取 `learning/python/week01/data` 而抛出 `FileNotFoundError`；搜索共发现 16 处旧引用。
+- 修复范围：仅更新 `learning/python/demo` 内 14 个文件的代码路径与运行说明，不改动学习逻辑。
+- 验证结果：demo 内旧 `week01` 路径引用清零；Day 1～10 回归 14/14、Day 11 回归 3/3 通过；无效 JSON 示例抛出预期 `JSONDecodeError`，而非 `FileNotFoundError`。
+- 本次维护使用独立 `chore:` 提交，根目录 `test.py` 保持未暂存，不推送远程。

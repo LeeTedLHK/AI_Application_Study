@@ -14,7 +14,7 @@
 - 删除完成后的 TODO 和 NotImplementedError。
 
 验收命令：
-python learning/python/week01/day05_modules/order_summary.py
+python learning/python/demo/day05_modules/order_summary.py
 
 直接运行时必须只输出一行：
 module demo: {'sales': 120}

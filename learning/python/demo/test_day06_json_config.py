@@ -1,7 +1,7 @@
 """Agent 提供的验收脚手架，本课不要求学习 unittest。
 
 从仓库根目录运行：
-python learning/python/week01/test_day06_json_config.py
+python learning/python/demo/test_day06_json_config.py
 
 只修改 day06_json_config.py 的核心函数，不修改测试迎合错误结果。
 三个测试分别捕获：未更新或返回 dict、错误忽略零值、丢失其他字段。
