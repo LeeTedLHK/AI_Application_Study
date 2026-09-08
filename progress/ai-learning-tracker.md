@@ -4,11 +4,11 @@
 
 ## 当前状态
 
-- 当前日期：2026-09-08
+- 当前日期：2026-09-09
 - 当前 Week：Week 1
 - 当前 Phase：Python Core
-- 当前主目标：Day 11 iterator / generator / yield 已完成；Day 1～10 的长期目录已确认为 `learning/python/demo`，迁移路径维护完成
-- 下一步唯一优先任务：用约 2 分钟复测 generator 性能条件与单次消费，随后进入 decorator
+- 当前主目标：Day 12 function decorator 基础已完成，进入章节归档
+- 下一步唯一优先任务：下次先用约 2 分钟复测 decorator 的函数对象、返回位置和调用时机，随后进入 context manager
 - 上次周测日期：
 - 上次阶段 Mock：
 
@@ -57,7 +57,8 @@
 | specific try / except | Modified-It | 独立实现成功、文件不存在、JSON 非法三条结构化返回路径；Day 9 测试 3/3、Day 7 回归 3/3 通过；面试能解释宽泛捕获掩盖根因 | 完成当日交错巩固；下次复测未匹配异常传播，不提前扩展 finally |
 
 | class / instance / self | Modified-It | 独立实现 QueryTask 的 __init__、to_payload、update_limit；Day 10 测试 4/4，通过实例隔离与 limit=0 边界；面试 9/10 | Day 11 开场变体最终准确解释参数求值、self 绑定、实例状态与隐式返回值，跨日缺口关闭 |
-| iterator / generator / yield | Modified-It | 独立实现 iter_active_table_names；顺序筛选、消费位置、空输入测试 3/3；能解释延迟执行、yield 暂停与单次消费 | 面试误认为 generator 一定更快；下次复测上游惰性、提前停止与重复读取的条件 |
+| iterator / generator / yield | Modified-It | 独立实现 iter_active_table_names；测试 3/3；2026-09-08 间隔复测准确解释耗尽、已有列表内存不消失，以及上游惰性与提前停止的性能条件 | 缺口关闭；后续在文档流与数据库游标场景复用 |
+| function decorator | Modified-It | 独立完成 query_logger，测试 2/2；定义/调用时机 4/4、异常传播 5/5；巩固题 1、3 正确，题 2 的 return 位置经跨日纠错通过 | 面试 8.5/10；下次间隔复测函数对象与 wrapper 返回契约，再进入 context manager |
 
 ## Backend
 
@@ -103,7 +104,6 @@
 
 ### Minor
 
-- 2026-09-08 Day 11：面试中一度认为 generator 一定更快。已补准 generator 只保证按需产出；只有上游也延迟读取且调用方提前停止，才可能避免剩余 I/O 与计算。下次用新场景间隔复测。
 - 2026-09-07 Day 10：首次巩固把 update_limit 修改后的实例属性与方法返回值混淆；经实际输出和逐步解释后，能说明 self.limit 更新为新值，而无显式 return 只使调用结果为 None。下次用新数据间隔复测。
 - 2026-09-05 Day 9：巩固变体中一度认为不匹配的 FileNotFoundError 会由 JSONDecodeError 分支返回 None；即时纠错已通过，下次用新数据复测传播、赋值与后续语句三者关系。
 - 2026-09-05 Day 8：一度把 path 改到业务内容不匹配的 day08_invalid_config.json；根据输出契约重新选择 challenge 配置后已解决。巩固中已补充“无异常还要比较 actual / expected 并运行测试”。
@@ -113,6 +113,9 @@
 
 ## Latest Daily Consolidation
 
+- 2026-09-09 Day 12 跨日纠错：准确写出先保存原结果、再打印 finish、最后 return result，并解释 return 会立即结束 wrapper；同时删除顶层演示调用，模块导入恢复静默。Day 12 巩固首次 8/10 保留，纠错后 3/3 通过。
+- 2026-09-08 Day 12 进展：学习者独立实现最小 query_logger，测试由 1/2 转为 2/2；定义/调用时机题 4/4，异常传播题 5/5；面试 8.5/10，待完成三题交错巩固后归档。
+- 2026-09-08 Day 11 间隔复测：准确预测 `next`、剩余 `list` 与耗尽后空列表；能说明已有完整 list 再套 generator 不会降低上游内存，并以“上游按需读取 + 调用方提前停止”限定潜在时间收益。原性能条件缺口关闭。
 - 2026-09-08 工程维护：学习者确认 `learning/python/demo` 是 Day 1～10 的长期目录。修复 demo 内 16 处旧 `week01` 路径引用；旧路径搜索清零，Day 1～10 回归 14/14、Day 11 回归 3/3 通过，无效 JSON 示例恢复为预期 `JSONDecodeError`。
 - 2026-09-08 Day 11：三题首次闭卷 9/10。生成器执行顺序与 class 交错题正确；单次消费原因和两种修复均正确，内存与重复读取取舍表达需补准。面试 7/10，主要缺口是误认为 generator 一定更快。
 - Day 11 最终验证：本章测试 3/3 通过，业务模块与巩固模块导入静默。扩展回归在最新 demo 目录中 10/11 通过；唯一失败来自先前目录迁移未更新 Day 8 硬编码数据路径，不属于 Day 11 代码，本轮未修改。
@@ -149,11 +152,14 @@
 | 2026-09-05 | 精确异常捕获 | 9/10 | 核心风险解释完整；可进一步从调用方动作和监控分类说明影响 | 巩固未匹配异常传播；后续在 API 错误映射中复用 |
 | 2026-09-07 | class、实例与状态 | 9/10 | 一度认为普通字典无法同时表示多个对象 | 补准字典可有多份；class 的优势是为明确领域概念集中状态与行为 |
 | 2026-09-08 | iterator、generator 与 yield | 7/10 | 误认为 generator 一定更快 | 复测上游惰性、提前停止、峰值内存与重复读取成本的条件 |
+| 2026-09-08 | 函数装饰器基础 | 8.5/10 | wrapper 返回值的调用方契约表述不够精确 | 当日巩固交错复测函数对象、等价变换、返回值与异常传播 |
 
 ## Recently Resolved Gaps
 
 | Date | Gap | Evidence |
 |---|---|---|
+| 2026-09-09 | decorator 中过早 return 会跳过调用后逻辑 | 跨日准确改为先保存 result、执行 finish、最后 return，并说明 return 立即结束 wrapper |
+| 2026-09-08 | generator 不保证更快；收益取决于上游惰性与调用方提前停止 | 间隔复测准确解释已有 list 的内存不会消失，并列出文件、数据库游标、网络流等惰性上游场景 |
 | 2026-09-08 | Day 1～10 移入长期 `demo` 目录后仍残留旧 `week01` 路径 | 修复 16 处代码与运行说明引用；旧路径搜索清零，Day 1～10 14/14、Day 11 3/3 测试通过 |
 | 2026-08-31 | 理解 `dict.get(key, default)` 的默认值只在 key 缺失时生效 | 能正确判断直接累计缺失 key 会失败，并完成三个运行案例 |
 | 2026-09-01 | 区分字典缺失读取、`get()` 和赋值的副作用 | 正确预测 `get()` 返回 None 且不修改字典，赋值后才创建 key |

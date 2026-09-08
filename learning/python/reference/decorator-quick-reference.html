@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>函数装饰器｜速查</title>
+  <style>
+    :root { --ink:#172033; --muted:#5f6b7a; --accent:#7657a6; --line:#d7dfeb; --soft:#f4effb; }
+    body { margin:0; color:var(--ink); background:#f7f8fb; font:16px/1.6 system-ui,"Microsoft YaHei",sans-serif; }
+    main { max-width:860px; margin:32px auto; padding:36px 44px; background:#fff; box-shadow:0 10px 30px #17203314; }
+    h1 { margin:0 0 6px; font-size:1.8rem; } h2 { margin-top:28px; font-size:1.15rem; }
+    .lead { color:var(--muted); } pre { padding:16px; overflow:auto; border:1px solid var(--line); border-radius:8px; background:#f8fafc; }
+    code { font-family:"Cascadia Code",Consolas,monospace; } table { width:100%; border-collapse:collapse; }
+    th,td { padding:9px 11px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { background:var(--soft); } .warning { padding:13px 16px; border-left:4px solid var(--accent); background:var(--soft); }
+    a { color:#63428f; } @media print { body{background:#fff} main{box-shadow:none;margin:0;max-width:none;padding:16px} }
+  </style>
+</head>
+<body>
+<main>
+  <h1>函数装饰器基础</h1>
+  <p class="lead">Day 12 快速回忆：接收函数、返回 wrapper、保留结果。</p>
+
+  <h2>一句话模型</h2>
+  <p class="warning"><code>@decorate</code> 放在函数上方，核心上等价于 <code>name = decorate(name)</code>。</p>
+
+  <h2>最小骨架</h2>
+  <pre><code>def decorate(func):
+    def wrapper():
+        # 调用前行为
+        result = func()
+        # 调用后行为
+        return result
+
+    return wrapper</code></pre>
+
+  <h2>名字分别指向什么</h2>
+  <table>
+    <tr><th>名字</th><th>含义</th></tr>
+    <tr><td><code>func</code></td><td>被包装的原函数对象</td></tr>
+    <tr><td><code>wrapper</code></td><td>替代原函数名、增加额外行为的新函数</td></tr>
+    <tr><td><code>result</code></td><td>原函数本次调用产生的返回值</td></tr>
+  </table>
+
+  <h2>执行时机</h2>
+  <table>
+    <tr><th>时机</th><th>发生什么</th></tr>
+    <tr><td>执行到函数定义</td><td>把原函数交给 decorator，并把返回的新函数绑定到原名字</td></tr>
+    <tr><td>调用被装饰函数</td><td>执行 wrapper，再由 wrapper 调用原函数</td></tr>
+  </table>
+
+  <h2>排错顺序</h2>
+  <ol>
+    <li>decorator 是否返回 wrapper？</li>
+    <li>wrapper 是否真的调用 func？</li>
+    <li>wrapper 是否把 result 返回给调用方？</li>
+    <li>wrapper 的参数是否能传给原函数？</li>
+  </ol>
+
+  <p><a href="https://docs.python.org/3.11/glossary.html#term-decorator">Python 官方 decorator 定义</a> · <a href="../lessons/0012-function-decorator-basics.html">返回本章讲义</a></p>
+</main>
+</body>
+</html>

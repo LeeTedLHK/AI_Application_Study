@@ -186,3 +186,15 @@ except Exception 会同时捕获 JSON 格式错误、权限问题、程序缺陷
 generator 不保证一定更快。如果最终仍消费全部记录、上游已经预先物化所有数据、数据库或网络 I/O 才是主要瓶颈，或者逐项恢复执行的开销更明显，速度可能相近甚至更慢。generator 的确定特性是延迟、逐项产出，而不是性能承诺。
 
 同一个 generator 通常只能向前消费一次，耗尽后不能自动倒带。若数据量巨大且只顺序处理一次，优先使用 generator；若数据量可控且同一结果需要反复遍历，可以先保存为 list。也可以重新创建 generator，但会重新读取数据源并重复 I/O 或计算，应根据内存与重复工作的成本权衡。
+
+## 2026-09-08 — 函数装饰器基础
+
+本轮评分：8.5/10。学习者能说明装饰器集中横切逻辑、`@logger` 的等价变换和异常默认传播；需要补准 wrapper 返回原函数结果的调用方契约。
+
+### 问题：RAG 服务的 retrieve、rerank、generate 都需要记录开始和结束，但不能改变原返回值。相比重复写日志，decorator 有什么优势？`@logger` 等价于什么？为什么 wrapper 必须 return result？原函数抛异常且 wrapper 没有 try/except 时会怎样？
+
+**标准回答：**
+
+decorator 可以把日志这种多个业务函数都需要的横切行为集中在一个位置，在不修改各函数核心业务逻辑的情况下统一复用，减少重复并方便以后调整。对某个函数 `retrieve`，`@logger` 核心上等价于 `retrieve = logger(retrieve)`：logger 接收原函数对象并返回 wrapper，原函数名随后指向 wrapper。
+
+wrapper 调用原函数后必须保存并 `return result`，才能维持原函数对调用方的返回值约定；若省略 return，wrapper 会隐式返回 `None`，即使原函数内部已经产生了正确结果，调用方仍只能收到 `None`。若原函数抛出异常且 wrapper 没有捕获，wrapper 会在调用原函数的位置中断，调用后的日志与 return 不执行，原异常保持类型继续向外传播。

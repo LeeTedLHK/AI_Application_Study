@@ -4,8 +4,8 @@
 
 - Date: 2026-09-08
 - Mode: Study
-- Week / Phase: Week 1 / Python Core / Day 11
-- Domain: iterator / generator / yield
+- Week / Phase: Week 1 / Python Core / Day 11～12
+- Domain: iterator / generator / yield；function decorator
 - 说明：本章于 2026-09-07 开始，跨日继续。
 
 ## Starting Point
@@ -80,3 +80,26 @@
 - 修复范围：仅更新 `learning/python/demo` 内 14 个文件的代码路径与运行说明，不改动学习逻辑。
 - 验证结果：demo 内旧 `week01` 路径引用清零；Day 1～10 回归 14/14、Day 11 回归 3/3 通过；无效 JSON 示例抛出预期 `JSONDecodeError`，而非 `FileNotFoundError`。
 - 本次维护使用独立 `chore:` 提交，根目录 `test.py` 保持未暂存，不推送远程。
+
+## Day 11 Spaced Retrieval
+
+- 准确预测生成器逐步输出、剩余值与耗尽后空列表。
+- 准确说明已有 100 万条数据的 list 再套 generator，不会降低该 list 本身的内存占用。
+- 能以“上游按需读取 + 调用方提前停止”限定潜在时间收益，并举出文件、数据库游标、网络流和文档切块器。Day 11 性能条件缺口关闭。
+
+## Day 12 Start
+
+- 主题：函数装饰器基础；只学习接收函数、返回 wrapper、调用前后行为和返回值保留。
+- AI 应用用途：为 API、LLM 调用和 Agent 工具统一增加日志、计时、鉴权或追踪。
+- 已创建讲义、速查表、练习与两个行为测试。
+- 红灯已验证：当前返回值测试通过，日志测试因 wrapper 尚未实现而失败，正好锁定学习者需要完成的行为。
+- 下一步：学习者只修改 `day12_query_logger.py` 的 `query_logger`，不引入 `*args`、`**kwargs` 或 `functools.wraps`。
+
+## Day 12 Implementation and Interview
+
+- 学习者独立实现 query_logger：wrapper 在原函数前后打印日志，保存并返回原结果，两个测试全部通过。
+- 定义与调用时机题 4/4：准确给出 decorate、ready、before、body、after、orders，并说明装饰后名字指向 wrapper。
+- 异常变体 5/5：准确判断 ready、before、body 后 ValueError 向外传播，after、赋值和后续 print 均不执行。
+- 面试评分 8.5/10：能说明装饰器集中日志行为、`@logger` 等价变换和异常默认传播；`return result` 需要补准为 wrapper 向调用方维持原返回值契约。
+- 标准答案已在首次回答后追加到 `docs/interview_answer.md`。
+- 下一步：完成三题交错巩固，再做最终验证与章节归档。
