@@ -4,11 +4,11 @@
 
 ## 当前状态
 
-- 当前日期：2026-09-09
+- 当前日期：2026-09-10
 - 当前 Week：Week 1
 - 当前 Phase：Python Core
-- 当前主目标：Day 12 function decorator 基础已完成，进入章节归档
-- 下一步唯一优先任务：下次先用约 2 分钟复测 decorator 的函数对象、返回位置和调用时机，随后进入 context manager
+- 当前主目标：Day 13 context manager 基础已完成，掌握等级 Modified-It
+- 下一步唯一优先任务：下次先用约 2 分钟复测 return 的退出清理、异常传播与装饰器返回对象，再进入 Python 工程基础 typing
 - 上次周测日期：
 - 上次阶段 Mock：
 
@@ -58,7 +58,8 @@
 
 | class / instance / self | Modified-It | 独立实现 QueryTask 的 __init__、to_payload、update_limit；Day 10 测试 4/4，通过实例隔离与 limit=0 边界；面试 9/10 | Day 11 开场变体最终准确解释参数求值、self 绑定、实例状态与隐式返回值，跨日缺口关闭 |
 | iterator / generator / yield | Modified-It | 独立实现 iter_active_table_names；测试 3/3；2026-09-08 间隔复测准确解释耗尽、已有列表内存不消失，以及上游惰性与提前停止的性能条件 | 缺口关闭；后续在文档流与数据库游标场景复用 |
-| function decorator | Modified-It | 独立完成 query_logger，测试 2/2；定义/调用时机 4/4、异常传播 5/5；巩固题 1、3 正确，题 2 的 return 位置经跨日纠错通过 | 面试 8.5/10；下次间隔复测函数对象与 wrapper 返回契约，再进入 context manager |
+| function decorator | Modified-It | 独立完成 query_logger，测试 2/2；Day 13 交错复测能预测输出并修复返回对象，经反馈解释仅定义 wrapper 不等于调用它 | Day 13 首次仍混淆 wrapped 绑定，保留次日间隔复测，不因即时纠错升级 |
+| context manager / __enter__ / __exit__ | Modified-It | 亲手实现 QuerySession 并修复导入副作用；正常退出、as 原实例、异常传播且关闭、实例隔离及导入静默共 5/5；面试 7/10，巩固首次 7/10、纠错 2/2 | 下次复测 return 与清理先后、清理不等于吞异常；当前仅模拟资源状态，未连接真实数据库 |
 
 ## Backend
 
@@ -82,14 +83,14 @@
 
 ## Project A — Enterprise Data Knowledge Assistant
 
-- Current milestone:
+- Current milestone: 未进入项目开发；Day 13 资源生命周期模式可用于后续文件与连接管理，尚未接入项目。
 - Last demo:
 - Current blockers:
 - Eval status:
 
 ## Project B — Intelligent Query Agent
 
-- Current milestone:
+- Current milestone: 未进入项目开发；Day 13 QuerySession 仅为模拟练习，尚未接入真实数据库。
 - Last demo:
 - Current blockers:
 - Eval status:
@@ -104,6 +105,7 @@
 
 ### Minor
 
+- 2026-09-10 Day 13：return 跳过后续语句、decorator 返回对象与异常清理语义经反馈纠正；首次面试和巩固均 7/10，下次以新数据间隔复测，不等同于长期掌握。
 - 2026-09-07 Day 10：首次巩固把 update_limit 修改后的实例属性与方法返回值混淆；经实际输出和逐步解释后，能说明 self.limit 更新为新值，而无显式 return 只使调用结果为 None。下次用新数据间隔复测。
 - 2026-09-05 Day 9：巩固变体中一度认为不匹配的 FileNotFoundError 会由 JSONDecodeError 分支返回 None；即时纠错已通过，下次用新数据复测传播、赋值与后续语句三者关系。
 - 2026-09-05 Day 8：一度把 path 改到业务内容不匹配的 day08_invalid_config.json；根据输出契约重新选择 challenge 配置后已解决。巩固中已补充“无异常还要比较 actual / expected 并运行测试”。
@@ -113,6 +115,13 @@
 
 ## Latest Daily Consolidation
 
+- 2026-09-10 Day 13 收尾完成：学习者解释 return 结束整个函数、仅定义但未返回 wrapper 不会调用它，纠错 2/2 通过；补齐 return 交给调用方前先退出 with 的顺序。保留首次巩固 7/10、面试 7/10；最终五项测试 5/5、直接演示输出正确，等级 Modified-It。章节提交标识 learn(week01-day13): context manager resource lifecycle，仅纳入本章文件与记录，不推送远程。
+- 2026-09-10 Day 13 首次闭卷巩固 7/10：Q1 正确判断返回前已关闭，但误列出 return 后的 after；Q2 正确判断只输出 True 并将 __exit__ 返回值改为 False（术语补准为打印值）；Q3 正确预测 query、2 并指出应返回 wrapper，但误认原题 wrapped 指向 wrapper。实际运行验证 Q1=inside/ok/True、Q2=True、Q3=query/2 且 wrapped is count_rows。待两点口述纠错，不标记收尾完成。
+- 2026-09-10 Day 13 代码修复复验：学习者亲手添加 __main__ 保护，五项测试全部通过；直接运行仍输出 True/False/True/True，导入无输出。进入面试环节，尚未评分、未做每日收尾巩固，不创建章节完成提交。
+- 2026-09-10 Day 13 实现 Review：学习者已实现 QuerySession 并自行验证；Agent 实测核心行为 4/4 通过（正常状态、as 原实例、原异常传播且关闭、实例隔离），导入静默失败，总计 4/5。原因是两段演示调用在模块顶层，导入打印 True/False/True/True；由学习者修复 __main__ 保护后复验。今日面试与收尾巩固待开展。
+- 2026-09-10 Day 13 阅读预测 2/2：准确判断异常路径 open、session、close 后传播 ValueError，done 不执行；正确判断删除 __enter__ 返回值后 connection 为 None（其 open、None 表述仅为前两项输出，反馈补全后续正常执行）。进入学习者独立编码前的设计步骤；尚未验收实现，非每日收尾巩固。
+- 2026-09-10 Day 13 反馈后复核：学习者准确口述 wrapped() → wrapper → func() → query_count，函数对象绑定关系即时纠错通过；保留首次错误与 Modified-It 等级，进入 context manager。当前待完成阅读预测，未完成新知识验收。
+- 2026-09-10 Day 13 开场复测（非每日收尾）：输出顺序与删除 return 后得到 None 判断正确；准确判断装饰时原函数体未执行，但误认 wrapped 指向 query_count。已指出其实际指向返回的 wrapper，待口述复核；掌握等级保持 Modified-It。题目实际运行输出与第 1 题答案一致。今日收尾巩固尚未开展。
 - 2026-09-09 Day 12 跨日纠错：准确写出先保存原结果、再打印 finish、最后 return result，并解释 return 会立即结束 wrapper；同时删除顶层演示调用，模块导入恢复静默。Day 12 巩固首次 8/10 保留，纠错后 3/3 通过。
 - 2026-09-08 Day 12 进展：学习者独立实现最小 query_logger，测试由 1/2 转为 2/2；定义/调用时机题 4/4，异常传播题 5/5；面试 8.5/10，待完成三题交错巩固后归档。
 - 2026-09-08 Day 11 间隔复测：准确预测 `next`、剩余 `list` 与耗尽后空列表；能说明已有完整 list 再套 generator 不会降低上游内存，并以“上游按需读取 + 调用方提前停止”限定潜在时间收益。原性能条件缺口关闭。
@@ -142,6 +151,7 @@
 
 | Date | Scope | Score | Weakness | Follow-up |
 |---|---|---:|---|---|
+| 2026-09-10 | context manager / 资源清理与异常传播 | 7/10 | 首次误以为上下文管理器保证异常后继续执行；追问纠正，仍需补准 traceback 不是返回值 | 当日巩固 return 清理时机与 __exit__ 返回 True 的变体，次日间隔复测 |
 | 2026-09-01 | Python 输入校验 | 7/10 | 误认为 `dict.get()` 会创建 key | 用最小例子区分读取与赋值 |
 | 2026-09-01 | Python 函数返回值 | 9/10 | 对“`result` 保存 `None`”的表达可更精确 | Day 4 继续训练函数作用域与低耦合设计 |
 | 2026-09-01 | Python 函数作用域 | 9/10 | 首次回答只覆盖一个工程影响 | 通过并发请求变体补全共享状态污染风险 |

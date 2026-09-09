@@ -1,0 +1,10 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Context manager 速查</title>
+<style>body{max-width:780px;margin:40px auto;padding:0 24px;font:17px/1.8 system-ui;color:#172033}code{background:#f4effb;padding:2px 5px}a{color:#63428f}@media print{body{margin:0}}</style>
+</head><body><h1>Context manager：进入与退出</h1>
+<p><code>__enter__(self)</code> 的返回值交给 <code>as</code> 后的变量。</p>
+<p><code>__exit__(self, exc_type, exc_value, traceback)</code> 接收退出时的异常信息；无异常时后三项均为 None。</p>
+<p>当 __enter__ 成功返回后，无论正常结束、return 还是块内异常，退出 with 都会调用 __exit__。进入本身失败时不调用。</p>
+<p>__exit__ 返回 False 或 None 不压制块内异常，返回真值可以压制异常。资源清理必须由实现提供，with 不会猜测该关闭什么。</p>
+<p><a href="../lessons/0013-context-manager-basics.html">回到本节讲义</a> · <a href="https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers">Python 官方协议说明</a></p>
+</body></html>

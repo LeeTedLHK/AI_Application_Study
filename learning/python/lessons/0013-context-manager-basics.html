@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 13｜with 的进入与退出</title>
+<style>
+body{margin:0;background:#f7f8fb;color:#172033;font:17px/1.75 system-ui,"Microsoft YaHei",sans-serif}
+main{max-width:820px;margin:36px auto;background:white;padding:40px;box-shadow:0 12px 36px #17203314}
+h1{line-height:1.3}h2{font-size:1.25rem;margin-top:28px}a{color:#63428f}
+pre{background:#f4f6fa;padding:20px;overflow:auto;line-height:1.55}code{font-family:Consolas,monospace}
+.goal{border-left:4px solid #7657a6;background:#f4effb;padding:16px}
+li{margin:8px 0}@media print{body{background:white}main{margin:0;box-shadow:none;padding:16px}}
+</style></head>
+<body><main>
+<h1>Day 13：with 的进入与退出</h1>
+<p class="goal">本节目标：看懂进入、执行、退出三步，并区分资源清理与异常传播。先预测，再亲手实现。</p>
+<h2>为什么要学</h2>
+<p>你已经用过 with open(...) as f。AI 服务会处理文件、数据库连接和网络连接，需要在使用结束时执行明确的清理逻辑。上下文管理器把进入与退出逻辑封装起来；具体释放哪些资源由实现决定。</p>
+<p>装饰器通常包装一次函数调用；这里的上下文管理器管理一个 with 代码块的进入和退出。</p>
+<h2>两个由 with 调用的方法</h2>
+<ul><li><code>__enter__(self)</code>：进入时执行，其返回值交给 <code>as</code> 后的变量。</li>
+<li><code>__exit__(self, exc_type, exc_value, traceback)</code>：退出时执行。后三个参数由 Python 传入，依次是异常类型、异常对象和 traceback；无异常时均为 None。</li>
+<li><code>__exit__</code> 返回 False：不压制块内异常。清理完成后，异常仍向外传播。</li></ul>
+<p>前提是 __enter__ 已成功返回。随后正常结束、return 或块内抛出异常，都会调用 __exit__；如果进入本身失败，这次 with 不会调用它。</p>
+<h2>模拟查询会话</h2>
+<p>下面只打印标记，没有真实数据库连接；session 是为了观察 as 绑定而返回的字符串。</p>
+<pre><code>class QuerySession:
+    def __enter__(self):
+        print("open")
+        return "session"
+    def __exit__(self, exc_type, exc_value, traceback):
+        print("close")
+        return False
+
+with QuerySession() as connection:
+    print(connection)
+    print("query")
+print("done")</code></pre>
+<p>正常顺序：open → session → query → close → done。</p>
+<h2>现在由你预测</h2>
+<ol><li>将 print("query") 换成 raise ValueError("bad query")。哪些 print 会执行？close、done 是否出现？异常是否继续传播？</li>
+<li>恢复正常路径，仅删除 __enter__ 的 return "session"。connection 会得到什么？</li></ol>
+<p>验收：能解释清理不等于吞掉异常，以及 as 接收的是 __enter__ 的返回值。首次作答前不展示变体答案。</p>
+<p><a href="../week01/day13_context_manager_demo.py">可运行示例与题面</a> · <a href="../reference/context-manager-quick-reference.html">本节速查</a> · <a href="0012-function-decorator-basics.html">上一课：decorator</a></p>
+<p><a href="https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers">Python 官方文档：上下文管理器协议</a>。示例在本机 Python 3.11.15 验证。</p>
+<p>有一步不清楚，直接告诉我具体哪个方法或哪行代码，我会缩小例子再讲。</p>
+</main></body></html>
