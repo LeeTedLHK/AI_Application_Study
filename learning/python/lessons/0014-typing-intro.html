@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><title>Day 14 · 类型标注</title>
+<style>body{max-width:760px;margin:48px auto;padding:0 24px;font:18px/1.8 system-ui;color:#203047}pre{background:#f0f4f8;padding:20px;border-radius:10px}h1{line-height:1.3}@media print{body{margin:0;font-size:12pt}}</style>
+<h1>Day 14 · 给函数写清输入与输出</h1>
+<p>目标：读懂 AI 应用函数的类型约定，区分标注与实际校验。</p>
+<pre>def table_label(name: str) -> str:
+    return "table: " + name
+
+print(table_label("orders"))</pre>
+<p><code>name: str</code> 表示期望 name 是字符串；<code>-&gt; str</code> 表示期望返回字符串。标注供人和类型检查工具理解接口，Python 本身不会因此自动检查或转换参数。实际操作仍可能因类型不合适而报错。</p>
+<p>参数的 <code>= 10</code> 表示默认值，与类型标注用途不同。今天先掌握普通函数标注，不引入高级泛型。</p>
+<p><a href="../week01/day14_typing_intro.py">下一步：完成三次调用的输出与类型预测</a>。先闭卷回答，再运行核对；不清楚的地方直接向导师追问。</p>
+<p><a href="https://docs.python.org/3.11/library/typing.html">依据：Python 3.11 官方 typing 文档</a> · <a href="../reference/typing-basics.html">类型标注速查</a></p></html>
