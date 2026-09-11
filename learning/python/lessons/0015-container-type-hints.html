@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><title>Day 15 · 容器类型标注</title>
+<style>body{max-width:760px;margin:48px auto;padding:0 24px;font:18px/1.8 system-ui;color:#203047}pre{background:#f0f4f8;padding:20px;border-radius:10px}h1{line-height:1.3}code{background:#eef2f6;padding:2px 5px;border-radius:4px}@media print{body{margin:0;font-size:12pt}}</style>
+<h1>Day 15 · 给容器标注元素类型</h1>
+<p>目标：让 SQL 查询结果、工具参数和 RAG 文档块的结构更容易被人、IDE 和静态检查工具理解。</p>
+<pre>def summarize_limits(limits: list[int]) -&gt; dict[str, int]:
+    return {"count": len(limits), "total": sum(limits)}</pre>
+<p><code>list[int]</code> 表示元素期望是整数；<code>dict[str, int]</code> 表示键期望是字符串、值期望是整数。Python 3.9+ 可以直接使用内置容器的这种写法。</p>
+<p>容器标注仍是约定，不会自动检查每一项，也不会把字符串转换成整数。运行时校验要由函数体或专门的模型完成。</p>
+<p>今天先做阅读预测，再实现一个汇总函数。边界案例是空列表：结果应是 <code>{"count": 0, "total": 0}</code>。</p>
+<p><a href="../week01/day15_container_typing.py">下一步：完成阅读预测与编码练习</a> · <a href="../reference/typing-containers.html">容器标注速查</a></p>
+<p><a href="https://docs.python.org/3.11/library/stdtypes.html#generic-aliases">依据：Python 3.11 官方内置容器泛型文档</a>。不清楚的地方直接追问。</p></html>

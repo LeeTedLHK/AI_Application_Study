@@ -4,11 +4,11 @@
 
 ## 当前状态
 
-- 当前日期：2026-09-11
+- 当前日期：2026-09-12
 - 当前 Week：Week 1
 - 当前 Phase：Python Core
-- 当前主目标：Day 14 普通函数类型标注与运行时校验已完成，限定范围 Built-It；面试 9/10，巩固首次 9/10，纠错通过
-- 下一步唯一优先任务：下次先用约 2 分钟复测假值判断与默认参数，再进入 typing 的 list/dict 容器标注
+- 当前主目标：Day 15 容器类型标注实现与面试已完成，巩固首次 8/10、纠错通过；当前等级 Modified-It
+- 下一步唯一优先任务：完成 Day 15 章节验证与本地提交；下次复测容器标注层级后进入 dataclass / enum
 - 上次周测日期：
 - 上次阶段 Mock：
 
@@ -62,6 +62,7 @@
 | context manager / __enter__ / __exit__ | Modified-It | 亲手实现 QuerySession 并修复导入副作用；正常退出、as 原实例、异常传播且关闭、实例隔离及导入静默共 5/5；面试 7/10，巩固首次 7/10、纠错 2/2 | 下次复测 return 与清理先后、清理不等于吞异常；当前仅模拟资源状态，未连接真实数据库 |
 
 | 普通函数类型标注与运行时校验 | Built-It | 独立实现 checked_query_limit；6/6 行为案例、标注/默认值和导入静默通过；面试 9/10，9 月 11 日巩固首次 9/10、纠错通过 | 仅限普通函数标注与本题校验，不外推至整个 typing；下次复测 if not 与默认值，再学容器标注 |
+| list / dict 容器类型标注 | Modified-It | 独立实现 `summarize_limits(limits: list[int]) -> dict[str, int]`；正常、空列表和预期 TypeError 案例通过；面试 8/10；巩固首次 8/10、层级纠错通过 | 下次复测嵌套层级与输入/输出校验边界；再进入 dataclass / enum |
 
 ## Backend
 
@@ -119,6 +120,8 @@
 
 - 2026-09-10 Day 13 收尾完成：学习者解释 return 结束整个函数、仅定义但未返回 wrapper 不会调用它，纠错 2/2 通过；补齐 return 交给调用方前先退出 with 的顺序。保留首次巩固 7/10、面试 7/10；最终五项测试 5/5、直接演示输出正确，等级 Modified-It。章节提交标识 learn(week01-day13): context manager resource lifecycle，仅纳入本章文件与记录，不推送远程。
 - 2026-09-10 Day 13 首次闭卷巩固 7/10：Q1 正确判断返回前已关闭，但误列出 return 后的 after；Q2 正确判断只输出 True 并将 __exit__ 返回值改为 False（术语补准为打印值）；Q3 正确预测 query、2 并指出应返回 wrapper，但误认原题 wrapped 指向 wrapper。实际运行验证 Q1=inside/ok/True、Q2=True、Q3=query/2 且 wrapped is count_rows。待两点口述纠错，不标记收尾完成。
+- 2026-09-12 Day 15 收尾巩固首次 8/10：Q1 数值正确但类型只写 dict；Q2 选择 A 正确，B 的外层/键/值层级表述不完整；Q3 正确判断标注不自动拒绝或转换，输入和输出边界均可校验。补答后准确说出 `dict[str, int]` 与 `dict[str, list[int]]` 的层级。
+- 2026-09-12 Day 15 最终验证：核心函数、空列表、预期 TypeError、标注、导入静默和直接运行退出码 0 均通过；章节提交标识 learn(week01-day15): container type hints and validation boundaries，待本地提交。
 - 2026-09-10 Day 13 代码修复复验：学习者亲手添加 __main__ 保护，五项测试全部通过；直接运行仍输出 True/False/True/True，导入无输出。进入面试环节，尚未评分、未做每日收尾巩固，不创建章节完成提交。
 - 2026-09-10 Day 13 实现 Review：学习者已实现 QuerySession 并自行验证；Agent 实测核心行为 4/4 通过（正常状态、as 原实例、原异常传播且关闭、实例隔离），导入静默失败，总计 4/5。原因是两段演示调用在模块顶层，导入打印 True/False/True/True；由学习者修复 __main__ 保护后复验。今日面试与收尾巩固待开展。
 - 2026-09-10 Day 13 阅读预测 2/2：准确判断异常路径 open、session、close 后传播 ValueError，done 不执行；正确判断删除 __enter__ 返回值后 connection 为 None（其 open、None 表述仅为前两项输出，反馈补全后续正常执行）。进入学习者独立编码前的设计步骤；尚未验收实现，非每日收尾巩固。
@@ -153,6 +156,7 @@
 
 | Date | Scope | Score | Weakness | Follow-up |
 |---|---|---:|---|---|
+| 2026-09-12 | list / dict 容器标注与校验边界 | 8/10 | 初答未具体说明键、值、元素层级；追问只提到结果清洗，需补输入边界校验 | 已在巩固中补准 `dict[str, list[int]]` 层级；下次间隔复测 |
 | 2026-09-10 | typing / 类型约定与运行时校验 | 9/10 | 首答未明确提及静态检查工具，定边界表述需区分描述与强制执行；追问准确 | 当日交错巩固标注、默认值、return 与退出清理 |
 | 2026-09-10 | context manager / 资源清理与异常传播 | 7/10 | 首次误以为上下文管理器保证异常后继续执行；追问纠正，仍需补准 traceback 不是返回值 | 当日巩固 return 清理时机与 __exit__ 返回 True 的变体，次日间隔复测 |
 | 2026-09-01 | Python 输入校验 | 7/10 | 误认为 `dict.get()` 会创建 key | 用最小例子区分读取与赋值 |

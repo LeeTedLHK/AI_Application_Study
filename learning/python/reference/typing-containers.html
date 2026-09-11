@@ -1,0 +1,4 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>容器类型标注速查</title>
+<style>body{max-width:720px;margin:48px auto;padding:0 24px;font:18px/1.8 system-ui;color:#203047}td,th{padding:10px;text-align:left;border-bottom:1px solid #ddd}</style>
+<h1>容器类型标注速查</h1><table><tr><th>写法</th><th>含义</th></tr><tr><td>list[int]</td><td>元素期望为 int 的列表</td></tr><tr><td>dict[str, int]</td><td>键期望为 str、值期望为 int 的字典</td></tr><tr><td>list[dict[str, int]]</td><td>每一项都是字符串到整数的字典</td></tr><tr><td>-&gt; dict[str, int]</td><td>返回值结构约定</td></tr></table>
+<p>这些写法描述容器内部结构，不自动执行校验或转换。Python 3.9+ 支持直接参数化内置容器。</p><p><a href="https://docs.python.org/3.11/library/stdtypes.html#generic-aliases">Python 官方文档</a> · <a href="../lessons/0015-container-type-hints.html">返回讲义</a></p></html>
