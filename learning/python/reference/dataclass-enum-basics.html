@@ -1,0 +1,4 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>dataclass / enum 速查</title>
+<style>body{max-width:720px;margin:48px auto;padding:0 24px;font:18px/1.8 system-ui;color:#203047}td,th{padding:10px;text-align:left;border-bottom:1px solid #ddd}</style>
+<h1>dataclass / enum 速查</h1><table><tr><th>写法</th><th>作用</th></tr><tr><td>@dataclass</td><td>根据标注字段生成常见数据类方法</td></tr><tr><td>field: str</td><td>必传字段；无默认值</td></tr><tr><td>limit: int = 100</td><td>带默认值的字段</td></tr><tr><td>Mode.PREVIEW</td><td>枚举成员对象</td></tr><tr><td>Mode.PREVIEW.value</td><td>枚举成员的实际值，常用于序列化</td></tr></table>
+<p>dataclass 和 Enum 都不会自动替代业务校验。默认字段应放在必传字段之后。</p><p><a href="https://docs.python.org/3.11/library/dataclasses.html">dataclasses 官方文档</a> · <a href="https://docs.python.org/3.11/library/enum.html">enum 官方文档</a> · <a href="../lessons/0016-dataclass-enum.html">返回讲义</a></p></html>

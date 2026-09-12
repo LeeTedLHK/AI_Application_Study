@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><title>Day 16 · dataclass 与 enum</title>
+<style>body{max-width:760px;margin:48px auto;padding:0 24px;font:18px/1.8 system-ui;color:#203047}pre{background:#f0f4f8;padding:20px;border-radius:10px}h1{line-height:1.3}code{background:#eef2f6;padding:2px 5px;border-radius:4px}@media print{body{margin:0;font-size:12pt}}</style>
+<h1>Day 16 · 用 dataclass 和 enum 表达查询计划</h1>
+<p>目标：把 AI 工具的结构化输入表示成有名字、有默认值、可读的 Python 对象。</p>
+<pre>from dataclasses import dataclass
+from enum import Enum
+
+class QueryMode(Enum):
+    PREVIEW = "preview"
+    EXECUTE = "execute"
+
+@dataclass
+class QueryPlan:
+    table_name: str
+    limit: int = 100
+    mode: QueryMode = QueryMode.PREVIEW</pre>
+<p><code>@dataclass</code> 会根据带类型标注的字段生成常用的 <code>__init__</code>、<code>__repr__</code> 和相等比较方法，减少只保存数据时的样板代码；它不会因为标注而自动校验类型。</p>
+<p><code>Enum</code> 用有限的命名成员表达状态或模式。<code>plan.mode</code> 是枚举成员，<code>plan.mode.value</code> 是可用于序列化的字符串。</p>
+<p>没有默认值的字段必须写在有默认值的字段前面。今天先练查询计划，不引入 <code>field(default_factory=...)</code> 或冻结对象。</p>
+<p><a href="../week01/day16_dataclass_enum.py">下一步：完成阅读预测与结构化对象练习</a> · <a href="../reference/dataclass-enum-basics.html">dataclass / enum 速查</a></p>
+<p><a href="https://docs.python.org/3.11/library/dataclasses.html">依据：dataclasses 官方文档</a> · <a href="https://docs.python.org/3.11/library/enum.html">enum 官方文档</a>。有疑问直接追问。</p></html>

@@ -12,3 +12,28 @@
 - 可复用到 AI 工具输入输出契约；输入边界和输出序列化边界都需要考虑运行时校验。
 - 下一步唯一优先任务：约 2 分钟复测 `list[dict[str, int]]` 与 `dict[str, list[int]]` 层级，再进入 dataclass / enum。
 - 章节提交标识：`learn(week01-day15): container type hints and validation boundaries`；仅本章文件，不包含 `test.py`，不推送。
+
+## Day 16 实现与面试
+
+- 学习者独立补齐 `QueryPlan` 三个字段和 `plan_label`；默认字段顺序正确，入口演示覆盖默认 PREVIEW 与自定义 EXECUTE/limit。
+- Agent 独立验证：dataclass 默认构造、字段默认值、Enum 成员与 `.value`、标签输出、相等比较、错误类型不自动拦截、导入静默和 py_compile 全部通过；直接运行退出码 0。
+- 面试主问题：为什么用 QueryPlan dataclass 和 QueryMode enum，而不是裸字典和字符串；仍不能自动解决什么。学习者回答侧重标注帮助开发与 LLM 理解，不能保证返回数据格式。
+- 追问：Enum 如何改善模式拼写，QueryPlan 在哪一边界校验参数。学习者准确回答统一命名减少拼写错误，并在函数体开头校验类型。
+- 评分 8.5/10：补充 dataclass 集中字段/默认值/常见方法，Enum 提供有限命名成员；工程上校验应尽早放在构造或 API/tool 输入边界，防止无效对象进入业务。
+- 标准回答已追加 `docs/interview_answer.md`；每日巩固尚未完成，暂不提交章节。
+
+## Day 16 巩固与收尾
+
+- 巩固 Q1（3 分）：`Job("embed")` 字段值基本准确，但把 `Mode.SAFE` 写成类型；Q2（3 分）准确区分 Enum 成员与 `.value`，并指出题目“把 mode 改成字符串”的歧义；Q3（4 分）正确解释默认字段不能放在必填字段前，dataclass 不自动检查类型或范围。
+- 首次巩固 8/10。反馈后学习者准确补答类型 `Mode` 与具体值 `Mode.SAFE`，并说明普通字符串拼写错误会使无效模式进入后续业务；纠错通过，首次分数保留。
+- 题目歧义属于出题侧问题，不计入学习者失分；已在记录中明确原意是普通字符串模式值。
+- Day 16 实现、面试与巩固齐全，当前限定范围 Modified-It；可复用到 NL2SQL Agent 的查询计划建模，但 dataclass 本身仍需构造/API/tool 边界校验。
+- 待运行最终验证和章节提交；下次唯一优先任务是复测 Enum 成员/`.value`，再进入 Pydantic v2。
+
+## Day 16 开场与 Day 15 间隔复测
+
+- 当前日期 2026-09-12；Day 15 已归档，开始 `dataclass` / `enum`。
+- 容器标注间隔复测：学习者先答“列表、字典”，题目原文只问外层结构，按字面可接受；在明确要求补充内部层级后，准确说出 `list[dict[str, int]]` 的列表及字符串键/整数值字典，以及 `dict[str, list[int]]` 的字符串键/整数列表值。
+- 复测其余两题准确：标注不会自动拒绝或转换，输入校验放入口、输出校验放返回前。
+- 进入 Day 16 核心：`@dataclass` 根据标注字段生成常见构造/表示/比较方法；`Enum` 表示有限命名成员，`.value` 用于实际字符串值；两者都不自动完成业务类型校验。
+- 新增 `learning/python/week01/day16_dataclass_enum.py` 题面，待阅读预测和独立实现；尚未面试、巩固或章节提交。
