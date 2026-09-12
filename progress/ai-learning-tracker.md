@@ -8,7 +8,7 @@
 - 当前 Week：Week 1
 - 当前 Phase：Python Core
 - 当前主目标：Day 16 dataclass / enum 实现、面试与巩固已完成；当前等级 Modified-It
-- 下一步唯一优先任务：完成 Day 16 章节验证与本地提交；下次复测 Enum 成员/`.value`，再进入 Pydantic v2
+- 下一步唯一优先任务：下次先复测 Enum 成员/`.value` 与构造边界校验，再进入 Pydantic v2
 - 上次周测日期：
 - 上次阶段 Mock：
 
