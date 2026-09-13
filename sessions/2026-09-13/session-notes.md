@@ -21,3 +21,8 @@
 - 面试题：Agent Tool 收到 `limit="20"` 时选择自动转换还是严格模式。评分 8/10；学习者能按数据来源和业务契约权衡，补充强调严格模式适用于不稳定 LLM/用户输入和高风险 SQL 参数；类型转换不能替代范围、权限、只读和 SQL guardrail。
 - 闭卷巩固 3/3：`0` 是合法 `int`；`1001` 超出 `le=1000` 失败；返回 `{}` 会破坏 `QueryInput` 返回契约并把错误延迟为属性访问处的 `AttributeError`。
 - Day 17 限定范围达到 Modified-It：学习者能独立建模、验证、修改异常处理并解释边界，可复用到 FastAPI 请求模型和 Agent Tool 输入边界。
+## Tracker 补全维护
+
+- 学习者指出 `progress/ai-learning-tracker.md` 到 Day 17 后存在遗漏。已对照全部 session notes、`learning/python/` 练习/测试文件和 Git 历史核对 Day 1～17。
+- tracker 新增“章节索引”和“每日巩固索引”，补入 Day 12～17 的 Week 1 总结，并明确 Day 1～5 随早期基线提交保存、Day 6 起的章节提交哈希。
+- 原有 Python 细粒度主题、Knowledge Gaps、Weekly Interview Performance 和历史记录保留不删。

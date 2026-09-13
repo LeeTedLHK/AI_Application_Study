@@ -18,7 +18,7 @@
 
 | Week | 主题 | 状态 | 主要产物 |
 |---|---|---|---|
-| 1 | Python Core | 进行中 | Day 1～4 综合能力 `Built-It`；Day 5～7 模块、JSON、文件读取通过；Day 8～11 traceback、精确异常捕获、class、generator 与巩固通过，`Modified-It` |
+| 1 | Python Core | 进行中 | Day 1～4 综合能力 `Built-It`；Day 5～11 模块、JSON、文件读取、traceback、精确异常捕获、class、generator 已完成；Day 12～17 decorator、context manager、typing、容器标注、dataclass/enum、Pydantic v2 已完成，当前主线等级为 `Modified-It` |
 | 2 | Python Engineering / Async | 未开始 | |
 | 3 | FastAPI / Backend | 未开始 | |
 | 4 | LLM API / Tool Calling | 未开始 | |
@@ -41,6 +41,49 @@
 
 ## Python
 
+### 章节索引
+
+> 下表按 `sessions/` 会话记录、`learning/python/` 练习与测试、以及 Git 历史逐项核对。Day 1～5 的代码随早期基线提交保存，没有独立的章节提交；从 Day 6 起按章节提交。
+
+| Day | 日期 | 核心主题 | 代码与验收证据 | 掌握等级 | 提交记录 |
+|---|---|---|---|---|---|
+| 1 | 2026-08-31 | `list` / `dict` / 循环 / 函数 | 独立实现按状态汇总金额；paid、cancelled、空列表 3 个案例通过；修改为显式 `target_status` | Modified-It | 早期基线 `e148c4b`，无独立章节提交 |
+| 2 | 2026-09-01 | 字典输入校验、容器选择、`isinstance` 与短路 | 缺失字段校验 3 个案例通过；正确区分 list、tuple、set、dict；解释字符串金额导致短路 | Modified-It（容器与短路为 Understood-It） | 早期基线 `e148c4b`，无独立章节提交 |
+| 3 | 2026-09-01 | 参数、默认值、`return`、`raise` | 独立完成 `build_query_config`；3 个案例通过；清理不可达 `raise`，能解释异常中断后续语句 | Modified-It | 早期基线 `e148c4b`，无独立章节提交 |
+| 4 | 2026-09-01 | 函数作用域与综合处理 | 独立完成筛选函数；默认/指定状态/空列表通过；闭卷“校验→筛选→汇总”5 个案例通过 | Built-It（作用域单项为 Modified-It） | 早期基线 `e148c4b`，无独立章节提交 |
+| 5 | 2026-09-01 | module / import / `__main__` | 双文件模块化完成；直接运行、消费端运行、纯 import 均通过，import 无演示副作用 | Modified-It | 早期基线 `e148c4b`，无独立章节提交 |
+| 6 | 2026-09-02 | Python 对象与 JSON 文本 | `update_query_limit` 通过 3 个测试；保留嵌套字段、布尔值、null 和显式 `limit=0`；巩固 3/3 | Modified-It | `feebccb` |
+| 7 | 2026-09-03～04 | JSON 文件读取与资源生命周期 | `load_query_config`、文件关闭时机、返回对象和错误路径通过；3 个测试与巩固 10/10 | Modified-It | `7375edd` |
+| 8 | 2026-09-04～05 | traceback 阅读与 Debug | 独立修复路径和非法 JSON 两轮问题；Day 8 测试 1/1、Day 7 回归 3/3；巩固 9/10 | Modified-It | `ae8eb97` |
+| 9 | 2026-09-05 | 精确 `try` / `except` | 成功、文件不存在、非法 JSON 三条路径通过；3 个测试和回归通过；未匹配异常保持传播 | Modified-It | `70b6935` |
+| 10 | 2026-09-07 | class / instance / `self` | 独立实现 `QueryTask`；实例隔离、`limit=0`、`update_limit` 通过；本章及回归共 11/11 | Modified-It | `3c55d12` |
+| 11 | 2026-09-08 | iterator / generator / `yield` | 独立实现惰性筛选生成器；测试 3/3；巩固 9/10，补准生成器不保证更快 | Modified-It | `1694678` |
+| 12 | 2026-09-08～09 | function decorator | 独立实现 `query_logger`；测试 2/2；面试 8.5/10；巩固首次 8/10、纠错通过 | Modified-It | `c904678` |
+| 13 | 2026-09-10 | context manager / 资源清理 | 独立实现 `QuerySession`；正常退出、异常传播且关闭、实例隔离、导入静默最终通过；面试 7/10，巩固 7/10、纠错 2/2 | Modified-It | `e2e21b4` |
+| 14 | 2026-09-10～11 | 普通函数 typing 与运行时校验 | 独立实现 `checked_query_limit`；6/6 行为案例、标注/默认值和导入静默通过；面试 9/10，巩固首次 9/10、纠错通过 | Built-It | `fb40ad3` |
+| 15 | 2026-09-11～12 | 容器类型标注与校验边界 | 独立实现 `summarize_limits`；正常、空列表、字符串导致的预期 TypeError 通过；面试 8/10，巩固 8/10、层级纠错通过 | Modified-It | `f37caeb` |
+| 16 | 2026-09-12 | dataclass / enum 查询计划 | 独立补齐 `QueryPlan` 与 `plan_label`；默认/执行模式、`.value`、相等比较和导入静默通过；面试 8.5/10，巩固 8/10、纠错通过 | Modified-It | `91884cc` |
+| 17 | 2026-09-13 | Pydantic v2 `BaseModel` 输入校验 | 独立实现 `QueryInput` / `normalize_query`；预测 4/4，边界断言、`model_dump`、导入静默和精确异常演示通过；面试 8/10，巩固 3/3 | Modified-It | `cf46d78` |
+
+### 每日巩固索引
+
+| Day | 首次巩固结果 | 纠错 / 间隔复测 | 保留的下一步 |
+|---|---|---|---|
+| 1 | 未单列每日巩固；完成理解检查与面试 Q1（8/10） | 补准 `dict[key]` 缺失时立即 `KeyError`，`dict.get` 才返回默认值 | 后续继续区分读取与赋值 |
+| 2～5 | 交错巩固 7/10 | 作用域正确；补准显式参数覆盖、入口保护和 import 副作用 | 复测 JSON 严格语法与返回类型 |
+| 6 | 3/3，10/10 | 字符串大小写、单引号字段名、`dict`/JSON 返回类型均复测通过 | 间隔复测 JSON 与返回契约 |
+| 7 | 3/3，10/10 | 关闭时机、返回对象和显式 `0` 均复测通过 | 间隔复测异常路径 |
+| 8 | 9/10 | 补准 traceback 阅读顺序：异常详情 → 最近的自己代码 → 向上追输入 | 复测 traceback 定位顺序 |
+| 9 | 7/10 | 未匹配异常纠错 3/3，确认原异常继续传播 | 后续在 API 错误映射中复用 |
+| 10 | 7/10 | `update_limit(0)` 变体通过；补准属性更新与方法返回值区别 | 新数据复测实例状态 |
+| 11 | 9/10 | 补准生成器收益取决于上游惰性和调用方提前停止 | 后续在文件/游标场景复用 |
+| 12 | 8/10 | 先保存结果、打印 finish、最后 return；纠错 3/3 | 复测 wrapper 返回值与异常传播 |
+| 13 | 7/10 | 纠错 2/2；补准 return 前清理、`__exit__` 不吞异常 | 后续接真实连接生命周期 |
+| 14 | 9/10 | Q2 纠错通过；补准 `if not` 与默认参数区别 | 间隔复测假值与默认值 |
+| 15 | 8/10 | 补准嵌套容器层级和输入/输出校验边界 | 复测嵌套标注 |
+| 16 | 8/10 | 补准 `Mode` 类型、`Mode.SAFE` 成员与 `.value` | 复测 Enum 成员和值 |
+| 17 | 3/3 | 预测 4/4；原理 8.5/10；面试 8/10；`ValidationError` 边界全部通过 | 间隔复测默认值、转换与异常 |
+
 | Topic | Level | Evidence | Gap / Next |
 |---|---|---|---|
 | list / dict / for / if / function | Modified-It | 独立完成 `day01_query_rows.py`，通过 paid、cancelled、空列表案例 | 巩固 `dict.get` 找到已有 key 时返回累计值，而非默认值 |
@@ -55,12 +98,10 @@
 | JSON 文件读取 / open / with | Modified-It | 学习者实现 load_query_config，9 月 4 日复跑 3 个测试通过、导入静默；亲手修正巩固题缩进并经实际运行验证；三题巩固 10/10 | 已能实现、解释并修改失败变体；不据当日表现判定长期掌握，下次复测关闭时机与返回对象区别 |
 | exception / traceback | Modified-It | 9 月 5 日独立分两轮修复 challenge 的路径与 JSON；准确解释解析器在读到下一行右花括号时才确认尾随逗号后缺少字段；最终输出正确，Day 8 测试 1/1、Day 7 回归 3/3 通过 | 面试追问曾先检查上层调用行；下次间隔复测“最后一行 → 最近的自己代码 → 向上追输入”的顺序，再进入最小异常处理 |
 | specific try / except | Modified-It | 独立实现成功、文件不存在、JSON 非法三条结构化返回路径；Day 9 测试 3/3、Day 7 回归 3/3 通过；面试能解释宽泛捕获掩盖根因 | 完成当日交错巩固；下次复测未匹配异常传播，不提前扩展 finally |
-
 | class / instance / self | Modified-It | 独立实现 QueryTask 的 __init__、to_payload、update_limit；Day 10 测试 4/4，通过实例隔离与 limit=0 边界；面试 9/10 | Day 11 开场变体最终准确解释参数求值、self 绑定、实例状态与隐式返回值，跨日缺口关闭 |
 | iterator / generator / yield | Modified-It | 独立实现 iter_active_table_names；测试 3/3；2026-09-08 间隔复测准确解释耗尽、已有列表内存不消失，以及上游惰性与提前停止的性能条件 | 缺口关闭；后续在文档流与数据库游标场景复用 |
 | function decorator | Modified-It | 独立完成 query_logger，测试 2/2；Day 13 交错复测能预测输出并修复返回对象，经反馈解释仅定义 wrapper 不等于调用它 | Day 13 首次仍混淆 wrapped 绑定，保留次日间隔复测，不因即时纠错升级 |
 | context manager / __enter__ / __exit__ | Modified-It | 亲手实现 QuerySession 并修复导入副作用；正常退出、as 原实例、异常传播且关闭、实例隔离及导入静默共 5/5；面试 7/10，巩固首次 7/10、纠错 2/2 | 下次复测 return 与清理先后、清理不等于吞异常；当前仅模拟资源状态，未连接真实数据库 |
-
 | 普通函数类型标注与运行时校验 | Built-It | 独立实现 checked_query_limit；6/6 行为案例、标注/默认值和导入静默通过；面试 9/10，9 月 11 日巩固首次 9/10、纠错通过 | 仅限普通函数标注与本题校验，不外推至整个 typing；下次复测 if not 与默认值，再学容器标注 |
 | list / dict 容器类型标注 | Modified-It | 独立实现 `summarize_limits(limits: list[int]) -> dict[str, int]`；正常、空列表和预期 TypeError 案例通过；面试 8/10；巩固首次 8/10、层级纠错通过 | 下次复测嵌套层级与输入/输出校验边界；再进入 dataclass / enum |
 | dataclass / enum 查询计划 | Modified-It | 独立补齐 `QueryPlan` 字段和 `plan_label`；默认/执行模式、枚举 `.value`、相等比较和导入静默通过；面试 8.5/10；巩固首次 8/10、纠错通过 | 下次复测 Enum 成员/`.value` 和构造边界校验，再进入 Pydantic v2 |
