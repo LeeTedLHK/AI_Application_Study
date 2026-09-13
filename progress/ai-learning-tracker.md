@@ -4,11 +4,11 @@
 
 ## 当前状态
 
-- 当前日期：2026-09-12
+- 当前日期：2026-09-13
 - 当前 Week：Week 1
 - 当前 Phase：Python Core
-- 当前主目标：Day 16 dataclass / enum 实现、面试与巩固已完成；当前等级 Modified-It
-- 下一步唯一优先任务：下次先复测 Enum 成员/`.value` 与构造边界校验，再进入 Pydantic v2
+- 当前主目标：Day 17 Pydantic v2 BaseModel 输入校验与转换已完成；当前等级 Modified-It
+- 下一步唯一优先任务：下次间隔复测 Pydantic 的默认值、转换与 ValidationError 边界，再进入 `.env` 与配置管理
 - 上次周测日期：
 - 上次阶段 Mock：
 
@@ -64,6 +64,7 @@
 | 普通函数类型标注与运行时校验 | Built-It | 独立实现 checked_query_limit；6/6 行为案例、标注/默认值和导入静默通过；面试 9/10，9 月 11 日巩固首次 9/10、纠错通过 | 仅限普通函数标注与本题校验，不外推至整个 typing；下次复测 if not 与默认值，再学容器标注 |
 | list / dict 容器类型标注 | Modified-It | 独立实现 `summarize_limits(limits: list[int]) -> dict[str, int]`；正常、空列表和预期 TypeError 案例通过；面试 8/10；巩固首次 8/10、层级纠错通过 | 下次复测嵌套层级与输入/输出校验边界；再进入 dataclass / enum |
 | dataclass / enum 查询计划 | Modified-It | 独立补齐 `QueryPlan` 字段和 `plan_label`；默认/执行模式、枚举 `.value`、相等比较和导入静默通过；面试 8.5/10；巩固首次 8/10、纠错通过 | 下次复测 Enum 成员/`.value` 和构造边界校验，再进入 Pydantic v2 |
+| Pydantic v2 BaseModel 输入校验 | Modified-It | 独立实现 `QueryInput` / `normalize_query`；四题预测 4/4；默认值、字符串数字解析、`0/1000` 边界、`-1/1001`、缺失字段和不可解析字符串验证通过；精确捕获演示通过；不可解析字符串异常由独立断言验证；面试 8/10；巩固 3/3 | 间隔复测默认值、转换与 `ValidationError` 边界；进入 `.env` 与配置管理 |
 
 ## Backend
 
