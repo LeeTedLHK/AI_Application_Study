@@ -255,3 +255,15 @@ wrapper 调用原函数后必须保存并 `return result`，才能维持原函�
 ### 问题：如果一个 Agent Tool 接收 `{"table_name": "orders", "limit": "20"}`，你会选择让 Pydantic 自动把 `"20"` 转成 `20`，还是启用严格模式拒绝它？请结合数据来源、可靠性和后续 SQL 执行风险说明取舍。
 
 **标准回答：** 选择取决于输入来源和工具契约。如果输入来自可控的 JSON/表单适配层，且契约明确允许数字字符串，可以保留可预测的转换，再用 `ge/le` 等约束验证范围。如果输入来自不稳定的 LLM Tool 或用户自由文本，并且字段直接影响 SQL 执行，通常更倾向严格模式，要求调用方提供整数，避免脏数据被静默带入执行链。无论是否转换，都还需要范围约束、只读权限、参数化或 SQL guardrail 等独立防护；类型转换不能代替 SQL 安全控制。异常应由 API endpoint、Tool 适配层或 Agent 输入边界转换成结构化错误，模型验证函数本身保持清晰并传播 `ValidationError`。
+
+## 2026-09-15 — Day 18 配置优先级与校验边界
+
+本轮评分：8/10。学习者准确判断已有环境变量优先、非法文本导致 ValidationError，以及空字符串不会退回文件值或默认值。需补准空字符串首先在 int 解析阶段失败，错误类型为 int_parsing，不是越界检查。
+
+### 问题：智能取数服务的环境变量 DAY18_QUERY_LIMIT="abc"，本地 .env 写 DAY18_QUERY_LIMIT=25，程序用 load_dotenv(override=False)，然后交给你写的 QueryInput 校验。最终采用哪个原始值、会发生什么？为什么不能认为“加载配置成功”就代表“配置有效”？
+
+**标准回答：** override=False 保留进程中已有的 "abc"，不会用 .env 的 "25" 覆盖。os.getenv 读出的是字符串 "abc"。load_dotenv 只把文件值加载到环境，不负责类型转换或业务约束；将 "abc" 交给 QueryInput 后，它不能解析为 int，因此 Pydantic 抛出 ValidationError。配置读取成功和配置校验成功是不同阶段，错误不应被吞掉或默默回退到文件值。
+
+### 追问：如果环境变量 DAY18_QUERY_LIMIT 已存在但值为 ""，.env 仍为 25，override=False；你的函数最终会使用默认 100、文件值 25，还是报 ValidationError？解释每一步。
+
+**标准回答：** 空字符串表示该环境变量存在，override=False 会保留它，不用文件的 "25" 覆盖。os.getenv 得到 ""；学习者的函数只在值为 None 时省略 limit 键，所以此处会把空字符串作为 limit 提供给 QueryInput。Pydantic 无法把 "" 解析为 int，抛出 ValidationError，具体错误类型为 int_parsing；并未进入 ge/le 的范围检查。模型默认值 100 只用于 limit 键缺失的情况。

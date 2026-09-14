@@ -1,0 +1,8 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Day 18｜配置读取速查</title><style>body{max-width:760px;margin:36px auto;padding:0 24px;color:#172033;font:17px/1.8 system-ui,"Microsoft YaHei",sans-serif}code{background:#f4effb;padding:2px 5px}a{color:#63428f}@media print{body{margin:0}}</style></head><body>
+<h1>Day 18：配置读取速查</h1>
+<p><code>os.getenv(key, default)</code> 读取进程环境变量；仅在键缺失时返回 default。环境值和 .env 文件值均是字符串；空字符串也算键已存在。</p>
+<p><code>load_dotenv(path, override=False)</code> 显式加载文件，只填充缺失的环境变量。此模式下：已有环境值 → 文件值 → getenv 默认值。</p>
+<p><code>QueryInput.model_validate(data)</code> 才处理类型转换和范围校验。只有 data 字典没有 limit 键时，模型才使用自己的默认 100；limit=None 或 "" 都是已提供的输入，会报 ValidationError。</p>
+<p>.env 保存本地配置并被 Git 忽略；.env.example 可提交，但只写无密钥示例。当前项目的示例没有真实密钥。</p>
+<p><a href="../lessons/0018-env-configuration.html">返回讲义</a> · <a href="https://docs.python.org/3.11/library/os.html#os.getenv">Python 官方 getenv 文档</a> · <a href="https://bbc2.github.io/python-dotenv/">python-dotenv 官方文档</a></p>
+</body></html>

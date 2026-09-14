@@ -1,0 +1,23 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Day 18｜读取外部配置</title><style>body{margin:0;background:#f7f8fb;color:#172033;font:17px/1.8 system-ui,"Microsoft YaHei",sans-serif}main{max-width:800px;margin:32px auto;padding:36px;background:white}h2{font-size:1.2rem}pre{background:#f4effb;padding:18px;overflow:auto}a{color:#63428f}@media print{main{margin:0;padding:12px}}</style></head><body><main>
+<h1>Day 18：读取外部配置</h1><p>本节目标：区分环境变量的字符串值、缺失和空值。接下来再学 .env 文件加载及 Pydantic 配置校验。</p>
+<h2>为什么要学</h2><p>AI 服务在测试与正式环境可能使用不同的模型名称、连接地址与查询上限。通过外部配置，可以让同一份代码适应不同环境。</p>
+<h2>环境变量与 .env</h2><p>环境变量是进程可读取的配置，os.environ 提供类似字典的访问方式。.env 是保存配置的文本文件，Python 不会仅因文件存在就自动读取它；本章使用 python-dotenv 显式加载。</p>
+<h2>最小例子</h2><pre>import os
+
+os.environ["DAY18_QUERY_LIMIT"] = "25"
+raw = os.getenv("DAY18_QUERY_LIMIT", "100")
+print(raw)
+print(type(raw).__name__)</pre><p>输出为 25 和 str。数字形状的文本仍是字符串。此赋值只影响当前进程及后续子进程，不永久修改系统配置。</p>
+<p>os.getenv(name, default) 仅当变量不存在时才返回 default。省略 default 时为 None。空字符串是存在的值；读取不会自动转换整数或检查业务范围。</p>
+<h2>闭卷预测</h2><p>对 os.getenv("DAY18_QUERY_LIMIT", "100")，分别考虑变量为 "0"、变量不存在、变量为 ""。给出值和类型，并解释默认值是否生效。验收：能区分配置读取和校验。首次作答不运行变体。</p>
+<p><a href="../week01/day18_env_reading.py">代码与题面</a> · <a href="0017-pydantic-basemodel.html">上一课</a> · <a href="https://docs.python.org/3.11/library/os.html#os.getenv">Python 官方文档</a> · <a href="https://bbc2.github.io/python-dotenv/">python-dotenv 官方文档</a></p><p>有不清楚的地方，直接指出变量或代码行，我会换一个更小的例子。</p><h2>第二小节：从 .env 加载</h2><p>.env 是 KEY=VALUE 形式的文本，本例保存 DAY18_QUERY_LIMIT=25。使用 python-dotenv 1.2.2 的 load_dotenv 显式加载，文件值进入 os.environ，但仍然是字符串。</p>
+<pre>from dotenv import load_dotenv
+
+load_dotenv("learning/python/week01/day18_config/.env", override=False)
+raw = os.getenv("DAY18_QUERY_LIMIT", "100")</pre>
+<p>从仓库根目录运行，上面的相对路径才指向本章文件。override=False 保留已有环境变量，只填充缺失变量；override=True 则允许文件值覆盖已有值。本例采用默认的 False。</p>
+<p>例如加载前已有值 "60"，文件写 25，读取默认值是 "100"，最终得到 "60"。已有环境变量 → 文件值 → getenv 默认值，是本例读取的优先顺序。</p>
+<p>.env 保存本地实际配置，不提交；.env.example 保存无密钥模板，可提交。本仓库已配置相应忽略规则。这里两份都只包含演示值，没有凭据。</p>
+<p>加载负责把配置放入环境，getenv 负责读取字符串，Pydantic 才负责转换和校验。</p>
+<p>闭卷预测：文件始终为 25，override=False，getenv 默认值为 "100"。环境变量分别为 "0"、不存在、"abc" 时得到什么？文件会修复非法值吗？</p>
+<p><a href="../week01/day18_dotenv_demo.py">加载示例与题面</a> · <a href="../reference/env-config-quick-reference.html">本章速查</a> · <a href="../week01/day18_config/.env.example">无密钥配置模板</a></p></main></body></html>
