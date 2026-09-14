@@ -5,10 +5,10 @@
 ## 当前状态
 
 - 当前日期：2026-09-15
-- 当前 Week：Week 1
+- 当前 Week：Week 1 章节已完成；周测待做
 - 当前 Phase：Python Core
 - 当前主目标：Day 18 `.env` 加载与配置校验已完成；掌握等级 Modified-It
-- 下一步唯一优先任务：下次先用约 2 分钟复测环境值优先、空字符串 int_parsing、缺失键触发模型默认值，再进入 Week 2 的 logging
+- 下一步唯一优先任务：先用约 2 分钟复测配置边界，完成 Week 1 周测，再进入 Week 2 logging
 - 上次周测日期：
 - 上次阶段 Mock：
 
@@ -18,7 +18,7 @@
 
 | Week | 主题 | 状态 | 主要产物 |
 |---|---|---|---|
-| 1 | Python Core | 进行中 | Day 1～4 综合能力 `Built-It`；Day 5～11 模块、JSON、文件读取、traceback、精确异常捕获、class、generator 已完成；Day 12～17 decorator、context manager、typing、容器标注、dataclass/enum、Pydantic v2 已完成，当前主线等级为 `Modified-It` |
+| 1 | Python Core | 知识章节已完成；周测待做 | Day 1～4 综合能力 `Built-It`；Day 5～11 模块、JSON、文件读取、traceback、精确异常捕获、class、generator 已完成；Day 12～18 decorator、context manager、typing、容器标注、dataclass/enum、Pydantic v2、`.env` 配置已完成，当前主线等级为 `Modified-It` |
 | 2 | Python Engineering / Async | 未开始 | |
 | 3 | FastAPI / Backend | 未开始 | |
 | 4 | LLM API / Tool Calling | 未开始 | |
@@ -64,6 +64,7 @@
 | 15 | 2026-09-11～12 | 容器类型标注与校验边界 | 独立实现 `summarize_limits`；正常、空列表、字符串导致的预期 TypeError 通过；面试 8/10，巩固 8/10、层级纠错通过 | Modified-It | `f37caeb` |
 | 16 | 2026-09-12 | dataclass / enum 查询计划 | 独立补齐 `QueryPlan` 与 `plan_label`；默认/执行模式、`.value`、相等比较和导入静默通过；面试 8.5/10，巩固 8/10、纠错通过 | Modified-It | `91884cc` |
 | 17 | 2026-09-13 | Pydantic v2 `BaseModel` 输入校验 | 独立实现 `QueryInput` / `normalize_query`；预测 4/4，边界断言、`model_dump`、导入静默和精确异常演示通过；面试 8/10，巩固 3/3 | Modified-It | `cf46d78` |
+| 18 | 2026-09-14～15 | `.env` 加载、优先级与配置校验 | 独立实现 `load_query_config`；六类行为、导入静默和演示通过；面试 8/10，巩固首次 8/10、纠错通过 | Modified-It | `1b7db14` |
 
 ### 每日巩固索引
 
@@ -83,6 +84,7 @@
 | 15 | 8/10 | 补准嵌套容器层级和输入/输出校验边界 | 复测嵌套标注 |
 | 16 | 8/10 | 补准 `Mode` 类型、`Mode.SAFE` 成员与 `.value` | 复测 Enum 成员和值 |
 | 17 | 3/3 | 预测 4/4；原理 8.5/10；面试 8/10；`ValidationError` 边界全部通过 | 间隔复测默认值、转换与异常 |
+| 18 | 8/10 | 经提示补准：`raw is not None` 时才加入 `limit` 键；缺失键由模型默认 100；空字符串触发 `int_parsing` | 下次约 2 分钟复测配置优先级、解析阶段与缺失键默认值 |
 
 | Topic | Level | Evidence | Gap / Next |
 |---|---|---|---|
@@ -106,6 +108,7 @@
 | list / dict 容器类型标注 | Modified-It | 独立实现 `summarize_limits(limits: list[int]) -> dict[str, int]`；正常、空列表和预期 TypeError 案例通过；面试 8/10；巩固首次 8/10、层级纠错通过 | 下次复测嵌套层级与输入/输出校验边界；再进入 dataclass / enum |
 | dataclass / enum 查询计划 | Modified-It | 独立补齐 `QueryPlan` 字段和 `plan_label`；默认/执行模式、枚举 `.value`、相等比较和导入静默通过；面试 8.5/10；巩固首次 8/10、纠错通过 | 下次复测 Enum 成员/`.value` 和构造边界校验，再进入 Pydantic v2 |
 | Pydantic v2 BaseModel 输入校验 | Modified-It | 独立实现 `QueryInput` / `normalize_query`；四题预测 4/4；默认值、字符串数字解析、`0/1000` 边界、`-1/1001`、缺失字段和不可解析字符串验证通过；精确捕获演示通过；不可解析字符串异常由独立断言验证；面试 8/10；巩固 3/3 | Day 18 间隔复测通过；后续复用到配置与 API 输入 |
+| `.env` / 环境变量配置与模型校验 | Modified-It | 独立实现 `load_query_config`；已有环境值优先、文件填充、缺失键默认 100、非法文本和越界值抛出 `ValidationError`，六类行为与导入静默通过；面试 8/10，巩固首次 8/10、纠错通过 | 下次复测环境优先级、空字符串 `int_parsing` 与缺失键默认值，然后进入 logging |
 
 ## Backend
 
@@ -168,7 +171,8 @@
 
 | Day | 日期 | 收尾结果 | 证据 |
 |---|---|---|---|
-| 18 | 2026-09-15 | 巩固首次 8/10、纠错通过；面试 8/10 | 环境读取、.env 优先级、模型默认值、错误传播与导入静默均验证；本地章节提交见 Git 日志 | `QueryInput` 边界、转换、`model_dump()`、导入静默和独立异常断言通过；主程序按学习者选择保留 `"abc"` 注释；提交 `cf46d78` |
+| 18 | 2026-09-15 | 巩固首次 8/10、纠错通过；面试 8/10 | `load_query_config` 六类行为、导入静默和演示通过；提交 `1b7db14` |
+| 17 | 2026-09-13 | 巩固 3/3；面试 8/10 | `QueryInput` 边界、转换、`model_dump()`、导入静默和独立异常断言通过；提交 `cf46d78` |
 | 16 | 2026-09-12 | 巩固首次 8/10，纠错通过；面试 8.5/10 | `QueryPlan` 默认/执行模式、Enum `.value`、相等比较和导入静默通过；提交 `91884cc` |
 | 15 | 2026-09-12 | 巩固首次 8/10，层级纠错通过；面试 8/10 | 容器标注、空列表、预期 TypeError、输入/输出校验边界通过；提交 `f37caeb` |
 | 14 | 2026-09-11 | 巩固首次 9/10，假值纠错通过；面试 9/10 | 普通函数标注、类型/范围校验、默认值与显式 `0` 通过；提交 `fb40ad3` |
@@ -215,7 +219,8 @@
 
 | Date | Scope | Score | Weakness | Follow-up |
 |---|---|---:|---|---|
-| 2026-09-15 | Day 18 配置加载与校验边界 | 8/10 | 能区分已有环境值与文件值、空字符串错误；需补准空字符串在 int_parsing 阶段失败 | 次日复测配置来源与类型/范围校验阶段 | 8/10 | 能按数据来源与字段契约权衡自动转换和严格模式；需继续明确边界层级与 SQL 防护的独立性 | 下次间隔复测默认值、转换与 `ValidationError` 边界 |
+| 2026-09-15 | Day 18 配置加载与校验边界 | 8/10 | 能区分已有环境值与文件值、空字符串错误；需补准空字符串在 `int_parsing` 阶段失败 | 下次复测配置来源与类型/范围校验阶段 |
+| 2026-09-13 | Day 17 Pydantic v2 与 Tool 输入契约 | 8/10 | 能按数据来源与字段契约权衡自动转换和严格模式；需继续明确边界层级与 SQL 防护的独立性 | 后续在 API/Tool 边界复用 |
 | 2026-09-12 | Day 16 dataclass / enum 与查询计划建模 | 8.5/10 | 初答只覆盖标注可读性，未展开 dataclass 字段/默认值和 Enum 防拼写漂移；追问准确 | 当日巩固对象字段、`.value`、构造边界校验 |
 | 2026-09-12 | Day 15 list / dict 容器标注与校验边界 | 8/10 | 初答未具体说明键、值、元素层级；追问只提到结果清洗，需补输入边界校验 | 已在巩固中补准 `dict[str, list[int]]` 层级；下次间隔复测 |
 | 2026-09-10 | Day 14 typing / 类型约定与运行时校验 | 9/10 | 首答未明确提及静态检查工具，定边界表述需区分描述与强制执行；追问准确 | 当日交错巩固标注、默认值、return 与退出清理 |
@@ -237,7 +242,8 @@
 
 | Date | Gap | Evidence |
 |---|---|---|
-| 2026-09-15 | `os.getenv` 默认值与 Pydantic 模型默认值的来源区别 | 巩固第 2 题经提示纠正：仅在 raw 非 None 时将 limit 加入 data，缺失键由 QueryInput 使用默认 100；首次 8/10 保留 | 独立实现 `QueryInput`；补准 `"20"` 解析为 `int`、`ge/le` 约束、缺失字段和不可解析字符串；明确 `normalize_query` 传播异常、API/Tool 边界负责错误映射 |
+| 2026-09-15 | `os.getenv` 默认值与 Pydantic 模型默认值的来源区别 | 巩固第 2 题经提示纠正：仅在 raw 非 None 时将 limit 加入 data，缺失键由 QueryInput 使用默认 100；首次 8/10 保留 |
+| 2026-09-13 | Pydantic 模型默认值、解析、范围与异常边界 | 独立实现 `QueryInput`；补准 `"20"` 解析为 `int`、`ge/le` 约束、缺失字段和不可解析字符串；明确 `normalize_query` 传播异常、API/Tool 边界负责错误映射 |
 | 2026-09-12 | Enum 成员、`.value` 与普通字符串的区别 | 间隔复测准确说出 `job.mode` 是 `Mode.FAST`（类型 `Mode`），`job.mode.value` 是 `"fast"`（类型 `str`） |
 | 2026-09-12 | 嵌套容器标注的外层与内部层级 | 补答准确区分 `list[dict[str, int]]` 与 `dict[str, list[int]]` 的外层、键和值结构 |
 | 2026-09-11 | `if not 0` 与“未提供参数”的区别 | 纠错后准确说明省略参数才使用默认值，显式传入 `0` 应直接保留 `0` |
