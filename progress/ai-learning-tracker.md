@@ -1,35 +1,35 @@
-# AI Application Engineer Learning Tracker
+# AI 应用开发工程师学习追踪器
 
 > 全局唯一学习进度来源。
 
 ## 当前状态
 
-- 当前日期：2026-09-15
-- 当前 Week：Week 1 章节已完成；周测待做
-- 当前 Phase：Python Core
-- 当前主目标：Day 18 `.env` 加载与配置校验已完成；掌握等级 Modified-It
-- 下一步唯一优先任务：先用约 2 分钟复测配置边界，完成 Week 1 周测，再进入 Week 2 logging
-- 上次周测日期：
+- 当前日期：2026-09-16
+- 当前 Week：Week 1 已完成；准备进入 Week 2
+- 当前 Phase：Python Engineering / Async
+- 当前主目标：Week 1 Python Core 周测完成，综合得分 8.3/10；主线掌握等级 Modified-It
+- 下一步唯一优先任务：先复测模块导入副作用与 `override=False`，再进入 Week 2 logging
+- 上次周测日期：2026-09-16
 - 上次阶段 Mock：
 
 ## 12 周路线
 
 远程归档：2026-09-03 已创建私有仓库 https://github.com/LeeTedLHK/AI_Application_Study ，origin/main 已验证与本地 Day 6 提交 feebccb3a74ca73027960a3bd43392ae4553458d 一致。Day 7 本地提交为 7375edd，Day 8 为 ae8eb97；Day 9 本轮只创建本地章节提交，不自动推送。其他未跟踪文件不纳入。
 
-| Week | 主题 | 状态 | 主要产物 |
+| 周次 | 主题 | 状态 | 主要产物 |
 |---|---|---|---|
-| 1 | Python Core | 知识章节已完成；周测待做 | Day 1～4 综合能力 `Built-It`；Day 5～11 模块、JSON、文件读取、traceback、精确异常捕获、class、generator 已完成；Day 12～18 decorator、context manager、typing、容器标注、dataclass/enum、Pydantic v2、`.env` 配置已完成，当前主线等级为 `Modified-It` |
-| 2 | Python Engineering / Async | 未开始 | |
-| 3 | FastAPI / Backend | 未开始 | |
-| 4 | LLM API / Tool Calling | 未开始 | |
-| 5 | Baseline RAG | 未开始 | |
-| 6 | Retrieval Engineering | 未开始 | |
-| 7 | RAG Evaluation | 未开始 | |
-| 8 | Hand-written Agent Loop | 未开始 | |
+| 1 | Python 核心 | 已完成 | 第 1～18 天知识章节与第 1 周周测完成；周测 8.3/10，当前主线等级为 `Modified-It` |
+| 2 | Python 工程化 / 异步 | 准备开始 | 下一章 logging；开场先复测导入副作用与配置加载边界 |
+| 3 | FastAPI / 后端 | 未开始 | |
+| 4 | LLM API / 工具调用 | 未开始 | |
+| 5 | 基线 RAG | 未开始 | |
+| 6 | 检索工程 | 未开始 | |
+| 7 | RAG 评估 | 未开始 | |
+| 8 | 手写 Agent 循环 | 未开始 | |
 | 9 | OpenAI Agents SDK | 未开始 | |
-| 10 | MCP / Agent Engineering | 未开始 | |
-| 11 | Intelligent Query Agent | 未开始 | |
-| 12 | Project / Interview | 未开始 | |
+| 10 | MCP / Agent 工程 | 未开始 | |
+| 11 | 智能取数 Agent | 未开始 | |
+| 12 | 项目 / 面试 | 未开始 | |
 
 ## 掌握等级
 
@@ -45,7 +45,7 @@
 
 > 下表按 `sessions/` 会话记录、`learning/python/` 练习与测试、以及 Git 历史逐项核对。Day 1～5 的代码随早期基线提交保存，没有独立的章节提交；从 Day 6 起按章节提交。
 
-| Day | 日期 | 核心主题 | 代码与验收证据 | 掌握等级 | 提交记录 |
+| 学习日 | 日期 | 核心主题 | 代码与验收证据 | 掌握等级 | 提交记录 |
 |---|---|---|---|---|---|
 | 1 | 2026-08-31 | `list` / `dict` / 循环 / 函数 | 独立实现按状态汇总金额；paid、cancelled、空列表 3 个案例通过；修改为显式 `target_status` | Modified-It | 早期基线 `e148c4b`，无独立章节提交 |
 | 2 | 2026-09-01 | 字典输入校验、容器选择、`isinstance` 与短路 | 缺失字段校验 3 个案例通过；正确区分 list、tuple、set、dict；解释字符串金额导致短路 | Modified-It（容器与短路为 Understood-It） | 早期基线 `e148c4b`，无独立章节提交 |
@@ -68,7 +68,7 @@
 
 ### 每日巩固索引
 
-| Day | 首次巩固结果 | 纠错 / 间隔复测 | 保留的下一步 |
+| 学习日 | 首次巩固结果 | 纠错 / 间隔复测 | 保留的下一步 |
 |---|---|---|---|
 | 1 | 未单列每日巩固；完成理解检查与面试 Q1（8/10） | 补准 `dict[key]` 缺失时立即 `KeyError`，`dict.get` 才返回默认值 | 后续继续区分读取与赋值 |
 | 2～5 | 交错巩固 7/10 | 作用域正确；补准显式参数覆盖、入口保护和 import 副作用 | 复测 JSON 严格语法与返回类型 |
@@ -86,7 +86,7 @@
 | 17 | 3/3 | 预测 4/4；原理 8.5/10；面试 8/10；`ValidationError` 边界全部通过 | 间隔复测默认值、转换与异常 |
 | 18 | 8/10 | 经提示补准：`raw is not None` 时才加入 `limit` 键；缺失键由模型默认 100；空字符串触发 `int_parsing` | 下次约 2 分钟复测配置优先级、解析阶段与缺失键默认值 |
 
-| Topic | Level | Evidence | Gap / Next |
+| 主题 | 掌握等级 | 证据 | 缺口 / 下一步 |
 |---|---|---|---|
 | list / dict / for / if / function | Modified-It | 独立完成 `day01_query_rows.py`，通过 paid、cancelled、空列表案例 | 巩固 `dict.get` 找到已有 key 时返回累计值，而非默认值 |
 | 函数参数 / 字典输入校验 | Modified-It | 独立实现 `day02_validate_query_rows.py`，三个案例通过并正确解释缺失字段控制流 | 完成面试表达；后续增加一个新边界情况 |
@@ -110,49 +110,49 @@
 | Pydantic v2 BaseModel 输入校验 | Modified-It | 独立实现 `QueryInput` / `normalize_query`；四题预测 4/4；默认值、字符串数字解析、`0/1000` 边界、`-1/1001`、缺失字段和不可解析字符串验证通过；精确捕获演示通过；不可解析字符串异常由独立断言验证；面试 8/10；巩固 3/3 | Day 18 间隔复测通过；后续复用到配置与 API 输入 |
 | `.env` / 环境变量配置与模型校验 | Modified-It | 独立实现 `load_query_config`；已有环境值优先、文件填充、缺失键默认 100、非法文本和越界值抛出 `ValidationError`，六类行为与导入静默通过；面试 8/10，巩固首次 8/10、纠错通过 | 下次复测环境优先级、空字符串 `int_parsing` 与缺失键默认值，然后进入 logging |
 
-## Backend
+## 后端
 
-| Topic | Level | Evidence | Gap / Next |
+| 主题 | 掌握等级 | 证据 | 缺口 / 下一步 |
 |---|---|---|---|
 
-## LLM Application
+## LLM 应用
 
-| Topic | Level | Evidence | Gap / Next |
+| 主题 | 掌握等级 | 证据 | 缺口 / 下一步 |
 |---|---|---|---|
 
 ## RAG
 
-| Topic | Level | Evidence | Gap / Next |
+| 主题 | 掌握等级 | 证据 | 缺口 / 下一步 |
 |---|---|---|---|
 
 ## Agent / MCP
 
-| Topic | Level | Evidence | Gap / Next |
+| 主题 | 掌握等级 | 证据 | 缺口 / 下一步 |
 |---|---|---|---|
 
-## Project A — Enterprise Data Knowledge Assistant
+## 项目 A — 企业数据知识助手
 
-- Current milestone: 未进入项目开发；Day 13 资源生命周期模式可用于后续文件与连接管理，尚未接入项目。
-- Last demo:
-- Current blockers:
-- Eval status:
+- 当前里程碑：未进入项目开发；第 13 天资源生命周期模式可用于后续文件与连接管理，尚未接入项目。
+- 最近演示：
+- 当前阻塞项：
+- 评估状态：
 
-## Project B — Intelligent Query Agent
+## 项目 B — 智能取数 Agent
 
-- Current milestone: 未进入项目开发；Day 13 QuerySession 仅为模拟练习，尚未接入真实数据库。
-- Last demo:
-- Current blockers:
-- Eval status:
+- 当前里程碑：未进入项目开发；第 13 天 `QuerySession` 仅为模拟练习，尚未接入真实数据库。
+- 最近演示：
+- 当前阻塞项：
+- 评估状态：
 
-## Knowledge Gaps
+## 知识缺口
 
-### Blocker
+### 阻塞项
 
-### Significant
+### 重要缺口
 
 - 知识层面暂无 Significant 缺口。Day 8 的入口、调用、失败操作与 JSON 文本检测位置已在反馈和巩固中补准，保留跨日复测。
 
-### Minor
+### 轻微缺口
 
 - 2026-09-10 Day 13：return 跳过后续语句、decorator 返回对象与异常清理语义经反馈纠正；首次面试和巩固均 7/10，下次以新数据间隔复测，不等同于长期掌握。
 - 2026-09-07 Day 10：首次巩固把 update_limit 修改后的实例属性与方法返回值混淆；经实际输出和逐步解释后，能说明 self.limit 更新为新值，而无显式 return 只使调用结果为 None。下次用新数据间隔复测。
@@ -162,22 +162,27 @@
 - 2026-09-04：已完成返回对象纠错与 with 外读取失败的改错；关闭时机补准为“调用方拿到返回值前”。下次仍做两分钟间隔复测，不将当天通过等同于稳定掌握。
 - 2026-09-03 曾误把 "false" 视为 bool；9 月 4 日交错题准确区分 False / bool 与 false / str。9 月 3 日完整收尾未开展，不追溯补记完成。
 
-## Latest Daily Consolidation
+## 最新每日巩固
 
-> 首表是截至当前日期的规范收尾索引；其后的逐条 bullet 是按当时发生过程保留的历史日志，其中“待……”只表示当时状态，不代表当前状态。
+> 此处只保留截至当前日期的规范收尾索引。
 
+### 最新收尾索引（截至 2026-09-16）
 
-### 最新收尾索引（截至 2026-09-15）
+| 学习日 | 完成日期 | 主题 | 首次巩固 | 纠错结果 | 面试得分 | 验收证据 | 章节提交 |
+|---:|---|---|---:|---|---:|---|---|
+| 18 | 2026-09-15 | `.env` 加载与配置校验 | 8/10 | 通过 | 8/10 | `load_query_config` 六类行为、导入静默和演示通过 | `1b7db14` |
+| 17 | 2026-09-13 | Pydantic v2 输入校验 | 3/3 | 无需纠错 | 8/10 | `QueryInput` 边界、转换、`model_dump()`、导入静默和独立异常断言通过 | `cf46d78` |
+| 16 | 2026-09-12 | dataclass / Enum 查询计划 | 8/10 | 通过 | 8.5/10 | `QueryPlan` 默认与执行模式、Enum `.value`、相等比较和导入静默通过 | `91884cc` |
+| 15 | 2026-09-12 | 容器类型标注与校验边界 | 8/10 | 通过 | 8/10 | 容器标注、空列表、预期 `TypeError`、输入与输出校验边界通过 | `f37caeb` |
+| 14 | 2026-09-11 | 普通函数类型标注与运行时校验 | 9/10 | 通过 | 9/10 | 类型与范围校验、默认值、显式 `0` 和导入静默通过 | `fb40ad3` |
+| 13 | 2026-09-10 | 上下文管理器与资源清理 | 7/10 | 2/2 通过 | 7/10 | `QuerySession` 五项测试、异常传播和导入静默通过 | `e2e21b4` |
+| 12 | 2026-09-09 | 函数装饰器 | 8/10 | 3/3 通过 | 8.5/10 | `query_logger` 测试 2/2，wrapper 返回值和导入副作用修复通过 | `c904678` |
 
-| Day | 日期 | 收尾结果 | 证据 |
-|---|---|---|---|
-| 18 | 2026-09-15 | 巩固首次 8/10、纠错通过；面试 8/10 | `load_query_config` 六类行为、导入静默和演示通过；提交 `1b7db14` |
-| 17 | 2026-09-13 | 巩固 3/3；面试 8/10 | `QueryInput` 边界、转换、`model_dump()`、导入静默和独立异常断言通过；提交 `cf46d78` |
-| 16 | 2026-09-12 | 巩固首次 8/10，纠错通过；面试 8.5/10 | `QueryPlan` 默认/执行模式、Enum `.value`、相等比较和导入静默通过；提交 `91884cc` |
-| 15 | 2026-09-12 | 巩固首次 8/10，层级纠错通过；面试 8/10 | 容器标注、空列表、预期 TypeError、输入/输出校验边界通过；提交 `f37caeb` |
-| 14 | 2026-09-11 | 巩固首次 9/10，假值纠错通过；面试 9/10 | 普通函数标注、类型/范围校验、默认值与显式 `0` 通过；提交 `fb40ad3` |
-| 13 | 2026-09-10 | 巩固首次 7/10，纠错 2/2；面试 7/10 | `QuerySession` 五项测试、异常传播与导入静默通过；提交 `e2e21b4` |
-| 12 | 2026-09-09 | 巩固首次 8/10，纠错 3/3；面试 8.5/10 | `query_logger` 测试 2/2，修复 wrapper 返回值和导入副作用；提交 `c904678` |
+> 首次巩固保留当时实际采用的计分单位，不把 `3/3` 人为换算成 `/10`；纠错结果单独记录。
+
+## 历史学习过程日志
+
+> 以下内容按当时发生过程保留，其中“待……”只表示当时状态，不代表当前状态；当前结论以最新收尾索引和章节收尾为准。
 
 - 2026-09-10 Day 13 收尾完成：学习者解释 return 结束整个函数、仅定义但未返回 wrapper 不会调用它，纠错 2/2 通过；补齐 return 交给调用方前先退出 with 的顺序。保留首次巩固 7/10、面试 7/10；最终五项测试 5/5、直接演示输出正确，等级 Modified-It。章节提交标识 learn(week01-day13): context manager resource lifecycle，仅纳入本章文件与记录，不推送远程。
 - 2026-09-10 Day 13 首次闭卷巩固 7/10：Q1 正确判断返回前已关闭，但误列出 return 后的 after；Q2 正确判断只输出 True 并将 __exit__ 返回值改为 False（术语补准为打印值）；Q3 正确预测 query、2 并指出应返回 wrapper，但误认原题 wrapped 指向 wrapper。实际运行验证 Q1=inside/ok/True、Q2=True、Q3=query/2 且 wrapped is count_rows。待两点口述纠错，不标记收尾完成。
@@ -215,10 +220,11 @@
 - 本章归档标识：`learn(week01-day06): JSON serialization and query config`；提交记录以 Git 日志为准。仅归档本章文件和必要的忽略规则，其他未跟踪文件保留原样。
 
 
-## Weekly Interview Performance
+## 每周面试表现
 
-| Date | Scope | Score | Weakness | Follow-up |
+| 日期 | 范围 | 得分 | 薄弱点 | 后续任务 |
 |---|---|---:|---|---|
+| 2026-09-16 | Week 1 Python Core 周测 | 8.3/10 | 普通类型标注不会运行时转换；模块顶层副作用与 `override=False` 的边界表达不稳定；错误返回结构可能把底层错误推迟成 `KeyError` | Week 2 logging 开场复测导入副作用；日志练习中保留异常类型和 traceback |
 | 2026-09-15 | Day 18 配置加载与校验边界 | 8/10 | 能区分已有环境值与文件值、空字符串错误；需补准空字符串在 `int_parsing` 阶段失败 | 下次复测配置来源与类型/范围校验阶段 |
 | 2026-09-13 | Day 17 Pydantic v2 与 Tool 输入契约 | 8/10 | 能按数据来源与字段契约权衡自动转换和严格模式；需继续明确边界层级与 SQL 防护的独立性 | 后续在 API/Tool 边界复用 |
 | 2026-09-12 | Day 16 dataclass / enum 与查询计划建模 | 8.5/10 | 初答只覆盖标注可读性，未展开 dataclass 字段/默认值和 Enum 防拼写漂移；追问准确 | 当日巩固对象字段、`.value`、构造边界校验 |
@@ -238,9 +244,9 @@
 | 2026-09-01 | Day 2 Python 输入校验 | 7/10 | 误认为 `dict.get()` 会创建 key | 用最小例子区分读取与赋值 |
 | 2026-08-31 | Day 1 list / dict 汇总与 `dict.get` | 8/10 | 把 `dict[key]` 误解为先返回 None；需区分直接索引和 `get` 默认值 | 用最小例子复测缺失 key 传播与 `get` 默认值 |
 
-## Recently Resolved Gaps
+## 最近已解决缺口
 
-| Date | Gap | Evidence |
+| 日期 | 缺口 | 证据 |
 |---|---|---|
 | 2026-09-15 | `os.getenv` 默认值与 Pydantic 模型默认值的来源区别 | 巩固第 2 题经提示纠正：仅在 raw 非 None 时将 limit 加入 data，缺失键由 QueryInput 使用默认 100；首次 8/10 保留 |
 | 2026-09-13 | Pydantic 模型默认值、解析、范围与异常边界 | 独立实现 `QueryInput`；补准 `"20"` 解析为 `int`、`ge/le` 约束、缺失字段和不可解析字符串；明确 `normalize_query` 传播异常、API/Tool 边界负责错误映射 |
@@ -267,9 +273,16 @@
 | 2026-09-08 | 区分实例状态修改、参数求值与方法返回值 | 新变体准确预测 first 改为 1、second 保留调用时接收的 9、received 为 None，并说明参数接收的是当时求出的值 |
 
 
-## Day 14 章节收尾（2026-09-11）
+## 第 1 周章节收尾（2026-09-16）
 
-- 9 月 10 日学习，9 月 11 日完成跨日收尾。巩固 Q1 3/3、Q2 2/3、Q3 4/4，总计首次 9/10；Q2 修复正确但将 if not 误说成非空。
-- 反馈后准确说明省略参数使用默认值，显式传参返回所传值；纠错通过，首次分数保留，假值语义下次间隔复测。
-- 实际复核六项行为、标注/默认值、导入静默、三道巩固及学习者修复均通过。
-- 可复用至查询工具参数校验；两个主项目尚未接入。章节标识 learn(week01-day14): function type hints and runtime validation；仅本地提交，哈希以 Git 日志为准。
+| 项目 | 结果 |
+|---|---|
+| 章节状态 | 已完成 |
+| 学习范围 | 第 1～18 天：Python 核心语法、模块、JSON、文件与异常、class、generator、decorator、context manager、typing、dataclass / Enum、Pydantic v2、`.env` 配置 |
+| 周测结果 | 8.3/10 |
+| 掌握等级 | `Modified-It` |
+| 主要证据 | 独立完成汇总函数；配置与 Pydantic 边界通过；能定位 traceback 并使用精确异常；各日章节提交完整 |
+| 主要缺口 | 普通类型标注不执行运行时转换；模块顶层副作用与 `override=False` 的边界表达仍需间隔复测 |
+| 最近章节提交 | `1b7db14`：`learn(week01-day18): env configuration and validation` |
+| 项目复用结论 | 可复用于 Agent Tool 输入、配置校验、查询任务状态和异常处理；尚未接入真实 SQL、RAG 或 Agent 执行 |
+| 下一步唯一任务 | 进入第 2 周 logging；开场先复测模块导入副作用与配置加载边界 |

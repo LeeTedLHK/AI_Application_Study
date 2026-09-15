@@ -267,3 +267,31 @@ wrapper 调用原函数后必须保存并 `return result`，才能维持原函�
 ### 追问：如果环境变量 DAY18_QUERY_LIMIT 已存在但值为 ""，.env 仍为 25，override=False；你的函数最终会使用默认 100、文件值 25，还是报 ValidationError？解释每一步。
 
 **标准回答：** 空字符串表示该环境变量存在，override=False 会保留它，不用文件的 "25" 覆盖。os.getenv 得到 ""；学习者的函数只在值为 None 时省略 limit 键，所以此处会把空字符串作为 limit 提供给 QueryInput。Pydantic 无法把 "" 解析为 int，抛出 ValidationError，具体错误类型为 int_parsing；并未进入 ge/le 的范围检查。模型默认值 100 只用于 limit 键缺失的情况。
+
+## 2026-09-16 — Week 1 Python Core 周测
+
+综合得分：8.3/10。四题分别为 9.5、8、8.5、7 分。学习者能够独立完成校验、筛选和聚合代码，能判断精确异常传播及 Pydantic 输入边界；主要缺口是曾误认为普通类型标注会转换值，以及对模块顶层导入副作用、`override=False` 和启动代码放置位置的表达不完整。
+
+### 问题 1：实现查询行数汇总函数，并解释为什么不能用 row_count 的真假值判断
+
+**问题原文：** 实现 `summarize_query_rows(rows, target_status="success")`：每行必须包含 `source`、`status`、`row_count`，缺字段抛出 `ValueError("missing fields")`；只汇总目标状态；按来源累计；保留 `row_count=0`；空列表返回空字典；不使用全局变量。解释为什么不能写 `if row["row_count"]`。
+
+**标准回答：** 在循环内先验证三个必需键，再判断状态；目标状态行使用 `result[source] = result.get(source, 0) + row_count` 或等价的显式初始化方式累计，最后返回结果。不能用 `if row["row_count"]` 判断字段是否有效，因为整数 0 是假值，但本题中 0 是合法且有业务意义的结果。字段契约要求每一行都完整，所以即使某行状态不参与汇总，也会在状态筛选前因缺字段抛出异常。
+
+### 问题 2：普通类型标注与 Pydantic Tool 输入边界有什么区别？
+
+**问题原文：** 对 `QueryInput(table_name: str, limit: int = Field(default=100, ge=0, le=1000))`，输入 `{"table_name": "orders", "limit": "20"}` 或把 limit 改成 `"abc"` 会怎样？普通函数标注 `limit: int` 是否会完成相同转换和校验？为什么 Agent Tool 外部输入边界使用 Pydantic 有价值？
+
+**标准回答：** 默认非严格模式下，字符串 `"20"` 可被解析为整数 20；`"abc"` 无法解析为整数，会触发 `ValidationError`。普通 Python 类型标注不自动转换、拒绝或校验运行时参数，`run_query("20")` 仍接收字符串。Pydantic 放在 Tool 输入边界，可在执行查询前统一完成字段解析、必填检查和范围约束，阻止非法参数进入 SQL、检索或下游服务；它不能替代权限和 SQL guardrail。
+
+### 问题 3：精确异常捕获和返回契约如何影响调用方？
+
+**问题原文：** `load_config` 只捕获 `json.JSONDecodeError`，但 `open("missing.json")` 抛出 `FileNotFoundError`。应如何阅读 traceback？失败发生在哪里？后续 `print(config["limit"])` 是否执行？为什么不直接使用 `except Exception`？若单独捕获文件不存在并返回 `{"error": "missing file"}`，其他代码不变会怎样？
+
+**标准回答：** 先看 traceback 最后一行的异常类型和信息，再找最近的自己代码失败行，最后向上追调用路径和输入。真正失败的是 `open`，右侧函数未返回，因此赋值和后续打印都不执行。`JSONDecodeError` 与 `FileNotFoundError` 类型不同，不会匹配；宽泛捕获会掩盖根因并损害日志、监控和调用方恢复策略。如果返回错误字典但调用方仍按成功结构读取 `config["limit"]`，会产生新的 `KeyError('limit')`，说明返回契约需要明确区分成功和失败。
+
+### 问题 4：未来智能取数 Agent 的配置、校验、任务与入口代码如何分工？
+
+**问题原文：** 说明 `.env` 加载函数、Pydantic 模型和 `QueryTask` 的职责；解释为什么不能在模块顶层加载 `.env`、创建任务并打印；配置文件不存在和字段非法是否应统一返回同一种错误字典。
+
+**标准回答：** `.env` 加载层只负责按约定优先级把文本配置加载到进程环境，不负责类型、范围或业务校验；`override=False` 保留已存在的进程变量，但会用文件值填充缺失变量。Pydantic 将外部数据解析并验证为可信模型。`QueryTask` 接收已验证参数，集中保存一次查询任务的状态和相关行为。加载、创建对象和打印若放在模块顶层，会在测试、应用启动或其他模块仅仅 import 时执行，造成环境修改、重复初始化、噪声输出和顺序依赖。演示入口应放入 `main()`，并由 `if __name__ == "__main__":` 调用；未来服务资源初始化应使用明确的应用启动生命周期。文件不存在与字段非法应保留可区分的异常语义，只在明确的 API/Tool 边界转换为结构化错误，不能用一种模糊错误字典掩盖根因。
