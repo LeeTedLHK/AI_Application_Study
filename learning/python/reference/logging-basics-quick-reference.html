@@ -1,0 +1,9 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>logging 基础速查</title><style>body{max-width:760px;margin:36px auto;padding:0 24px;color:#172033;font:17px/1.8 system-ui,"Microsoft YaHei",sans-serif}code{background:#eef4fa;padding:2px 5px}a{color:#245b86}@media print{body{margin:0}}</style></head><body>
+<h1>logging 基础速查</h1>
+<p><code>logging.basicConfig(...)</code>：由应用入口统一设置最低级别、格式和输出位置。</p>
+<p><code>logging.getLogger(__name__)</code>：业务模块获取以当前模块命名的 logger；仅获取 logger 不等于记录日志。</p>
+<p><code>DEBUG &lt; INFO &lt; WARNING &lt; ERROR &lt; CRITICAL</code>。配置为 INFO 时，DEBUG 被过滤，INFO 及以上事件可被处理。</p>
+<p>INFO 记录正常业务节点；WARNING 表示仍可继续但存在风险；ERROR 表示某项功能失败。在 <code>except</code> 中使用 <code>logger.exception()</code> 可记录 ERROR 和当前 traceback；它不负责重新抛出异常，显式 <code>raise</code> 才会继续传播。</p>
+<p>业务日志应携带排查所需上下文，例如 table_name、limit、row_count；不要记录密码、API Key 或完整敏感数据。</p>
+<p><a href="../lessons/0019-logging-basics.html">返回讲义</a> · <a href="https://docs.python.org/3/library/logging.html">Python logging 官方文档</a></p>
+</body></html>

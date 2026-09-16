@@ -1,0 +1,26 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>第 19 天｜logging 基础</title><style>body{margin:0;background:#f7f8fb;color:#172033;font:17px/1.8 system-ui,"Microsoft YaHei",sans-serif}main{max-width:800px;margin:32px auto;padding:36px;background:white}h2{font-size:1.2rem}pre{background:#eef4fa;padding:18px;overflow:auto}code{background:#eef4fa;padding:2px 5px}a{color:#245b86}@media print{main{margin:0;padding:12px}}</style></head><body><main>
+<h1>第 19 天：用 logging 记录查询事件</h1>
+<p>本节目标：区分日志配置与业务记录，能为查询开始、风险和完成选择合适级别，并在消息中保留排查所需上下文。</p>
+<h2>为什么对 AI 应用重要</h2>
+<p>一次 RAG 或 Agent 请求会经过检索、Tool、SQL 与模型调用。只有“失败了”不够；日志还要说明哪个模块、哪张表、什么参数以及失败发生在哪一步，才能复盘一次请求。</p>
+<h2>最小心智模型</h2>
+<pre>应用入口：basicConfig → 决定最低级别和格式
+业务模块：getLogger(__name__) → 获得模块 logger
+业务函数：logger.info / warning / error → 记录事件</pre>
+<p>级别从低到高为 DEBUG、INFO、WARNING、ERROR、CRITICAL。配置为 INFO 时，INFO 及以上事件可被处理，DEBUG 被过滤；它不是“只输出 INFO”。</p>
+<h2>最小示例</h2>
+<pre>logging.basicConfig(
+    level=logging.INFO,
+    format="%(levelname)s | %(name)s | %(message)s",
+)
+
+logger = logging.getLogger(__name__)
+logger.info("query started")</pre>
+<p><code>%(name)s</code> 来自 logger 名称。模块使用 <code>getLogger(__name__)</code> 时，名称通常对应模块导入路径。</p>
+<h2>本节练习</h2>
+<p>为模拟查询函数记录开始、limit 过高警告和完成事件。入口统一配置，业务模块不得调用 <code>basicConfig</code>，导入时不得输出。</p>
+<h2>异常日志</h2>
+<p>在 <code>except</code> 中，<code>logger.exception(...)</code> 会记录 ERROR 事件并附带当前异常的 traceback。它不会自动重新抛出异常；是否继续传播由显式 <code>raise</code> 决定。</p>
+<p><a href="../week02/day19_logging_demo.py">最小示例</a> · <a href="../week02/day19_query_logging.py">级别与上下文练习</a> · <a href="../week02/day19_exception_logging.py">异常日志练习</a> · <a href="../reference/logging-basics-quick-reference.html">logging 速查</a> · <a href="https://docs.python.org/3/howto/logging.html">Python 官方 Logging HOWTO</a></p>
+<p>有不清楚的地方，请直接指出日志级别、输出格式或具体代码行，我会换成更小的例子。</p>
+</main></body></html>
