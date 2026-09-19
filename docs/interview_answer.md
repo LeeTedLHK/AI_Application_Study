@@ -309,3 +309,13 @@ wrapper 调用原函数后必须保存并 `return result`，才能维持原函�
 ### 追问：`request_id`、`table_name`、`limit`、`api_key` 应如何记录？两种返回契约分别选择什么？
 
 **标准回答：** 日志可保留 `request_id="req-17"`、`table_name="orders"` 和导致失败的 `limit="abc"`，明确排除 `api_key`。对 `parse_limit(...) -> int | None`，若调用方已约定检查 `None`，可以记录异常后返回 `None`；对 `parse_limit(...) -> int`，不能静默返回契约外的 `None`，应重新抛出原异常或在清晰的边界层转换成另一种明确异常，让调用方按异常契约处理。
+
+## 2026-09-19 — Day 20 pytest 日志测试
+
+本轮评分：5/10。学习者正确指出只测试返回值不能证明日志存在，并提出使用 `caplog`；但写成了不存在的 `caplog.record`，级别大小写不准确，且只检查级别，未将 WARNING 与 `orders`、`600` 绑定到同一条记录。代码练习中此前已实现正确断言，此处是闭卷表述不稳定；保留首次面试得分，待交错巩固复测。
+
+### 问题：如何测试查询返回值正确但 WARNING 消失的情况？
+
+**问题原文：** 智能取数函数返回值完全正确，但本该出现的 WARNING 日志消失了。为什么只测返回值发现不了？你会怎样用 `caplog` 写断言，确保“没有日志”以及“关键词只出现在 INFO 日志里”这两种情况都不能误通过？
+
+**标准回答：** 返回字典和日志是两个独立的可观察行为，返回值正确不代表警告确实记录。pytest 将日志捕获到 `caplog.records`；应在同一条记录上检查 `record.levelname == "WARNING"`，并检查 `"orders"` 和 `"600"` 都位于 `record.getMessage()` 中，例如 `assert any(record.levelname == "WARNING" and "orders" in record.getMessage() and "600" in record.getMessage() for record in caplog.records)`。没有日志时，`any` 返回 `False`；关键词只在 INFO 中时，没有任何单条记录满足三个条件，也返回 `False`。不能把级别列表和消息列表分别检查，否则可能拼接两条不同记录造成假阳性。

@@ -4,11 +4,11 @@
 
 ## 当前状态
 
-- 当前日期：2026-09-17
+- 当前日期：2026-09-19
 - 当前 Week：Week 2 进行中
 - 当前 Phase：Python Engineering / Async
-- 当前主目标：Day 19 logging、异常 traceback 与日志职责边界已完成；掌握等级 Modified-It
-- 下一步唯一优先任务：先用约 2 分钟复测日志配置、记录与异常传播的职责，再进入 pytest
+- 当前主目标：Day 20 pytest 已完成；掌握等级 Modified-It，下一步进入 HTTP / timeout
+- 下一步唯一优先任务：先用约 2 分钟复测 `caplog.records` 同记录判断与 `pytest.raises`，再进入 HTTP 请求与 timeout
 - 上次周测日期：2026-09-16
 - 上次阶段 Mock：
 
@@ -19,7 +19,7 @@
 | 周次 | 主题 | 状态 | 主要产物 |
 |---|---|---|---|
 | 1 | Python 核心 | 已完成 | 第 1～18 天知识章节与第 1 周周测完成；周测 8.3/10，当前主线等级为 `Modified-It` |
-| 2 | Python 工程化 / 异步 | 进行中 | Day 19 logging 已完成；下一章 pytest |
+| 2 | Python 工程化 / 异步 | 进行中 | Day 19 logging、Day 20 pytest 已完成；下一步 HTTP / timeout |
 | 3 | FastAPI / 后端 | 未开始 | |
 | 4 | LLM API / 工具调用 | 未开始 | |
 | 5 | 基线 RAG | 未开始 | |
@@ -66,6 +66,7 @@
 | 17 | 2026-09-13 | Pydantic v2 `BaseModel` 输入校验 | 独立实现 `QueryInput` / `normalize_query`；预测 4/4，边界断言、`model_dump`、导入静默和精确异常演示通过；面试 8/10，巩固 3/3 | Modified-It | `cf46d78` |
 | 18 | 2026-09-14～15 | `.env` 加载、优先级与配置校验 | 独立实现 `load_query_config`；六类行为、导入静默和演示通过；面试 8/10，巩固首次 8/10、纠错通过 | Modified-It | `1b7db14` |
 | 19 | 2026-09-16～17 | logging、模块职责与异常 traceback | 独立实现查询上下文日志和异常日志；100/500/600、正常/0/空字符串/非法文本通过；面试 7/10，巩固首次 9/10、纠错通过 | Modified-It | `learn(week02-day19): logging basics and exception traces` |
+| 20 | 2026-09-19 | pytest 返回值、日志与预期异常 | 学习者完成 4 项测试；4/4 通过、仓库回归 28/28；反向检查失败如预期；面试 5/10，巩固首次 7/10、纠错 2/2 | Modified-It | `learn(week02-day20): pytest query behavior and error paths` |
 
 ### 每日巩固索引
 
@@ -87,6 +88,7 @@
 | 17 | 3/3 | 预测 4/4；原理 8.5/10；面试 8/10；`ValidationError` 边界全部通过 | 间隔复测默认值、转换与异常 |
 | 18 | 8/10 | 经提示补准：`raw is not None` 时才加入 `limit` 键；缺失键由模型默认 100；空字符串触发 `int_parsing` | 下次约 2 分钟复测配置优先级、解析阶段与缺失键默认值 |
 | 19 | 9/10 | 补准 WARNING 是最低门槛，DEBUG / INFO 被过滤，WARNING 及以上可输出 | 下次复测 `basicConfig`、`getLogger`、`logger.exception` 与 `raise` 的职责边界 |
+| 20 | 7/10 | 日志同记录判断纠错 2/2；能解释 `any(...)` 逐条判断；异常与显式 0 两题通过 | 次日约 2 分钟复测 `caplog.records` 同记录判断和 `pytest.raises` |
 
 | 主题 | 掌握等级 | 证据 | 缺口 / 下一步 |
 |---|---|---|---|
@@ -112,6 +114,7 @@
 | Pydantic v2 BaseModel 输入校验 | Modified-It | 独立实现 `QueryInput` / `normalize_query`；四题预测 4/4；默认值、字符串数字解析、`0/1000` 边界、`-1/1001`、缺失字段和不可解析字符串验证通过；精确捕获演示通过；不可解析字符串异常由独立断言验证；面试 8/10；巩固 3/3 | Day 18 间隔复测通过；后续复用到配置与 API 输入 |
 | `.env` / 环境变量配置与模型校验 | Modified-It | 独立实现 `load_query_config`；已有环境值优先、文件填充、缺失键默认 100、非法文本和越界值抛出 `ValidationError`，六类行为与导入静默通过；面试 8/10，巩固首次 8/10、纠错通过 | 下次复测环境优先级、空字符串 `int_parsing` 与缺失键默认值，然后进入 logging |
 | logging / 日志级别 / 异常 traceback | Modified-It | 独立实现模块 logger、上下文日志和 `logger.exception`；根据 Review 缩小 try 范围；行为断言 6/6、导入静默、编译和 24 项回归通过；面试 7/10，巩固首次 9/10、纠错通过 | 复测安全上下文字段，以及返回 `None` 与 `raise` 应由函数契约和恢复能力决定；下一章 pytest |
+| pytest / 返回值、日志与预期异常 | Modified-It | 学习者亲手完成四项测试；显式 0、同记录 WARNING、负数 ValueError；反向探针验证假阳性被拒绝；仓库回归 28/28 | 面试首次 5/10、巩固首次 7/10，经纠错能解释同记录判断；次日复测再进入 HTTP / timeout |
 
 ## 后端
 
@@ -169,10 +172,11 @@
 
 > 此处只保留截至当前日期的规范收尾索引。
 
-### 最新收尾索引（截至 2026-09-17）
+### 最新收尾索引（截至 2026-09-19）
 
 | 学习日 | 完成日期 | 主题 | 首次巩固 | 纠错结果 | 面试得分 | 验收证据 | 章节提交 |
 |---:|---|---|---:|---|---:|---|---|
+| 20 | 2026-09-19 | pytest 查询行为、日志与预期异常 | 7/10 | 2/2 通过 | 5/10 | 四项测试 4/4、仓库回归 28/28；缺失日志和合法 0 反向探针按预期失败 | `learn(week02-day20)` |
 | 19 | 2026-09-17 | logging 与异常 traceback | 9/10 | 通过 | 7/10 | 日志级别、模块职责、上下文、traceback 与传播边界通过；回归 24/24 | `learn(week02-day19)` |
 | 18 | 2026-09-15 | `.env` 加载与配置校验 | 8/10 | 通过 | 8/10 | `load_query_config` 六类行为、导入静默和演示通过 | `1b7db14` |
 | 17 | 2026-09-13 | Pydantic v2 输入校验 | 3/3 | 无需纠错 | 8/10 | `QueryInput` 边界、转换、`model_dump()`、导入静默和独立异常断言通过 | `cf46d78` |
@@ -228,6 +232,7 @@
 
 | 日期 | 范围 | 得分 | 薄弱点 | 后续任务 |
 |---|---|---:|---|---|
+| 2026-09-19 | Day 20 pytest 日志测试 | 5/10 | 闭卷表达时误写 `caplog.record`，只提级别未绑定同一条记录的消息；代码中已写对，巩固纠错 2/2 | 次日间隔复测 `caplog.records`、`any` 与日志级别/消息同记录判断 |
 | 2026-09-17 | Day 19 logging 与异常日志 | 7/10 | 初答把 logging 简化为写文件；未完整列出安全上下文；错误地用测试与内存占用解释 `None` / `raise` 选择 | 复测入口配置、模块记录、安全上下文与函数契约；在后续服务中复用 |
 | 2026-09-16 | Week 1 Python Core 周测 | 8.3/10 | 普通类型标注不会运行时转换；模块顶层副作用与 `override=False` 的边界表达不稳定；错误返回结构可能把底层错误推迟成 `KeyError` | Week 2 logging 开场复测导入副作用；日志练习中保留异常类型和 traceback |
 | 2026-09-15 | Day 18 配置加载与校验边界 | 8/10 | 能区分已有环境值与文件值、空字符串错误；需补准空字符串在 `int_parsing` 阶段失败 | 下次复测配置来源与类型/范围校验阶段 |
@@ -306,3 +311,18 @@
 | 项目复用结论 | 可用于 RAG、Tool、SQL 与 Agent 请求的统一事件记录和失败 traceback；不得记录 API Key 等敏感字段 |
 | 章节提交 | `learn(week02-day19): logging basics and exception traces` |
 | 下一步唯一任务 | 先做约 2 分钟 logging 职责复测，再进入 pytest |
+
+## 第 20 天章节收尾（2026-09-19）
+
+| 项目 | 结果 |
+|---|---|
+| 章节状态 | 已完成 |
+| 核心主题 | pytest 返回值断言、显式 0 边界、`caplog` 同记录日志校验、`pytest.raises` 预期异常 |
+| 掌握等级 | `Modified-It`；测试由学习者实现，`any(...)` 的完整写法经提示后掌握，不上调为 Built-It |
+| 面试结果 | 首次 5/10；闭卷未完整表达同记录判断，标准答案已归档 |
+| 巩固结果 | 首次 7/10；日志组合变体纠错 2/2，能口述 `any(...)` 逐条判断 |
+| 验收证据 | 四项测试 4/4、仓库回归 28/28；缺失 WARNING、跨记录拼接和合法 0 反向探针均按预期失败 |
+| 主要缺口 | `caplog.records` 与同记录判断需次日间隔复测，不能把即时纠错等同长期掌握 |
+| 项目复用结论 | 可为智能取数 Tool 的返回契约、日志上下文和非法输入异常建立自动回归；尚未接入真实 SQL 或服务 |
+| 章节提交 | `learn(week02-day20): pytest query behavior and error paths`；仅本章测试与记录，不推送远程 |
+| 下一步唯一任务 | 先用约 2 分钟复测 `caplog` / `pytest.raises`，再进入 HTTP 请求与 timeout |
