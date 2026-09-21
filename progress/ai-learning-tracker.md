@@ -4,11 +4,11 @@
 
 ## 当前状态
 
-- 当前日期：2026-09-21
+- 当前日期：2026-09-22
 - 当前 Week：Week 2 进行中
 - 当前 Phase：Python Engineering / Async
-- 当前主目标：Day 21 HTTP GET / timeout 已跨日完成；掌握等级 Modified-It
-- 下一步唯一优先任务：先用约 2 分钟复测 ReadTimeout 的每段等待语义，再进入 HTTP retry
+- 当前主目标：Day 22 HTTP retry 已完成，章节提交已创建
+- 下一步唯一优先任务：进入 async / await 基础
 - 上次周测日期：2026-09-16
 - 上次阶段 Mock：
 
@@ -19,7 +19,7 @@
 | 周次 | 主题 | 状态 | 主要产物 |
 |---|---|---|---|
 | 1 | Python 核心 | 已完成 | 第 1～18 天知识章节与第 1 周周测完成；周测 8.3/10，当前主线等级为 `Modified-It` |
-| 2 | Python 工程化 / 异步 | 进行中 | Day 19 logging、Day 20 pytest、Day 21 HTTP / timeout 已完成；下一步 retry |
+| 2 | Python 工程化 / 异步 | 进行中 | Day 19 logging、Day 20 pytest、Day 21 HTTP / timeout、Day 22 HTTP retry 已完成 |
 | 3 | FastAPI / 后端 | 未开始 | |
 | 4 | LLM API / 工具调用 | 未开始 | |
 | 5 | 基线 RAG | 未开始 | |
@@ -67,7 +67,8 @@
 | 18 | 2026-09-14～15 | `.env` 加载、优先级与配置校验 | 独立实现 `load_query_config`；六类行为、导入静默和演示通过；面试 8/10，巩固首次 8/10、纠错通过 | Modified-It | `1b7db14` |
 | 19 | 2026-09-16～17 | logging、模块职责与异常 traceback | 独立实现查询上下文日志和异常日志；100/500/600、正常/0/空字符串/非法文本通过；面试 7/10，巩固首次 9/10、纠错通过 | Modified-It | `learn(week02-day19): logging basics and exception traces` |
 | 20 | 2026-09-19 | pytest 返回值、日志与预期异常 | 学习者完成 4 项测试；4/4 通过、仓库回归 28/28；反向检查失败如预期；面试 5/10，巩固首次 7/10、纠错 2/2 | Modified-It | `learn(week02-day20): pytest query behavior and error paths` |
-| 21 | 2026-09-20～21 | HTTP GET、状态码与 timeout | 200/404/超时及删除 `raise_for_status` 预测正确；学习者实现函数，本章测试 3/3、仓库回归 31/31；面试 7/10，巩固 3/3 | Modified-It | `learn(week02-day21): HTTP status and timeout` |
+| 21 | 2026-09-20～21 | HTTP GET、状态码与 timeout | 200/404/超时及删除 `raise_for_status` 预测正确；学习者实现函数，本章测试 3/3、仓库回归 31/31；面试 7/10，巩固 3/3；2026-09-22 间隔复测 3/3 | Modified-It | `learn(week02-day21): HTTP status and timeout` |
+| 22 | 2026-09-22 | HTTP retry 边界与有限连接重试 | 学习者实现 `fetch_status_with_retry`；只重试 `ConnectError` / `ConnectTimeout`，404 / ReadTimeout 不重试；`max_attempts < 1` 拒绝；本章 5/5、仓库回归 36/36 | Modified-It | `learn(week02-day22): bounded HTTP retry` |
 
 ### 每日巩固索引
 
@@ -91,6 +92,8 @@
 | 19 | 9/10 | 补准 WARNING 是最低门槛，DEBUG / INFO 被过滤，WARNING 及以上可输出 | 下次复测 `basicConfig`、`getLogger`、`logger.exception` 与 `raise` 的职责边界 |
 | 20 | 7/10 | 日志同记录判断纠错 2/2；2026-09-20 间隔复测 2/2，能解释同记录判断与预期异常 | 缺口关闭；后续在 HTTP 测试中复用 pytest |
 | 21 | 3/3 | 无需纠错；准确判断分段读取不受总 3 秒限制、间隔超时及 404 与 ReadTimeout 不匹配 | 下次约 2 分钟复测每段读取等待与完整响应结束的区别 |
+| 21（间隔） | 3/3 | 2026-09-22：三题均正确，能按每段数据等待和异常类型判断 | 进入 HTTP retry；复测重试范围与总预算 |
+| 22 | 3/3 | 面试 8/10；巩固前两题正确，第三题把已修复的 `ValueError` 误记为旧版 `None`，纠正后准确说明非正次数不发请求并抛出 `ValueError` | 间隔复测重试异常范围、最多请求次数与总时间预算 |
 
 | 主题 | 掌握等级 | 证据 | 缺口 / 下一步 |
 |---|---|---|---|
@@ -117,7 +120,7 @@
 | `.env` / 环境变量配置与模型校验 | Modified-It | 独立实现 `load_query_config`；已有环境值优先、文件填充、缺失键默认 100、非法文本和越界值抛出 `ValidationError`，六类行为与导入静默通过；面试 8/10，巩固首次 8/10、纠错通过 | 下次复测环境优先级、空字符串 `int_parsing` 与缺失键默认值，然后进入 logging |
 | logging / 日志级别 / 异常 traceback | Modified-It | 独立实现模块 logger、上下文日志和 `logger.exception`；根据 Review 缩小 try 范围；行为断言 6/6、导入静默、编译和 24 项回归通过；面试 7/10，巩固首次 9/10、纠错通过 | 复测安全上下文字段，以及返回 `None` 与 `raise` 应由函数契约和恢复能力决定；下一章 pytest |
 | pytest / 返回值、日志与预期异常 | Modified-It | 学习者亲手完成四项测试；显式 0、同记录 WARNING、负数 ValueError；反向探针验证假阳性被拒绝；仓库回归 28/28 | 2026-09-20 间隔复测 2/2；后续在 HTTP 测试中继续复用 |
-| HTTP GET / 状态异常 / timeout | Modified-It | 学习者实现 `fetch_status`；200、404、ReadTimeout 本章 3/3，仓库回归 31/31；导入静默；面试 7/10、巩固 3/3 | `ReadTimeout` 的客户端等待下一段数据语义需间隔复测；下一章 retry |
+| HTTP GET / 状态异常 / timeout | Modified-It | 学习者实现 `fetch_status`；200、404、ReadTimeout 本章 3/3，仓库回归 31/31；导入静默；面试 7/10、巩固 3/3；间隔复测 3/3 | 进入 retry；保留“读取超时不是整次请求总时限”的边界 |
 
 ## 后端
 
@@ -175,10 +178,11 @@
 
 > 此处只保留截至当前日期的规范收尾索引。
 
-### 最新收尾索引（截至 2026-09-21）
+### 最新收尾索引（截至 2026-09-22）
 
 | 学习日 | 完成日期 | 主题 | 首次巩固 | 纠错结果 | 面试得分 | 验收证据 | 章节提交 |
 |---:|---|---|---:|---|---:|---|---|
+| 22 | 2026-09-22 | HTTP retry 边界与有限连接重试 | 3/3 | 第 3 题纠正通过 | 8/10 | 本章 5/5、仓库回归 36/36；只重试连接异常；404 / ReadTimeout 各一次；非正 `max_attempts` 抛 `ValueError` | `learn(week02-day22)` |
 | 21 | 2026-09-21 | HTTP GET、状态码与 timeout | 3/3 | 无需纠错 | 7/10 | 本章 3/3、仓库回归 31/31；导入静默；404 / ReadTimeout 分支通过 | `learn(week02-day21)` |
 | 20 | 2026-09-19 | pytest 查询行为、日志与预期异常 | 7/10 | 2/2 通过 | 5/10 | 四项测试 4/4、仓库回归 28/28；缺失日志和合法 0 反向探针按预期失败 | `learn(week02-day20)` |
 | 19 | 2026-09-17 | logging 与异常 traceback | 9/10 | 通过 | 7/10 | 日志级别、模块职责、上下文、traceback 与传播边界通过；回归 24/24 | `learn(week02-day19)` |
@@ -346,3 +350,18 @@
 | 项目复用结论 | 可用于元数据、LLM 或检索服务调用时区分错误响应与网络超时；当前仅返回状态码，尚未接入真实服务或解析响应体 |
 | 章节提交 | `learn(week02-day21): HTTP status and timeout`；仅本章代码、测试与记录，不推送远程 |
 | 下一步唯一任务 | 先用约 2 分钟复测读取超时语义，再进入 HTTP retry |
+
+## 第 22 天章节收尾（2026-09-22）
+
+| 项目 | 结果 |
+|---|---|
+| 章节状态 | 已完成；本地章节提交已创建 |
+| 核心主题 | 幂等 GET 的有限连接异常重试、异常范围、最大尝试次数与输入边界 |
+| 掌握等级 | `Modified-It`；学习者亲手实现 retry 循环、异常筛选和 `max_attempts` 校验，并能解释 404、ReadTimeout 与连接异常的差异 |
+| 面试结果 | 8/10；准确说明 404 不应重试、timeout 不是函数总时限；需继续区分“当前策略不重试 ReadTimeout”和“ReadTimeout 永远不能重试” |
+| 巩固结果 | 3/3；第 3 题曾回忆为旧版 `None`，纠正后能准确说明非正次数不发请求并抛出 `ValueError` |
+| 验收证据 | 本章 5/5、仓库回归 36/36；连接超时两次后成功、持续连接异常传播、404 与 ReadTimeout 单次请求、非正 `max_attempts` 校验均通过；测试使用 monkeypatch，未访问真实服务 |
+| 主要缺口 | 尚未加入退避、总时间预算或 5xx / 429 策略；这些留待后续工程化，不在本章扩大范围 |
+| 项目复用结论 | 可用于元数据、LLM 或检索服务的幂等 GET 调用；进入真实 Agent 前仍需补充退避、总预算、状态码策略和请求幂等性审查 |
+| 章节提交 | `learn(week02-day22): bounded HTTP retry`；仅本章代码、测试与记录，不推送远程 |
+| 下一步唯一任务 | 进入 async / await 基础 |
