@@ -4,11 +4,11 @@
 
 ## 当前状态
 
-- 当前日期：2026-09-22
+- 当前日期：2026-09-23
 - 当前 Week：Week 2 进行中
 - 当前 Phase：Python Engineering / Async
-- 当前主目标：Day 22 HTTP retry 已完成，章节提交已创建
-- 下一步唯一优先任务：进入 async / await 基础
+- 当前主目标：Day 23 async / await 与 Task 已完成，章节提交已创建
+- 下一步唯一优先任务：进入 `asyncio.gather` 并发结果收集
 - 上次周测日期：2026-09-16
 - 上次阶段 Mock：
 
@@ -19,7 +19,7 @@
 | 周次 | 主题 | 状态 | 主要产物 |
 |---|---|---|---|
 | 1 | Python 核心 | 已完成 | 第 1～18 天知识章节与第 1 周周测完成；周测 8.3/10，当前主线等级为 `Modified-It` |
-| 2 | Python 工程化 / 异步 | 进行中 | Day 19 logging、Day 20 pytest、Day 21 HTTP / timeout、Day 22 HTTP retry 已完成 |
+| 2 | Python 工程化 / 异步 | 进行中 | Day 19 logging、Day 20 pytest、Day 21 HTTP / timeout、Day 22 retry、Day 23 async / await 与 Task 已完成 |
 | 3 | FastAPI / 后端 | 未开始 | |
 | 4 | LLM API / 工具调用 | 未开始 | |
 | 5 | 基线 RAG | 未开始 | |
@@ -69,6 +69,7 @@
 | 20 | 2026-09-19 | pytest 返回值、日志与预期异常 | 学习者完成 4 项测试；4/4 通过、仓库回归 28/28；反向检查失败如预期；面试 5/10，巩固首次 7/10、纠错 2/2 | Modified-It | `learn(week02-day20): pytest query behavior and error paths` |
 | 21 | 2026-09-20～21 | HTTP GET、状态码与 timeout | 200/404/超时及删除 `raise_for_status` 预测正确；学习者实现函数，本章测试 3/3、仓库回归 31/31；面试 7/10，巩固 3/3；2026-09-22 间隔复测 3/3 | Modified-It | `learn(week02-day21): HTTP status and timeout` |
 | 22 | 2026-09-22 | HTTP retry 边界与有限连接重试 | 学习者实现 `fetch_status_with_retry`；只重试 `ConnectError` / `ConnectTimeout`，404 / ReadTimeout 不重试；`max_attempts < 1` 拒绝；本章 5/5、仓库回归 36/36 | Modified-It | `learn(week02-day22): bounded HTTP retry` |
+| 23 | 2026-09-23 | `async def`、协程对象、`await` 与 Task | 学习者实现两个元数据查询 Task；事件顺序证明并发启动；本章 2/2、仓库回归 38/38；面试 6/10，巩固 3/3 | Modified-It | `learn(week02-day23): async tasks and cooperative concurrency` |
 
 ### 每日巩固索引
 
@@ -94,6 +95,8 @@
 | 21 | 3/3 | 无需纠错；准确判断分段读取不受总 3 秒限制、间隔超时及 404 与 ReadTimeout 不匹配 | 下次约 2 分钟复测每段读取等待与完整响应结束的区别 |
 | 21（间隔） | 3/3 | 2026-09-22：三题均正确，能按每段数据等待和异常类型判断 | 进入 HTTP retry；复测重试范围与总预算 |
 | 22 | 3/3 | 面试 8/10；巩固前两题正确，第三题把已修复的 `ValueError` 误记为旧版 `None`，纠正后准确说明非正次数不发请求并抛出 `ValueError` | 间隔复测重试异常范围、最多请求次数与总时间预算 |
+| 22（间隔） | 2.5/3 | 2026-09-23：连接异常重试次数判断正确；补准 HTTPX 标量 timeout 覆盖多个网络阶段，不只是读取，也不是函数总预算 | 缺口关闭；在异步 HTTP 中继续区分阶段 timeout 与总预算 |
+| 23 | 3/3 | 准确区分协程对象与 Task、顺序 await 与先建 Task 的耗时，以及无 await 的 CPU 循环会阻塞事件循环 | 下次复测协程函数 / 协程对象 / Task 三层关系，再进入 `gather` |
 
 | 主题 | 掌握等级 | 证据 | 缺口 / 下一步 |
 |---|---|---|---|
@@ -121,6 +124,7 @@
 | logging / 日志级别 / 异常 traceback | Modified-It | 独立实现模块 logger、上下文日志和 `logger.exception`；根据 Review 缩小 try 范围；行为断言 6/6、导入静默、编译和 24 项回归通过；面试 7/10，巩固首次 9/10、纠错通过 | 复测安全上下文字段，以及返回 `None` 与 `raise` 应由函数契约和恢复能力决定；下一章 pytest |
 | pytest / 返回值、日志与预期异常 | Modified-It | 学习者亲手完成四项测试；显式 0、同记录 WARNING、负数 ValueError；反向探针验证假阳性被拒绝；仓库回归 28/28 | 2026-09-20 间隔复测 2/2；后续在 HTTP 测试中继续复用 |
 | HTTP GET / 状态异常 / timeout | Modified-It | 学习者实现 `fetch_status`；200、404、ReadTimeout 本章 3/3，仓库回归 31/31；导入静默；面试 7/10、巩固 3/3；间隔复测 3/3 | 进入 retry；保留“读取超时不是整次请求总时限”的边界 |
+| async / await / Task | Modified-It | 学习者实现 `fetch_table` / `fetch_two_tables`；两个 Task 先创建后等待，事件序列为两个 start 后两个 done；本章 2/2、仓库回归 38/38；巩固 3/3 | 面试首次 6/10；需稳定区分协程函数、协程对象与 Task，并说明 asyncio 不提供 CPU 多核并行 |
 
 ## 后端
 
@@ -178,10 +182,11 @@
 
 > 此处只保留截至当前日期的规范收尾索引。
 
-### 最新收尾索引（截至 2026-09-22）
+### 最新收尾索引（截至 2026-09-23）
 
 | 学习日 | 完成日期 | 主题 | 首次巩固 | 纠错结果 | 面试得分 | 验收证据 | 章节提交 |
 |---:|---|---|---:|---|---:|---|---|
+| 23 | 2026-09-23 | async / await 与 Task | 3/3 | 并发 / 并行术语纠正通过 | 6/10 | 本章 2/2、仓库回归 38/38；实际事件为两个 start 后两个 done；Task 异常传播预测 3/3 | `learn(week02-day23)` |
 | 22 | 2026-09-22 | HTTP retry 边界与有限连接重试 | 3/3 | 第 3 题纠正通过 | 8/10 | 本章 5/5、仓库回归 36/36；只重试连接异常；404 / ReadTimeout 各一次；非正 `max_attempts` 抛 `ValueError` | `learn(week02-day22)` |
 | 21 | 2026-09-21 | HTTP GET、状态码与 timeout | 3/3 | 无需纠错 | 7/10 | 本章 3/3、仓库回归 31/31；导入静默；404 / ReadTimeout 分支通过 | `learn(week02-day21)` |
 | 20 | 2026-09-19 | pytest 查询行为、日志与预期异常 | 7/10 | 2/2 通过 | 5/10 | 四项测试 4/4、仓库回归 28/28；缺失日志和合法 0 反向探针按预期失败 | `learn(week02-day20)` |
@@ -365,3 +370,18 @@
 | 项目复用结论 | 可用于元数据、LLM 或检索服务的幂等 GET 调用；进入真实 Agent 前仍需补充退避、总预算、状态码策略和请求幂等性审查 |
 | 章节提交 | `learn(week02-day22): bounded HTTP retry`；仅本章代码、测试与记录，不推送远程 |
 | 下一步唯一任务 | 进入 async / await 基础 |
+
+## 第 23 天章节收尾（2026-09-23）
+
+| 项目 | 结果 |
+|---|---|
+| 章节状态 | 已完成；本地章节提交已创建 |
+| 核心主题 | `async def`、协程函数与协程对象、`await`、`asyncio.create_task()`、协作式并发与异常传播 |
+| 掌握等级 | `Modified-It`；学习者亲手实现两个并发启动的元数据 Task，并能解释 Task 在 await 点让出事件循环 |
+| 面试结果 | 6/10；能说明直接 await 与 create_task 的差异，但首次混淆协程函数和协程对象，对 I/O 并发与 CPU 密集工作的差异表达不完整 |
+| 巩固结果 | 3/3；准确判断协程对象未执行时事件为空、顺序 await 与并发 Task 的耗时，以及无 await 的纯 Python 循环会阻塞事件循环 |
+| 验收证据 | 本章 2/2、仓库回归 38/38；实际事件顺序为 `start:orders`、`start:customers`、`done:orders`、`done:customers`；Task 内 `ValueError` 向 await 调用方传播的预测 3/3 |
+| 主要缺口 | 需间隔复测协程函数、协程对象与 Task 的三层关系；避免把单线程事件循环的并发称为 CPU 并行 |
+| 项目复用结论 | 可用于并发等待元数据、权限、检索或 LLM 等 I/O；CPU 密集计算仍会阻塞事件循环，需要不同执行策略 |
+| 章节提交 | `learn(week02-day23): async tasks and cooperative concurrency`；仅本章代码、测试与记录，不推送远程 |
+| 下一步唯一任务 | 进入 `asyncio.gather` 并发结果收集 |

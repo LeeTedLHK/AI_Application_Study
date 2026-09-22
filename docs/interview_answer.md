@@ -343,3 +343,13 @@ wrapper 调用原函数后必须保存并 `return result`，才能维持原函�
 ### 问题：对幂等的元数据 `GET` 请求，为什么当前策略只重试 `ConnectError` 和 `ConnectTimeout`，而不重试 `404` 与 `ReadTimeout`？如果 `max_attempts=3`、`timeout=3`，能否直接断言整个函数最多运行 9 秒？为什么？
 
 **标准回答：** `ConnectError` 和 `ConnectTimeout` 表示连接阶段可能暂时失败，且本例是幂等的 GET，因此可以在明确次数内重新建立连接。404 表示服务端已经返回确定的“资源不存在”，重复请求通常不会改变结果，所以当前策略不重试。`ReadTimeout` 发生在连接建立后等待响应数据时，服务端可能已经处理或正在处理请求；它在其他系统中可以被纳入重试，但必须结合请求幂等性、重复副作用、退避和总时间预算，本章明确选择不重试。`max_attempts=3` 只限制最多发起三次请求，不能直接推出函数最多运行 9 秒：HTTPX 的 timeout 不是整个函数的总时限，标量 timeout 会作用于各网络阶段，read timeout 还是等待下一段数据的间隔上限；还可能存在连接、连接池、处理和退避等额外时间。
+
+## 2026-09-23 — Day 23 async / await 与 Task
+
+本轮评分：6/10。学习者能说明 `await coroutine` 会使当前 Task 进入并等待协程，也知道 `create_task` 会把工作交给事件循环；但把调用 `async def` 的结果误答为“协程函数”，没有区分协程函数与协程对象，对 I/O 并发与 CPU 密集工作的差异只回答了“协程可以暂停”。
+
+### 问题：智能取数服务同时请求元数据服务和权限服务时，`async def`、协程对象、Task、顺序 await 与 I/O 并发分别是什么关系？为什么 asyncio 不会自然加速大量 CPU 计算？
+
+**问题原文：** 智能取数服务要同时请求元数据服务和权限服务。请解释：1. 调用 `async def` 后得到什么？2. `asyncio.create_task()` 增加了什么行为？3. 为什么直接写 `await metadata()` 再写 `await permission()` 仍是顺序执行？4. 为什么 asyncio 适合等待 HTTP、数据库或 LLM 响应，却不会自然加速大量 CPU 计算？
+
+**标准回答：** `async def` 定义协程函数；调用协程函数只创建协程对象，不会立即执行函数体。`asyncio.create_task(coroutine)` 把协程包装成 Task，并安排它在当前事件循环中尽快运行。直接先 `await metadata()` 再 `await permission()` 时，当前 Task 必须等第一个协程完成后才会创建并进入第二个协程，因此仍是顺序执行；要并发，应先创建两个 Task，再等待它们。asyncio 适合 I/O 密集工作，因为 Task 在等待非阻塞 HTTP、数据库或 LLM 响应时可以通过 `await` 让出事件循环，使其他 Task 推进。CPU 密集代码若长时间不遇到可让出控制权的 await，会阻塞事件循环；单线程事件循环提供的是协作式并发，不是多核 CPU 并行，因此不会自然加速大量计算。
