@@ -4,11 +4,12 @@
 
 ## 当前状态
 
-- 当前日期：2026-09-23
+- 当前日期：2026-09-30
 - 当前 Week：Week 2 进行中
 - 当前 Phase：Python Engineering / Async
-- 当前主目标：Day 23 async / await 与 Task 已完成，章节提交已创建
-- 下一步唯一优先任务：进入 `asyncio.gather` 并发结果收集
+- 学习状态：暂停（2026-09-30 起，按用户请求）
+- 当前主目标：Day 24 `asyncio.gather` 已完成代码验收；原理纠错、面试和每日巩固尚未完成
+- 下一步唯一优先任务：恢复学习后先复测协程对象列表、空输入 / 非法表名和 gather 结果顺序，再完成 Day 24 收尾
 - 上次周测日期：2026-09-16
 - 上次阶段 Mock：
 
@@ -70,6 +71,7 @@
 | 21 | 2026-09-20～21 | HTTP GET、状态码与 timeout | 200/404/超时及删除 `raise_for_status` 预测正确；学习者实现函数，本章测试 3/3、仓库回归 31/31；面试 7/10，巩固 3/3；2026-09-22 间隔复测 3/3 | Modified-It | `learn(week02-day21): HTTP status and timeout` |
 | 22 | 2026-09-22 | HTTP retry 边界与有限连接重试 | 学习者实现 `fetch_status_with_retry`；只重试 `ConnectError` / `ConnectTimeout`，404 / ReadTimeout 不重试；`max_attempts < 1` 拒绝；本章 5/5、仓库回归 36/36 | Modified-It | `learn(week02-day22): bounded HTTP retry` |
 | 23 | 2026-09-23 | `async def`、协程对象、`await` 与 Task | 学习者实现两个元数据查询 Task；事件顺序证明并发启动；本章 2/2、仓库回归 38/38；面试 6/10，巩固 3/3 | Modified-It | `learn(week02-day23): async tasks and cooperative concurrency` |
+| 24 | 2026-09-29 | `asyncio.gather` 并发结果收集 | Day 23 间隔复测 3/3；最小示例首次 2/3、变体纠错通过；学习者实现协程列表与 gather，本章 4/4、仓库回归 42/42；原理与收尾待完成 | 待评估 | 未提交 |
 
 ### 每日巩固索引
 
@@ -97,6 +99,7 @@
 | 22 | 3/3 | 面试 8/10；巩固前两题正确，第三题把已修复的 `ValueError` 误记为旧版 `None`，纠正后准确说明非正次数不发请求并抛出 `ValueError` | 间隔复测重试异常范围、最多请求次数与总时间预算 |
 | 22（间隔） | 2.5/3 | 2026-09-23：连接异常重试次数判断正确；补准 HTTPX 标量 timeout 覆盖多个网络阶段，不只是读取，也不是函数总预算 | 缺口关闭；在异步 HTTP 中继续区分阶段 timeout 与总预算 |
 | 23 | 3/3 | 准确区分协程对象与 Task、顺序 await 与先建 Task 的耗时，以及无 await 的 CPU 循环会阻塞事件循环 | 下次复测协程函数 / 协程对象 / Task 三层关系，再进入 `gather` |
+| 23（间隔） | 3/3 | 2026-09-29：正确区分协程对象与调度后的 Task；准确判断顺序 / 并发耗时与无 await 的 CPU 循环阻塞事件循环 | 进入 `gather`；当前表现不自动上调掌握等级 |
 
 | 主题 | 掌握等级 | 证据 | 缺口 / 下一步 |
 |---|---|---|---|
